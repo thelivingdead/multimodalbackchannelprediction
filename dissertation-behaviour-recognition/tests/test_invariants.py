@@ -24,6 +24,17 @@ def test_match_pairs_and_greedy() -> None:
     assert (tp, fp, fn) == (1, 1, 0)
 
 
+def test_clock_mmss() -> None:
+    from src.utils import format_mmss, parse_clock
+
+    assert format_mmss(55) == "0:55"
+    assert format_mmss(115) == "1:55"
+    assert format_mmss(701.4) == "11:41"
+    assert parse_clock("0:55") == 55
+    assert parse_clock("11:41") == 701
+    assert parse_clock("1:02") == 62
+
+
 def test_parse_label() -> None:
     assert parse_label(1) == 1
     assert parse_label("0") == 0

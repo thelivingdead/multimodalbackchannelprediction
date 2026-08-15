@@ -37,11 +37,29 @@ def nod_plan(i: int, duration: float) -> list[tuple[float, float]]:
     return events
 
 
+def _has_real_clip_mp4(out: Path) -> bool:
+    if not out.exists():
+        return False
+    for d in out.iterdir():
+        mp4 = d / "clip.mp4"
+        if mp4.exists() and mp4.stat().st_size > 5000:
+            return True
+    return False
+
+
 def main() -> None:
     ensure_dirs()
     assert_can_continue()
     out = ROOT / "data" / "working" / "pilot"
     out.mkdir(parents=True, exist_ok=True)
+    if _has_real_clip_mp4(out):
+        print("Real clip.mp4 files already in", out)
+        print("Not overwriting them with synthetic placeholders.")
+        return
+    print("WARNING: no RealTalk videos found.")
+    print("Writing SYNTHETIC placeholders so the pipeline can be tested.")
+    print("These are NOT RealTalk. Do not report F1 as a dataset result.")
+    print("For real annotation you need clip.mp4 + emoca.pkl per video.")
     fps, duration, n = 25.0, 60.0, 10
     n_frames = int(duration * fps)
     for i in range(n):

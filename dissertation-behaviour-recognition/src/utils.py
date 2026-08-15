@@ -31,6 +31,52 @@ def set_seed(seed: int) -> None:
     np.random.seed(seed)
 
 
+def format_mmss(seconds: float | None) -> str:
+    """YouTube-style clock, e.g. 55s → 0:55, 701s → 11:41."""
+    if seconds is None:
+        return ""
+    try:
+        s = float(seconds)
+    except (TypeError, ValueError):
+        return ""
+    if s != s:  # NaN
+        return ""
+    s = max(0.0, s)
+    m = int(s // 60)
+    whole = int(round(s - 60 * m))
+    if whole == 60:
+        m += 1
+        whole = 0
+    return f"{m}:{whole:02d}"
+
+
+def parse_clock(raw: object) -> float | None:
+    """Parse 0:55, 11:41, or a raw second count. Returns seconds."""
+    if raw is None:
+        return None
+    if isinstance(raw, (int, float)) and not isinstance(raw, bool):
+        if raw != raw:
+            return None
+        return float(raw)
+    s = str(raw).strip().lower()
+    if s in ("", "nan", "none"):
+        return None
+    if ":" in s:
+        parts = s.split(":")
+        try:
+            if len(parts) == 2:
+                return float(parts[0]) * 60.0 + float(parts[1])
+            if len(parts) == 3:
+                return float(parts[0]) * 3600.0 + float(parts[1]) * 60.0 + float(parts[2])
+        except ValueError:
+            return None
+        return None
+    try:
+        return float(s)
+    except ValueError:
+        return None
+
+
 def git_commit(root: Path) -> str:
     try:
         import subprocess

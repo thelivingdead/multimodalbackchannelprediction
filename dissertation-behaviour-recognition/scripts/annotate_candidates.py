@@ -59,7 +59,58 @@ def propose() -> pd.DataFrame:
     return df
 
 
-def append_log(row: dict) -> None:
+def sparkline(values: list[float], width: int = 40) -> str:
+    if not values:
+        return "(no pose samples in this window)"
+    blocks = "▁▂▃▄▅▆▇█"
+    lo, hi = min(values), max(values)
+    span = hi - lo if hi > lo else 1e-6
+    step = max(1, len(values) // width)
+    sampled = values[::step][:width]
+    chars = [blocks[min(len(blocks) - 1, int((v - lo) / span * (len(blocks) - 1)))] for v in sampled]
+    return "".join(chars)
+
+
+def preview_interval(vid: str, start_s: float, end_s: float) -> None:
+    clip = ROOT / "data" / "working" / "pilot" / vid / "clip.mp4"
+    hp = ROOT / "data" / "headpose" / f"{vid}.csv"
+    print("  --------------------------------")
+    print(f"  CLIP:  {vid}")
+    print(f"  PART:  {start_s:.2f}s  →  {end_s:.2f}s   (watch only this slice)")
+    if len(vid) == 11 and not vid.startswith("pilot"):
+        print(f"  WATCH: https://www.youtube.com/watch?v={vid}&t={int(max(0, start_s))}")
+        print("         Jump to that time. Listener: p0=LEFT, p1=RIGHT (see watch_list.csv).")
+    if clip.exists() and clip.stat().st_size > 5000:
+        print(f"  VIDEO: {clip}")
+        print("         Open that file and jump to the start time above.")
+    else:
+        print("  VIDEO: none (synthetic placeholder — there is nothing to watch)")
+        print("         Judge from the pitch trace below.")
+    if not hp.exists():
+        print("  POSE:  missing head-pose CSV")
+        print("  --------------------------------")
+        return
+    df = pd.read_csv(hp)
+    pad = 0.4
+    w = df[(df["time_s"] >= start_s - pad) & (df["time_s"] <= end_s + pad)]
+    inside = df[(df["time_s"] >= start_s) & (df["time_s"] <= end_s)]
+    if "pitch" not in df.columns or inside.empty:
+        print("  POSE:  no pitch in this window")
+        print("  --------------------------------")
+        return
+    rng = float(inside["pitch"].max() - inside["pitch"].min())
+    print(f"  PITCH range in window: {rng:.2f} deg")
+    print(f"  PITCH trace: {sparkline(inside['pitch'].astype(float).tolist())}")
+    print("         A nod is usually a down-then-up (or up-then-down) bump.")
+    print("         Flat / tiny wiggle → 0    clear cycle → 1")
+    if len(w) and "time_s" in w.columns:
+        show = w[["time_s", "pitch"]].copy()
+        show["time_s"] = show["time_s"].map(lambda x: f"{x:.2f}")
+        show["pitch"] = show["pitch"].map(lambda x: f"{x:.3f}")
+        print(show.head(12).to_string(index=False))
+        if len(show) > 12:
+            print("         ...")
+    print("  --------------------------------")
     path = ROOT / "data" / "gold" / "annotation_log.csv"
     df = pd.DataFrame([row], columns=LOG_COLUMNS)
     header = not path.exists() or path.stat().st_size == 0
@@ -113,8 +164,9 @@ def main() -> None:
             current_vid = vid
             n_this_video = 0
             t_vid = time.time()
-            print(f"\n=== {vid} ===  (open data/working/pilot/{vid}/ if you have a clip)")
-        print(f"  {a:.2f}s – {b:.2f}s   ({b-a:.2f}s)")
+            print(f"\n=== {vid} ===")
+        print()
+        preview_interval(vid, a, b)
         ans = input("    1=clear nod  0=unclear  a=add  q=quit  > ").strip().lower()
         if ans == "q":
             break

@@ -1,0 +1,2 @@
+status: blocked
+reason: "Do not fine-tune VideoMAE before frozen-head experiment and pilot rule."

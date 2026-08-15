@@ -1,0 +1,5 @@
+name: head_shake
+min_range_deg: 3.0
+min_dur: 0.25
+max_dur: 1.40
+note: "Do not report test metrics until gold shake labels exist."

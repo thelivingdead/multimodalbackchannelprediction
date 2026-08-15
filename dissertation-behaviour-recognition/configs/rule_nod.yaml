@@ -1,0 +1,10 @@
+name: nod
+min_dur: 0.25
+max_dur: 1.40
+min_range_deg: 2.5
+min_reversals: 2
+band_low_hz: 1.0
+band_high_hz: 3.0
+fps: 25.0
+primary_event_iou: 0.30
+tune_on: pilot

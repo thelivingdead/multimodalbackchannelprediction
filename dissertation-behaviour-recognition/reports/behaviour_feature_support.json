@@ -1,0 +1,33 @@
+{
+  "nod": {
+    "feature": "pitch from pose rotvec[:3]",
+    "source": "EMOCA pose",
+    "verified": "LIKELY",
+    "rule_feasible": true,
+    "confidence": "medium-high"
+  },
+  "head_shake": {
+    "feature": "yaw",
+    "verified": "LIKELY",
+    "rule_feasible": true,
+    "scored": false
+  },
+  "head_tilt": {
+    "feature": "roll",
+    "verified": "LIKELY",
+    "rule_feasible": true,
+    "scored": false
+  },
+  "eyebrow_raise": {
+    "verified": "NOT AVAILABLE",
+    "rule_feasible": false
+  },
+  "lean_forward": {
+    "verified": "NOT AVAILABLE",
+    "rule_feasible": false
+  },
+  "lean_back": {
+    "verified": "NOT AVAILABLE",
+    "rule_feasible": false
+  }
+}

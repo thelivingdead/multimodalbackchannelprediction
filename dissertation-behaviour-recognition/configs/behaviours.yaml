@@ -1,0 +1,35 @@
+behaviours:
+  - id: nod
+    phase: A
+    feature: pitch_dynamics
+    status: implemented
+  - id: head_shake
+    phase: B
+    feature: yaw_dynamics
+    status: implemented_unscored
+  - id: head_tilt
+    phase: B
+    feature: roll_sustained
+    status: implemented_unscored
+  - id: eyebrow_raise
+    phase: C
+    feature: expression
+    status: blocked_until_emoca_verified
+  - id: lean_forward
+    phase: C
+    feature: translation
+    status: blocked_until_emoca_verified
+  - id: lean_back
+    phase: C
+    feature: translation
+    status: blocked_until_emoca_verified
+  - id: neutral
+    phase: A
+    feature: background
+    status: implicit_negatives
+
+annotation:
+  classes:
+    1: clear_nod
+    0: unclear
+  note: "Annotators only type 1 or 0."

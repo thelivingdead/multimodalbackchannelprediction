@@ -1,0 +1,6 @@
+status: blocked
+reason: "VideoMAE starts only after results/pilot_nod_rule_metrics.json exists."
+model: MCG-NJU/videomae-base
+frames: 16
+window_s: 2.0
+frozen: true

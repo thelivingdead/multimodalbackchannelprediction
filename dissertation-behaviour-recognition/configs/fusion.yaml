@@ -1,0 +1,3 @@
+status: blocked
+method: concatenate_then_mlp
+inputs: [videomae, pose_summary]

@@ -1,0 +1,8 @@
+numpy>=1.24,<2.1
+scipy>=1.10,<1.14
+matplotlib>=3.7,<3.10
+# Prefer a prebuilt wheel; on lab GPU machines this usually installs cleanly.
+# If OpenCV fails locally, demo mode still works without it:
+#   pip install numpy scipy matplotlib
+#   python scripts/visualise_flame_vs_frames.py --demo --out outputs/viz_demo
+opencv-python-headless==4.10.0.84

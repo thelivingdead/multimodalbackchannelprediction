@@ -10,6 +10,9 @@ from scipy.spatial.transform import Rotation
 
 POSE_KEY_CANDIDATES = (
     "pose",
+    "posecode",
+    "pose_code",
+    "flame_pose",
     "global_pose",
     "poseparams",
     "pose_params",
@@ -17,6 +20,15 @@ POSE_KEY_CANDIDATES = (
     "rotation",
     "neck_pose",
     "global_rot",
+)
+EXPR_KEY_CANDIDATES = (
+    "expcode",
+    "exp_code",
+    "expression",
+    "expressioncode",
+    "expression_code",
+    "exp",
+    "shape",
 )
 
 
@@ -47,6 +59,27 @@ def find_pose_array(emb: Any) -> np.ndarray | None:
         return None
     arr = np.asarray(emb, dtype=float).reshape(-1)
     if arr.size >= 3:
+        return arr
+    return None
+
+
+def find_expression_array(emb: Any) -> np.ndarray | None:
+    if emb is None:
+        return None
+    if hasattr(emb, "detach"):
+        try:
+            emb = emb.detach().cpu().numpy()
+        except Exception:
+            return None
+    if isinstance(emb, dict):
+        for k in EXPR_KEY_CANDIDATES:
+            if k in emb:
+                found = find_expression_array(emb[k])
+                if found is not None:
+                    return found
+        return None
+    arr = np.asarray(emb, dtype=float).reshape(-1)
+    if arr.size >= 4:
         return arr
     return None
 

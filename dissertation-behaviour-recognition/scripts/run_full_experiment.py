@@ -914,7 +914,8 @@ def main() -> None:
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--smoke-test", action="store_true")
     ap.add_argument("--rule-only", action="store_true", help="Gold rule baseline only; no pseudo-labels or CNN")
-    ap.add_argument("--skip-stream", action="store_true", help="Use existing features/gold/*.npz; do not contact Hugging Face")
+    ap.add_argument("--skip-stream", action="store_true", help="Use existing features/*.npz; do not contact Hugging Face")
+    ap.add_argument("--no-train", action="store_true", help="Extract/score only; do not train the 1D CNN")
     ap.add_argument("--local-emoca-dir", type=Path, default=None)
     args = ap.parse_args()
     work = args.workdir.resolve()
@@ -929,9 +930,11 @@ def main() -> None:
     n_pseudo = 0 if args.rule_only else (20 if args.smoke_test else args.pseudo_clips)
     epochs = 2 if args.smoke_test else args.epochs
     already = len(list((work / "features" / "gold").glob("*.npz")))
-    if args.skip_stream or already >= 30:
-        print(f"Skipping EMOCA stream; using {already} existing gold npz files")
-        stream_info = {"schema": None, "source": "existing_npz", "gold_npz": already}
+    have_pseudo = len(list((work / "features" / "pseudo").glob("*.npz")))
+    need_stream = (already < 30) or (n_pseudo > 0 and have_pseudo < n_pseudo)
+    if args.skip_stream or not need_stream:
+        print(f"Skipping EMOCA stream; gold={already}/30 pseudo={have_pseudo}/{n_pseudo}")
+        stream_info = {"schema": None, "source": "existing_npz", "gold_npz": already, "pseudo_npz": have_pseudo}
     else:
         stream_info = stream_emoca(gold, work, n_pseudo, args.smoke_test, args.local_emoca_dir)
     dump_json(work / "results" / "emoca_stream_status.json", stream_info)
@@ -947,13 +950,18 @@ def main() -> None:
             f"Detail: {stream_info.get('error')}"
         )
     else:
-        cfg = choose_axis_and_threshold(gold, work)
-        rule_dev = cfg["dev_metrics"]
-        print("Rule DEV F1:", rule_dev["f1"])
+        cfg_path = work / "results" / "rule_selected_config.json"
+        if cfg_path.exists():
+            cfg = json.loads(cfg_path.read_text())
+            print("Using frozen rule", cfg_path)
+            rule_dev = cfg.get("dev_metrics") or {}
+        else:
+            cfg = choose_axis_and_threshold(gold, work)
+            rule_dev = cfg["dev_metrics"]
+        print("Rule DEV F1:", rule_dev.get("f1"))
         rule_test = eval_rule(gold, work, cfg, "TEST")
         print("Rule TEST F1:", rule_test["f1"])
-        cnn = None
-        if not args.rule_only:
+        if not args.rule_only and not args.no_train:
             cnn = maybe_train_cnn(gold, work, epochs, args.seed, args.smoke_test)
     write_final(work, gold_sum, rule_dev, rule_test, cnn, storage0)
     dump_json(work / "results" / "storage_after.json", {"free_gb": disk_free_gb(work)})

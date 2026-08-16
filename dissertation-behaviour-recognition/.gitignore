@@ -24,7 +24,9 @@ LAB_NOTES.local.md
 *.local.md
 models/*.pt
 
-# Keep the 30 gold pose clips in git (~3.6 MB). Ignore everything else under features/.
+# Keep gold + unlabelled pose clips in git (small npz only). Ignore other features/.
 features/*
 !features/gold/
 !features/gold/*.npz
+!features/pseudo/
+!features/pseudo/*.npz

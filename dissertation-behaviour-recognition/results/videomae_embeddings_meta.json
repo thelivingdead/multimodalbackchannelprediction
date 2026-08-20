@@ -1,0 +1,574 @@
+{
+  "script": "extract_videomae_embeddings.py",
+  "checkpoint": "MCG-NJU/videomae-base",
+  "embed_dim": 768,
+  "pooling": "mean over patch tokens of last_hidden_state (frozen encoder)",
+  "backbone_frozen": true,
+  "transformers_version": "5.15.1",
+  "torch_version": "2.13.0+cpu",
+  "weight_bytes": 376873760,
+  "checkpoint_probe": {
+    "MCG-NJU/videomae-base": {
+      "status": "ok",
+      "weight_file": "model.safetensors",
+      "weight_bytes": 376873760,
+      "weight_gb": 0.351
+    }
+  },
+  "input": "features/rgb16 uint8 (16, 224, 224, 3) face crops",
+  "n_requested": 110,
+  "n_embeddings_total": 110,
+  "free_gb_end": 5.88,
+  "clips": {
+    "gold_001": {
+      "sample_id": "gold_001",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "gold_002": {
+      "sample_id": "gold_002",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "gold_003": {
+      "sample_id": "gold_003",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "gold_004": {
+      "sample_id": "gold_004",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "gold_005": {
+      "sample_id": "gold_005",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "gold_006": {
+      "sample_id": "gold_006",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "gold_007": {
+      "sample_id": "gold_007",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "gold_008": {
+      "sample_id": "gold_008",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "gold_009": {
+      "sample_id": "gold_009",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "gold_010": {
+      "sample_id": "gold_010",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "gold_011": {
+      "sample_id": "gold_011",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "gold_012": {
+      "sample_id": "gold_012",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "gold_013": {
+      "sample_id": "gold_013",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "gold_014": {
+      "sample_id": "gold_014",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "gold_015": {
+      "sample_id": "gold_015",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "gold_016": {
+      "sample_id": "gold_016",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "gold_017": {
+      "sample_id": "gold_017",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "gold_018": {
+      "sample_id": "gold_018",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "gold_019": {
+      "sample_id": "gold_019",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "gold_020": {
+      "sample_id": "gold_020",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "gold_021": {
+      "sample_id": "gold_021",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "gold_022": {
+      "sample_id": "gold_022",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "gold_023": {
+      "sample_id": "gold_023",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "gold_024": {
+      "sample_id": "gold_024",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "gold_025": {
+      "sample_id": "gold_025",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "gold_026": {
+      "sample_id": "gold_026",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "gold_027": {
+      "sample_id": "gold_027",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "gold_028": {
+      "sample_id": "gold_028",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "gold_029": {
+      "sample_id": "gold_029",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "gold_030": {
+      "sample_id": "gold_030",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00001": {
+      "sample_id": "pseudo_00001",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00002": {
+      "sample_id": "pseudo_00002",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00003": {
+      "sample_id": "pseudo_00003",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00004": {
+      "sample_id": "pseudo_00004",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00005": {
+      "sample_id": "pseudo_00005",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00006": {
+      "sample_id": "pseudo_00006",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00007": {
+      "sample_id": "pseudo_00007",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00008": {
+      "sample_id": "pseudo_00008",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00009": {
+      "sample_id": "pseudo_00009",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00010": {
+      "sample_id": "pseudo_00010",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00011": {
+      "sample_id": "pseudo_00011",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00012": {
+      "sample_id": "pseudo_00012",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00013": {
+      "sample_id": "pseudo_00013",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00014": {
+      "sample_id": "pseudo_00014",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00015": {
+      "sample_id": "pseudo_00015",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00016": {
+      "sample_id": "pseudo_00016",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00017": {
+      "sample_id": "pseudo_00017",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00018": {
+      "sample_id": "pseudo_00018",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00019": {
+      "sample_id": "pseudo_00019",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00020": {
+      "sample_id": "pseudo_00020",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00021": {
+      "sample_id": "pseudo_00021",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00022": {
+      "sample_id": "pseudo_00022",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00023": {
+      "sample_id": "pseudo_00023",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00024": {
+      "sample_id": "pseudo_00024",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00025": {
+      "sample_id": "pseudo_00025",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00026": {
+      "sample_id": "pseudo_00026",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00027": {
+      "sample_id": "pseudo_00027",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00028": {
+      "sample_id": "pseudo_00028",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00029": {
+      "sample_id": "pseudo_00029",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00030": {
+      "sample_id": "pseudo_00030",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00031": {
+      "sample_id": "pseudo_00031",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00032": {
+      "sample_id": "pseudo_00032",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00033": {
+      "sample_id": "pseudo_00033",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00034": {
+      "sample_id": "pseudo_00034",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00035": {
+      "sample_id": "pseudo_00035",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00036": {
+      "sample_id": "pseudo_00036",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00037": {
+      "sample_id": "pseudo_00037",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00038": {
+      "sample_id": "pseudo_00038",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00039": {
+      "sample_id": "pseudo_00039",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00040": {
+      "sample_id": "pseudo_00040",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00041": {
+      "sample_id": "pseudo_00041",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00042": {
+      "sample_id": "pseudo_00042",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00043": {
+      "sample_id": "pseudo_00043",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00044": {
+      "sample_id": "pseudo_00044",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00045": {
+      "sample_id": "pseudo_00045",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00046": {
+      "sample_id": "pseudo_00046",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00047": {
+      "sample_id": "pseudo_00047",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00048": {
+      "sample_id": "pseudo_00048",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00049": {
+      "sample_id": "pseudo_00049",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00050": {
+      "sample_id": "pseudo_00050",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00051": {
+      "sample_id": "pseudo_00051",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00052": {
+      "sample_id": "pseudo_00052",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00053": {
+      "sample_id": "pseudo_00053",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00054": {
+      "sample_id": "pseudo_00054",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00055": {
+      "sample_id": "pseudo_00055",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00056": {
+      "sample_id": "pseudo_00056",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00057": {
+      "sample_id": "pseudo_00057",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00058": {
+      "sample_id": "pseudo_00058",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00059": {
+      "sample_id": "pseudo_00059",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00060": {
+      "sample_id": "pseudo_00060",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00061": {
+      "sample_id": "pseudo_00061",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00062": {
+      "sample_id": "pseudo_00062",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00063": {
+      "sample_id": "pseudo_00063",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00064": {
+      "sample_id": "pseudo_00064",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00065": {
+      "sample_id": "pseudo_00065",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00066": {
+      "sample_id": "pseudo_00066",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00067": {
+      "sample_id": "pseudo_00067",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00068": {
+      "sample_id": "pseudo_00068",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00069": {
+      "sample_id": "pseudo_00069",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00070": {
+      "sample_id": "pseudo_00070",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00071": {
+      "sample_id": "pseudo_00071",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00072": {
+      "sample_id": "pseudo_00072",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00073": {
+      "sample_id": "pseudo_00073",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00074": {
+      "sample_id": "pseudo_00074",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00075": {
+      "sample_id": "pseudo_00075",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00076": {
+      "sample_id": "pseudo_00076",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00077": {
+      "sample_id": "pseudo_00077",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00078": {
+      "sample_id": "pseudo_00078",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00079": {
+      "sample_id": "pseudo_00079",
+      "status": "ok",
+      "embed_dim": 768
+    },
+    "pseudo_00080": {
+      "sample_id": "pseudo_00080",
+      "status": "ok",
+      "embed_dim": 768
+    }
+  }
+}

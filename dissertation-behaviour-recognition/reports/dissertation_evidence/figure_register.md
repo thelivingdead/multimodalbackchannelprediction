@@ -21,7 +21,8 @@
 | R3 | figures/model_comparison_f1.jpg | rule vs CNN TEST F1 | 7 | Headline comparison | final_results_summary.md |
 | R4 | figures/pseudo_label_distribution.jpg | 70/10 pseudo labels | 6 | Weak-label bias | pseudo_labels.csv |
 | R5 | figures/videomae_training_curve.png | VideoMAE head loss + DEV F1 | 7/appendix | Early stop epoch 10 (DEV F1 0.90); tuning diagnostic, not a headline | videomae_frozen_head/training_history.csv + metrics.json |
-| R6 | figures/model_comparison_f1.png | 3-model TEST F1 + 95% CI | 7 | Rule 0.67 / CNN 0.70 / VideoMAE 0.57; CIs overlap, not significant | tables/bootstrap_ci.csv |
+| R6 | figures/model_comparison_f1.png | 4-model TEST F1 + 95% CI | 7 | Rule 0.67 / CNN 0.70 / frozen VideoMAE 0.57 / fine-tuned VideoMAE 0.82 (highlighted); CIs overlap, not significant | tables/bootstrap_ci.csv |
+| R7 | figures/videomae_finetuned_training_curve.png | fine-tuned VideoMAE loss + DEV F1 | 7/appendix | Early stop epoch 5 (DEV F1 0.857, threshold 0.45); tuning diagnostic, not a headline | videomae_finetuned/training_history.csv + metrics.json |
 | G1 | figures/gold_visuals/label_counts.jpg | gold 19/11 | 4 | Human labels only | gold sheet |
 | G2 | figures/gold_visuals/labels_by_split.jpg | 15/15 | 4 | DEV vs TEST counts | gold sheet |
 | G3 | figures/gold_visuals/labels_by_person.jpg | LEFT/RIGHT | 4 | p0/p1 | gold sheet |
@@ -34,4 +35,4 @@
 | X2 | figures/training_loss.jpg | TRAIN loss | appendix | Not a headline | training_history.csv |
 | X3 | figures/dev_f1_by_epoch.jpg | DEV F1 curve | appendix | Tuning only | training_history.csv |
 
-Do not paste older P3–P12 `pilot_*` figures as RealTalk TEST results. VideoMAE rows in make_figures.py were never produced.
+Do not paste older P3–P12 `pilot_*` figures as RealTalk TEST results. The only VideoMAE figures are R5–R7 from `scripts/plot_videomae_results.py`, using the locked TEST scores (frozen 0.57, fine-tuned 0.82).

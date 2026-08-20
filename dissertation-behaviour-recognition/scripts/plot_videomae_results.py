@@ -3,11 +3,13 @@
 
 Reads:
   results/videomae_frozen_head/training_history.csv  (epoch, train_loss, dev_f1, ...)
+  results/videomae_finetuned/training_history.csv    (epoch, train_loss, dev_f1, ...)
   results/tables/bootstrap_ci.csv                    (model, ..., f1, f1_ci_lo, f1_ci_hi)
 
 Writes:
-  figures/videomae_training_curve.png  (loss + DEV F1 vs epoch, best epoch marked)
-  figures/model_comparison_f1.png      (TEST F1 bars with 95% CI error bars)
+  figures/videomae_training_curve.png            (frozen head: loss + DEV F1 vs epoch)
+  figures/videomae_finetuned_training_curve.png  (fine-tuned: loss + DEV F1 vs epoch)
+  figures/model_comparison_f1.png                (4-model TEST F1 bars with 95% CI error bars)
 
 Run: python3 scripts/plot_videomae_results.py
 """
@@ -29,12 +31,24 @@ MODEL_LABELS = {
     "rule_baseline": "Pose rule",
     "pose_cnn_xyz_deriv": "Pose CNN\n(xyz + deriv)",
     "videomae_frozen_head": "Frozen\nVideoMAE head",
+    "videomae_finetuned": "Fine-tuned\nVideoMAE",
 }
-MODEL_ORDER = ["rule_baseline", "pose_cnn_xyz_deriv", "videomae_frozen_head"]
+MODEL_ORDER = [
+    "rule_baseline",
+    "pose_cnn_xyz_deriv",
+    "videomae_frozen_head",
+    "videomae_finetuned",
+]
+MODEL_COLORS = {
+    "rule_baseline": "#4c78a8",
+    "pose_cnn_xyz_deriv": "#59a14f",
+    "videomae_frozen_head": "#e15759",
+    "videomae_finetuned": "#f28e2b",
+}
 
 
-def load_training_history():
-    path = RESULTS / "videomae_frozen_head" / "training_history.csv"
+def load_training_history(run_dir):
+    path = RESULTS / run_dir / "training_history.csv"
     with open(path, newline="") as f:
         rows = list(csv.DictReader(f))
     epochs = [int(r["epoch"]) for r in rows]
@@ -43,16 +57,16 @@ def load_training_history():
     return epochs, loss, dev_f1
 
 
-def best_epoch_from_metrics():
-    path = RESULTS / "videomae_frozen_head" / "metrics.json"
+def best_epoch_from_metrics(run_dir):
+    path = RESULTS / run_dir / "metrics.json"
     with open(path) as f:
         meta = json.load(f)
     return int(meta["best_epoch"]), float(meta["dev_f1"])
 
 
-def plot_training_curve():
-    epochs, loss, dev_f1 = load_training_history()
-    best_epoch, best_dev_f1 = best_epoch_from_metrics()
+def plot_training_curve(run_dir, out_name, title):
+    epochs, loss, dev_f1 = load_training_history(run_dir)
+    best_epoch, best_dev_f1 = best_epoch_from_metrics(run_dir)
 
     fig, ax1 = plt.subplots(figsize=(7, 4.2))
     ax2 = ax1.twinx()
@@ -80,10 +94,9 @@ def plot_training_curve():
     ax1.legend(handles, [ln.get_label() for ln in handles],
                loc="center right", fontsize=9, framealpha=0.9)
 
-    fig.suptitle("Frozen VideoMAE head: training loss and DEV F1 by epoch",
-                 fontsize=11)
+    fig.suptitle(title, fontsize=11)
     fig.tight_layout()
-    out = FIGURES / "videomae_training_curve.png"
+    out = FIGURES / out_name
     fig.savefig(out, dpi=150)
     plt.close(fig)
     return out
@@ -94,7 +107,7 @@ def plot_model_comparison():
     with open(path, newline="") as f:
         rows = {r["model"]: r for r in csv.DictReader(f)}
 
-    labels, f1s, yerr_lo, yerr_hi = [], [], [], []
+    labels, f1s, yerr_lo, yerr_hi, colors = [], [], [], [], []
     for key in MODEL_ORDER:
         r = rows[key]
         f1 = float(r["f1"])
@@ -104,9 +117,9 @@ def plot_model_comparison():
         f1s.append(f1)
         yerr_lo.append(f1 - lo)
         yerr_hi.append(hi - f1)
+        colors.append(MODEL_COLORS[key])
 
-    colors = ["#4c78a8", "#59a14f", "#e15759"]
-    fig, ax = plt.subplots(figsize=(6.2, 4.2))
+    fig, ax = plt.subplots(figsize=(6.8, 4.2))
     bars = ax.bar(labels, f1s, color=colors, width=0.55,
                   yerr=[yerr_lo, yerr_hi],
                   error_kw=dict(ecolor="black", elinewidth=1.2, capsize=5))
@@ -129,7 +142,20 @@ def plot_model_comparison():
 
 def main():
     FIGURES.mkdir(exist_ok=True)
-    for out in (plot_training_curve(), plot_model_comparison()):
+    outputs = [
+        plot_training_curve(
+            "videomae_frozen_head",
+            "videomae_training_curve.png",
+            "Frozen VideoMAE head: training loss and DEV F1 by epoch",
+        ),
+        plot_training_curve(
+            "videomae_finetuned",
+            "videomae_finetuned_training_curve.png",
+            "Fine-tuned VideoMAE (last 4 blocks): training loss and DEV F1 by epoch",
+        ),
+        plot_model_comparison(),
+    ]
+    for out in outputs:
         print(f"wrote {out}")
 
 

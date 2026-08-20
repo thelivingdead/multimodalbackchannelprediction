@@ -1,6 +1,6 @@
 # Figure captions (copy into Word)
 
-All paths are relative to `dissertation-behaviour-recognition/`. Prefer **JPG** for Word. PNG duplicates exist for some gold plots. Do not invent a pipeline figure that includes VideoMAE scores.
+All paths are relative to `dissertation-behaviour-recognition/`. Prefer **JPG** for Word. PNG duplicates exist for some gold plots. VideoMAE figures must use only the locked TEST scores (frozen 0.57, fine-tuned 0.82) — no other VideoMAE numbers exist.
 
 Insert **after** the paragraph that first mentions the result. Keep DEV plots out of the Results headline section.
 
@@ -34,7 +34,9 @@ Insert **after** the paragraph that first mentions the result. Keep DEV plots ou
 
 **Figure 13.** Frozen VideoMAE head training curve: training loss (left axis) and DEV F1 (right axis) by epoch. The star marks the early-stopped best epoch (10, DEV F1 0.90); TEST was scored once at that epoch and threshold. This is a tuning diagnostic — the DEV curve must not be read as generalisation. File: `figures/videomae_training_curve.png`.
 
-**Figure 14.** TEST F1 for the three systems (\(n=15\), scored once): frozen pose rule 0.67, pose 1D CNN (xyz + derivatives) 0.70, frozen VideoMAE head 0.57. Error bars are 95% bootstrap CIs (1000 resamples, seed 42). The intervals overlap widely; the differences are not statistically significant. File: `figures/model_comparison_f1.png` (three-model version; distinct from the two-model `model_comparison_f1.jpg`).
+**Figure 14.** TEST F1 for the four systems with saved TEST predictions (\(n=15\), scored once): frozen pose rule 0.67, pose 1D CNN (xyz + derivatives) 0.70, frozen VideoMAE head 0.57, fine-tuned VideoMAE 0.82 (highlighted). Error bars are 95% bootstrap CIs (1000 resamples, seed 42). The intervals overlap widely; the differences are not statistically significant — 0.82 is the highest point estimate, not a proven win. File: `figures/model_comparison_f1.png` (four-model version; distinct from the two-model `model_comparison_f1.jpg`).
+
+**Figure 15.** Fine-tuned VideoMAE (last 4 encoder blocks + head) training curve: training loss (left axis) and DEV F1 (right axis) by epoch. The star marks the early-stopped best epoch (5, DEV F1 0.857, threshold 0.45); TEST was scored once at that epoch and threshold. This is a tuning diagnostic — the DEV curve must not be read as generalisation. File: `figures/videomae_finetuned_training_curve.png`.
 
 ---
 
@@ -50,7 +52,7 @@ Insert **after** the paragraph that first mentions the result. Keep DEV plots ou
 
 - `figures/ablation_f1.jpg` — includes feature set D at F1 0 because training diverged. Either omit D in a table instead, or caption: “Set D diverged (`loss = nan`); the zero F1 is not a valid comparison.”
 - Any `pilot_*` or `rule_baseline/` figure from an older synthetic run.
-- Any schematic that shows VideoMAE as a completed stage with a score.
+- Any schematic that shows VideoMAE with a score other than the locked TEST values (frozen 0.57, fine-tuned 0.82), or that presents full fine-tuning as completed.
 
 ---
 
@@ -60,5 +62,5 @@ Insert **after** the paragraph that first mentions the result. Keep DEV plots ou
 | --- | --- |
 | Data / annotation | 1, 2, 3, 4 |
 | Methods | 5, 6, 7, 8, 9 |
-| Results | 10, 11, 12, 14 (+13 beside §5.6 with caution caption) |
-| Appendix | training loss, DEV F1 by epoch, VideoMAE DEV curve |
+| Results | 10, 11, 12, 14 (+13 beside §5.6 and 15 beside §5.7, with caution captions) |
+| Appendix | training loss, DEV F1 by epoch, VideoMAE DEV curves |

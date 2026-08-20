@@ -2,7 +2,7 @@
 
 Use **only TEST numbers as headlines**. DEV scores froze the rule and picked the CNN epoch. They are not the result.
 
-JSON sources: `results/rule_test_metrics.json`, `results/classifier_test_metrics.json`.
+JSON sources: `results/rule_test_metrics.json`, `results/classifier_test_metrics.json`, `results/videomae_frozen_head/metrics.json`, `results/videomae_finetuned/metrics.json`. Master table: `results/tables/main_results.md`.
 Figures: `dissertation-behaviour-recognition/figures/`.
 
 If Methods already describes the protocol, start this chapter at §5.1. A six-sentence recap is included so the chapter can stand alone.
@@ -43,7 +43,7 @@ Both systems operate on EMOCA pose features only; no RGB or pixel model is part 
 
 **Figures:** `rule_confusion_matrix.jpg`; `classifier_confusion_matrix.jpg`; `model_comparison_f1.jpg`.
 
-DEV F1 was 0.86 (rule) and 0.89 (CNN, epoch 9, probability threshold 0.45). Those numbers describe the tuning set and must not be reported as generalisation.
+DEV F1 was 0.86 (rule) and 0.89 (CNN, epoch 9, probability threshold 0.45). Those numbers describe the tuning set and must not be reported as generalisation. Two RGB systems (frozen and fine-tuned VideoMAE) under the same protocol are reported in §5.6–5.7; the full five-model ordering is in the master table `results/tables/main_results.md`.
 
 ### 5.4 Feature ablations (TEST)
 
@@ -96,13 +96,33 @@ TEST counts: TP 6, FP 5, TN 0, FN 4 — the head never correctly rejects an uncl
 
 The VideoMAE head underperforms both pose systems on TEST F1 (0.57 vs 0.67 rule / 0.70 CNN). Three cautions keep this from being over-read. First, with \(n=15\) the 95% bootstrap CIs overlap widely — rule [0.35, 0.87], CNN [0.40, 0.89], VideoMAE [0.24, 0.75] — so the differences are **not statistically significant**. Second, supervision is the same 80 rule pseudo-labels, so label noise sets a ceiling that a larger input modality cannot lift. Third, the DEV–TEST gap (DEV F1 0.90 at epoch 10, TEST F1 0.57) shows the head fit the tuning set without generalising: frozen generic video features, trained for general action recognition, carry less of the nod signal than the explicit EMOCA pose sequence, and the 12 centre-crop fallbacks further degrade the RGB input. In this low-data regime, **explicit pose modelling is competitive with or better than frozen generic video features**; it is also cheaper, needing no pixel access at inference.
 
-### 5.7 What is not in this chapter
+### 5.7 Fine-tuned VideoMAE (partial, GPU)
 
-- DEV F1 0.86 / 0.89 / 0.90 as a finding
+The frozen head of §5.6 underfits: it cannot adapt generic video features to the nod decision, and its DEV–TEST gap suggests the head memorised the tuning set. The fourth system therefore tests whether **task adaptation of the video backbone itself** closes the gap, using identical inputs and splits.
+
+**Setup.** The same 16-frame, 224×224 listener face crops and the same `MCG-NJU/videomae-base` checkpoint were used, but as `VideoMAEForVideoClassification` with a single logit (`num_labels=1`). Patch embeddings and the first 8 encoder blocks were frozen; the **last 4 encoder blocks plus `fc_norm` and the classifier** were trained — **28.4M of 86.2M parameters**. AdamW with learning rates **1e-5 (backbone) / 1e-4 (head)**, batch size 8, `BCEWithLogitsLoss` with `pos_weight = 0.143` (TRAIN 70 nod / 10 unclear), and horizontal-flip augmentation on TRAIN only. Training used automatic mixed precision on a single RTX A4000 16 GB (lab host otter95). Because the 25 GB home quota could not hold a CUDA PyTorch stack, GPU PyTorch was installed on **`/scratch`** (local disk outside the quota); preprocessing was verified **bit-identical** to the frozen pipeline (max abs diff 0.0 against `VideoMAEImageProcessorPil`).
+
+**Protocol.** Identical TRAIN/DEV/TEST splits as every other system; the leakage gate passed at startup. Epoch and probability threshold were selected on DEV only (early stopping; best epoch **5**, DEV F1 **0.857**, threshold **0.45**); TEST was scored **exactly once**.
+
+|| Method | Precision | Recall | F1 | Accuracy | F1 95% CI |
+|| --- | ---: | ---: | ---: | ---: | --- |
+|| Fine-tuned VideoMAE (last 4 blocks) | 0.75 | 0.90 | **0.82** | 0.73 | [0.60, 0.96] |
+
+TEST counts: TP 9, FP 3, TN 2, FN 1 — the highest TEST F1 point estimate of the five systems (rule 0.67, pose CNN 0.70, frozen head 0.57, fine-tuned 0.82; the raw-xyz CNN variant, 0.70, has no saved CI). The full comparison is the master table `results/tables/main_results.md`.
+
+**Figure:** `videomae_finetuned_training_curve.png` (loss and DEV F1 by epoch, best epoch 5 marked; a tuning diagnostic, not a headline) and `model_comparison_f1.png` (TEST F1 of the four CI-backed systems with 95% CIs, fine-tuned bar highlighted).
+
+Three cautions apply, exactly as for the frozen head. First, **no pairwise difference is statistically significant**: at \(n=15\) the fine-tuned 95% CI [0.60, 0.96] overlaps the pose CNN's [0.40, 0.89] and the rule's [0.35, 0.87]; 0.82 is the **highest point estimate**, not a proven win. Second, supervision is the same 80 rule pseudo-labels, so label noise still ceilings every system. Third, the frozen-vs-fine-tuned pair (0.57 vs 0.82 on identical inputs, splits, and labels) indicates that **task adaptation of the video backbone, not the RGB input alone, drove the gain** — though the frozen head's own CI [0.24, 0.75] overlaps the fine-tuned interval, so this contrast is also not significant at \(n=15\).
+
+A process note for the record: an earlier bootstrap over all 110 saved predictions (`results/videomae_finetuned/predictions.csv`, which carries a `split` column) was **train-contaminated and invalid**; it was caught and corrected. The canonical CI file is the 15-row `results/videomae_finetuned/predictions_test.csv`, and every CI reported here uses TEST only.
+
+### 5.8 What is not in this chapter
+
+- DEV F1 0.86 / 0.89 / 0.90 / 0.857 as a finding
 - Ablation D as a valid F1
 - Any synthetic `pilot_*` F1
 - Event-level F1 at IoU 0.30 for this 30-window protocol
-- A claim that F1 0.70 is significantly better than 0.67, or that 0.57 is significantly worse than either
+- A claim that F1 0.70 is significantly better than 0.67, that 0.57 is significantly worse than either, or that 0.82 is significantly better than any pose system — at \(n=15\) all 95% CIs overlap
 
 ---
 

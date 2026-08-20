@@ -1,6 +1,6 @@
 # Abstract, introduction, and literature (paste-ready)
 
-Keep this shorter than Methods/Results if time is scarce. Do not import 7-class or VideoMAE **results**. You may describe them as the original plan.
+Keep this shorter than Methods/Results if time is scarce. Do not import 7-class **results** (never run). VideoMAE **was** run under the same protocol — frozen head F1 0.57, fine-tuned F1 0.82 — and may be cited; the seven-class taxonomy remains the original plan only.
 
 Harvard-style citations: see `references_harvard.md`.
 
@@ -12,9 +12,9 @@ Listener head nods are a common visual backchannel in face-to-face talk, but pub
 
 A Savitzky–Golay amplitude rule on one Euler channel of the EMOCA pose sequence was frozen on DEV (axis \(x\), threshold \(16.35^\circ\)). On TEST (\(n=15\)) the rule obtained precision 0.64, recall 0.70, and F1 **0.67** (7 true positives, 4 false positives, 1 true negative, 3 false negatives). The same frozen rule labelled 80 further unlabelled windows (70 predicted nod, 10 predicted unclear). A **pose-based temporal classifier** — a small 1D convolutional network over the EMOCA `rotation_xyz` sequence and its first differences, with no RGB input of any kind — trained on those **pseudo-labels** obtained TEST precision 0.70, recall 0.70, and F1 **0.70** (7 true positives, 3 false positives, 2 true negatives, 3 false negatives). The CNN matched the rule’s recall and reduced false positives by one clip. That difference is within the uncertainty of a 15-window test set. DEV scores (rule F1 0.86, CNN F1 0.89) were used only for tuning and are not reported as results.
 
-EMOCA was **streamed**, not trained. A pixel model (VideoMAE) was **not** run: the lab account used for extraction has a 25 GB quota and had about 6.5 GB free after CPU PyTorch, which is insufficient for RealTalk video plus a VideoMAE checkpoint. VideoMAE is therefore reported as planned future work, not as a completed or failed result, and no VideoMAE score appears in this dissertation. Metrics are clip-level precision, recall, and F1, not event IoU. The dissertation reports a leakage-controlled pose baseline and a weakly supervised CNN, not a multimodal 7-class system.
+EMOCA was **streamed**, not trained. Two pixel models were also run under the same frozen protocol, fetching 16 RGB frames per window by HTTP range reads. A **frozen VideoMAE head** (mean-pooled 768-D features plus a small MLP) obtained TEST F1 **0.57** (precision 0.55, recall 0.60); a **partially fine-tuned VideoMAE** (last 4 encoder blocks plus classifier, 28.4M of 86.2M parameters, on a lab GPU) obtained the highest TEST point estimate, F1 **0.82** (precision 0.75, recall 0.90; TP 9, FP 3, TN 2, FN 1). With \(n=15\) the 95% bootstrap confidence intervals of all systems overlap — fine-tuned VideoMAE [0.60, 0.96], pose CNN [0.40, 0.89], rule [0.35, 0.87] — so no pairwise difference is statistically significant; the frozen-vs-fine-tuned contrast (0.57 vs 0.82 on identical inputs and splits) nonetheless indicates that task adaptation of the video backbone, not the RGB input alone, drove the gain. Metrics are clip-level precision, recall, and F1, not event IoU. The dissertation reports a leakage-controlled pose baseline, a weakly supervised CNN, and two VideoMAE variants — not a multimodal 7-class system.
 
-**Keywords:** head-nod recognition; EMOCA; RealTalk; weak supervision; 1D CNN; clip-level F1.
+**Keywords:** head-nod recognition; EMOCA; RealTalk; weak supervision; 1D CNN; VideoMAE; clip-level F1.
 
 ---
 
@@ -36,9 +36,9 @@ The positive class is conservative: only nods the annotator judged clear. Ambigu
 
 ### 1.3 Original plan and submitted scope
 
-Project notes written earlier in the MSc described a seven-class backchannel taxonomy and a multimodal architecture with VideoMAE and fusion, following work such as MM-F2F on coarse Keep/Turn/Backchannel prediction (Lin et al., 2025). That plan exceeded what could be labelled and stored in the time and disk available. Human labels were collected for **binary nod presence** on 30 windows. Pose was extracted by streaming official EMOCA pickles. The learned model is a pose-based temporal classifier — a 1D CNN over EMOCA `rotation_xyz` sequences, not an RGB vision model — trained on CPU. VideoMAE was not started, because about 6.5 GB remained on a 25 GB lab quota after PyTorch; it remains planned future work, not a completed or failed experiment.
+Project notes written earlier in the MSc described a seven-class backchannel taxonomy and a multimodal architecture with VideoMAE and fusion, following work such as MM-F2F on coarse Keep/Turn/Backchannel prediction (Lin et al., 2025). That plan exceeded what could be labelled and stored in the time and disk available. Human labels were collected for **binary nod presence** on 30 windows. Pose was extracted by streaming official EMOCA pickles. The primary learned model is a pose-based temporal classifier — a 1D CNN over EMOCA `rotation_xyz` sequences, not an RGB vision model — trained on CPU. VideoMAE was initially blocked by storage (about 6.5 GB free on a 25 GB lab quota after PyTorch), but was later run in two constrained forms: a **frozen** feature extractor with a trained head on CPU, and a **partial fine-tune** (last 4 of 12 encoder blocks) on a lab GPU with CUDA PyTorch installed on `/scratch`, outside the quota. Full fine-tuning of all 86.2M parameters was not attempted.
 
-The submitted thesis therefore evaluates two pose systems under a frozen TEST split. VideoMAE and seven-class typing are discussed as **future work**, not as experiments that failed on TEST.
+The submitted thesis therefore evaluates two pose systems and two VideoMAE systems under a frozen TEST split. Seven-class typing and full multimodal fusion are discussed as **future work**, not as experiments that failed on TEST.
 
 ### 1.4 Research questions
 
@@ -51,11 +51,12 @@ The submitted thesis therefore evaluates two pose systems under a frozen TEST sp
 1. A 30-window **human-labelled** gold set on RealTalk (15 DEV / 15 TEST; p0 = LEFT, p1 = RIGHT; 1 = clear nod, 0 = unclear), with TEST unused for training or threshold search.
 2. A frozen Savitzky–Golay amplitude rule with a locked TEST score: F1 **0.67**.
 3. A weakly supervised pose-based 1D CNN (temporal classifier over `rotation_xyz`; no RGB input) on 80 pseudo-labels with a locked TEST score: F1 **0.70**, differing from the rule by one false positive.
-4. An explicit account of what was not run (VideoMAE, EMOCA training, event IoU, seven-class labelling) and why.
+4. Two VideoMAE systems under the same frozen protocol — a frozen head (TEST F1 **0.57**) and a partial fine-tune of the last 4 encoder blocks (TEST F1 **0.82**, the highest point estimate, with overlapping 95% CIs at \(n=15\)) — isolating the effect of task adaptation of the video backbone.
+5. An explicit account of what was not run (full VideoMAE fine-tuning, EMOCA training, event IoU, seven-class labelling) and why.
 
 ### 1.6 Thesis structure
 
-Chapter 2 reviews backchannels, RealTalk, EMOCA/FLAME, weak supervision, and video transformers (the last as context for future work). Chapter 3 summarises the gold set. Chapter 4 describes the rule, pseudo-labels, and CNN. Chapter 5 reports TEST results. Chapter 6 discusses limitations and concludes.
+Chapter 2 reviews backchannels, RealTalk, EMOCA/FLAME, weak supervision, and video transformers. Chapter 3 summarises the gold set. Chapter 4 describes the rule, pseudo-labels, CNN, and the two VideoMAE variants. Chapter 5 reports TEST results. Chapter 6 discusses limitations and concludes.
 
 *(Renumber to match your Word template.)*
 
@@ -95,11 +96,11 @@ Snorkel (Ratner et al., 2017) formalises training-set creation from labelling fu
 
 **Link.** Eighty pseudo-labels (70/10) are the CNN’s only training supervision.
 
-### 2.6 Video transformers (not used)
+### 2.6 Video transformers
 
-VideoMAE (Tong et al., 2022) pretrains a vision transformer by masking video patches and is a standard starting point for clip classification. It is discussed because it appeared in the original plan. **No VideoMAE run was performed** in this MSc, for disk reasons stated in Methods. Related work must not be padded with a fabricated score.
+VideoMAE (Tong et al., 2022) pretrains a vision transformer by masking video patches and is a standard starting point for clip classification. It appeared in the original plan and, after an initial disk blockage, **was run here in two forms**: a frozen encoder with a trained MLP head, and a partial fine-tune of the last four encoder blocks on a lab GPU (Methods §4.8). Full fine-tuning and the planned multimodal fusion remain future work.
 
-**Link.** VideoMAE is future work if storage allows; it is not a result.
+**Link.** The dissertation compares frozen versus fine-tuned VideoMAE on identical inputs, splits, and pseudo-labels: TEST F1 0.57 versus 0.82, with overlapping confidence intervals at \(n=15\).
 
 ### 2.7 Synthesis
 

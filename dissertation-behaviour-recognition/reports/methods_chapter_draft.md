@@ -8,7 +8,7 @@ Suggested chapter number: **4** (if Data is a separate chapter) or **4–5** (if
 
 ## 4. Methods
 
-This chapter describes the study that was actually run. The task is **clip-level recognition of a clear listener head nod** on Columbia RealTalk (Geng et al., 2023). Two systems are compared on a frozen TEST set of 15 windows: (i) a deterministic pose-amplitude rule whose axis and threshold are chosen on DEV only, and (ii) a small **pose-based temporal classifier** — a 1D convolutional network over the EMOCA `rotation_xyz` pose sequence, with no RGB input — trained on 80 **pseudo-labels** produced by that frozen rule. Human labels are never replaced by model outputs. VideoMAE was specified in the original project plan and was **not** trained; the reason is given in Section 4.8 and is treated as a resource constraint, not as a missing TEST score.
+This chapter describes the study that was actually run. The task is **clip-level recognition of a clear listener head nod** on Columbia RealTalk (Geng et al., 2023). Two systems are compared on a frozen TEST set of 15 windows: (i) a deterministic pose-amplitude rule whose axis and threshold are chosen on DEV only, and (ii) a small **pose-based temporal classifier** — a 1D convolutional network over the EMOCA `rotation_xyz` pose sequence, with no RGB input — trained on 80 **pseudo-labels** produced by that frozen rule. Human labels are never replaced by model outputs. Two RGB systems based on VideoMAE were additionally run under the same frozen protocol (Section 4.8): a frozen encoder with a trained head, and a partial fine-tune of the last four encoder blocks on a lab GPU. Full fine-tuning was not attempted, for the storage reasons given in Section 4.8.
 
 ### 4.1 Scope of the submitted study
 
@@ -22,7 +22,7 @@ The research questions that this Methods chapter is designed to answer are there
 2. **RQ2.** Does a 1D CNN trained only on 80 automatic rule labels improve those TEST scores?
 3. **RQ3.** At this sample size, do extra pose channels (full Euler xyz, first differences, expression coefficients) change TEST F1?
 
-Pixel-based VideoMAE fine-tuning, seven-class typing, and event-level F1 at temporal IoU 0.30 are **future work**. They are not reported as results.
+Two constrained VideoMAE variants (frozen head; partial fine-tune) **were** run and are reported as results (Section 4.8). **Full** VideoMAE fine-tuning, seven-class typing, and event-level F1 at temporal IoU 0.30 remain **future work**. They are not reported as results.
 
 ### 4.2 Dataset and listener convention
 
@@ -104,7 +104,7 @@ No gold TEST clip is in TRAIN. No gold DEV clip is in TRAIN. The CNN therefore n
 
 ### 4.7 1D CNN (pose-based temporal classifier)
 
-**What the network is, and is not.** The classifier in this section is a **temporal model over pose sequences**. Its only input is the EMOCA `rotation_xyz` Euler series (plus first differences), resampled to a fixed length. It is **not** an RGB vision model: no video frame, face crop, or pixel tensor is read at any point in training or scoring. The only pixel-based system in the project plan is VideoMAE, which was not run (Section 4.8).
+**What the network is, and is not.** The classifier in this section is a **temporal model over pose sequences**. Its only input is the EMOCA `rotation_xyz` Euler series (plus first differences), resampled to a fixed length. It is **not** an RGB vision model: no video frame, face crop, or pixel tensor is read at any point in training or scoring. The pixel-based systems of this study are the two VideoMAE variants of Section 4.8.
 
 **Architecture.** Each clip is resampled to a fixed length of **128** time steps. Feature set **C** (the reported model) concatenates Euler xyz with first differences, giving **6** input channels. Inputs are standardised with the mean and standard deviation of the TRAIN (pseudo) set, then the same statistics are applied to DEV and TEST.
 
@@ -131,11 +131,17 @@ The network is a three-layer 1D CNN in PyTorch:
 
 Sets A–C are described in the Results chapter. Set D is mentioned only to record that expression was tried and failed numerically. It is not interpreted as evidence that expression is uninformative.
 
-### 4.8 VideoMAE and other systems that were not run
+### 4.8 VideoMAE systems (RGB comparison)
 
-A VideoMAE fine-tune on face crops was part of the original plan (Tong et al., 2022). It was **not started**. On otter, free disk after installing CPU PyTorch was about **6.5 GB** against a **25 GB** home quota. RealTalk video shards plus a VideoMAE checkpoint do not fit that remainder. Fusion of text, audio, and video, and the seven-class taxonomy, were likewise not executed.
+A VideoMAE fine-tune on face crops was part of the original plan (Tong et al., 2022). It was initially **blocked by storage**: on otter, free disk after installing CPU PyTorch was about **6.5 GB** against a **25 GB** home quota, and RealTalk video shards plus a VideoMAE checkpoint do not fit that remainder. Two constrained variants were ultimately run under the same frozen protocol; **full** fine-tuning and the multimodal fusion of text, audio, and video remain future work.
 
-This is a **scope and resource** limitation. It is not a TEST F1 of 0, and it is not evidence that a pixel model would have underperformed the pose CNN. The dissertation must not invent a VideoMAE score. If video access is later confirmed, the only feasible variant on this quota is a **frozen** VideoMAE feature extractor on CPU with a small trained head — no fine-tuning, since a CUDA PyTorch stack (~5–8 GB installed) does not fit the quota even where a GPU is present. That experiment is planned future work, not a result of this study.
+**Input pipeline (shared by both variants).** For each of the 110 windows (80 TRAIN pseudo-labelled, 15 DEV, 15 TEST), 16 RGB frames were fetched from the source videos via HTTP range reads, cropped to the listener face (Haar detector; for **12 of 110 clips** no face was found and a centre-crop fallback was used), and resized to 224×224 with the `VideoMAEImageProcessorPil` preprocessing of the checkpoint. The backbone is `MCG-NJU/videomae-base` in both variants.
+
+**Variant 1 — frozen head (CPU).** The encoder was kept **frozen**; token embeddings were mean-pooled to a single **768-D** vector per clip, and a small **MLP head** was trained on the 80 rule pseudo-labels. Epoch and threshold were selected on DEV (best epoch 10, DEV F1 0.90, threshold 0.40); TEST was scored once.
+
+**Variant 2 — partial fine-tune (GPU).** The checkpoint was loaded as `VideoMAEForVideoClassification` with a single logit. Patch embeddings and the first 8 encoder blocks were frozen; the **last 4 encoder blocks plus `fc_norm` and the classifier** were trained (**28.4M of 86.2M parameters**). Optimiser AdamW with learning rates **1e-5 (backbone)** and **1e-4 (head)**; batch size 8; `BCEWithLogitsLoss` with `pos_weight = 0.143` (TRAIN 70 nod / 10 unclear); horizontal-flip augmentation on TRAIN only; automatic mixed precision on a single **RTX A4000 16 GB** (lab host otter95; torch 2.13.0+cu126, transformers 5.15.1, seed 42). Because the 25 GB home quota could not hold a CUDA PyTorch stack (~5–8 GB installed), the GPU environment lived on **`/scratch`**, local disk outside the quota. Preprocessing was verified **bit-identical** to the frozen pipeline (max abs diff 0.0). Early stopping on DEV F1 selected epoch **5** (DEV F1 0.857, threshold 0.45); TEST was scored exactly once.
+
+For both variants the TRAIN/DEV/TEST splits are identical to the pose systems, and a leakage gate (80 pseudo clips disjoint from DEV and TEST by id and video) passed at startup. The dissertation must not invent scores beyond the locked TEST values (frozen 0.57; fine-tuned 0.82; Results §5.6–5.7).
 
 Training the 1D CNN on a GPU would not change the reported TEST counts: the model is small and was already trained to the early-stopping epoch on CPU.
 
@@ -161,8 +167,8 @@ TEST \(n=15\) is small. A change of one clip in the confusion matrix moves F1 by
 
 - Gold CSV: `data/gold_annotations.csv`. Splits: `data/splits/gold_dev.txt`, `gold_test.txt`.
 - Frozen rule: `results/rule_selected_config.json`.
-- TEST scores: `results/rule_test_metrics.json`, `results/classifier_test_metrics.json`.
-- Seed 42; CPU PyTorch; no TEST-based retraining.
+- TEST scores: `results/rule_test_metrics.json`, `results/classifier_test_metrics.json`, `results/videomae_frozen_head/metrics.json`, `results/videomae_finetuned/metrics.json`; master table `results/tables/main_results.md`; CIs `results/tables/bootstrap_ci.csv` (TEST-only predictions; for the fine-tuned model the canonical file is `results/videomae_finetuned/predictions_test.csv`, 15 rows).
+- Seed 42; CPU PyTorch (pose systems, frozen head); GPU partial fine-tune on otter95 with CUDA PyTorch on `/scratch`; no TEST-based retraining.
 - Repository tests include split-leakage checks (`tests/test_invariants.py`).
 - Synthetic `pilot_*` clips, if present from earlier pipeline debugging, are **not** RealTalk results and are not tabulated.
 

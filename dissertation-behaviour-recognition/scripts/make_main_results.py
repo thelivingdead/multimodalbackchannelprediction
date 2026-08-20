@@ -14,6 +14,8 @@ Pose CNN        results/classifier_test_metrics.json  results/classifier_test_pr
 xyz_deriv
 Frozen VideoMAE results/videomae_frozen_head/     results/videomae_frozen_head/
 head            metrics.json                      predictions.csv
+Fine-tuned      results/videomae_finetuned/       results/videomae_finetuned/
+VideoMAE        metrics.json                      predictions.csv
 ==============  ================================  ==========================
 
 CIs come from ``results/tables/bootstrap_ci.csv`` (scripts/bootstrap_f1.py);
@@ -44,6 +46,7 @@ RULE_METRICS = ROOT / "results" / "rule_test_metrics.json"
 ABLATION = ROOT / "results" / "ablation_results.csv"
 CNN_METRICS = ROOT / "results" / "classifier_test_metrics.json"
 VMAE_METRICS = ROOT / "results" / "videomae_frozen_head" / "metrics.json"
+VMAE_FT_METRICS = ROOT / "results" / "videomae_finetuned" / "metrics.json"
 PSEUDO_LABELS = ROOT / "results" / "pseudo_labels.csv"
 BOOTSTRAP = OUT_DIR / "bootstrap_ci.csv"
 
@@ -170,6 +173,29 @@ def build_rows() -> tuple[list[dict], list[str]]:
         "accuracy": metric(tm, "accuracy"),
         **ci_fields(cis, "videomae_frozen_head"),
     })
+
+    # --- Fine-tuned VideoMAE (Step 7, otter95 GPU) ----------------------
+    m = load_json(VMAE_FT_METRICS)
+    if m is None:
+        notes.append(
+            "Fine-tuned VideoMAE: results/videomae_finetuned/metrics.json "
+            "missing (Step 7 not run) -> N/A row"
+        )
+    tm = (m or {}).get("test_metrics")
+    if not isinstance(tm, dict):
+        tm = m  # tolerate a flat metrics.json
+    unfrozen = (m or {}).get("unfrozen_blocks", 4)
+    rows.append({
+        "model": f"Fine-tuned VideoMAE (last {unfrozen} blocks)",
+        "input": f"RGB 16x224x224 face crops ({(m or {}).get('checkpoint', 'VideoMAE')})",
+        "supervision": f"{(m or {}).get('train_n', n_pseudo if n_pseudo is not None else 80)} rule pseudo-labels",
+        "train_n": (m or {}).get("train_n", NA),
+        "precision": metric(tm, "precision"),
+        "recall": metric(tm, "recall"),
+        "f1": metric(tm, "f1"),
+        "accuracy": metric(tm, "accuracy"),
+        **ci_fields(cis, "videomae_finetuned"),
+    })
     return rows, notes
 
 
@@ -204,6 +230,7 @@ def main() -> None:
         "Pose CNN raw <- `results/ablation_results.csv` (feature_set `xyz`); "
         "Pose CNN xyz_deriv <- `results/classifier_test_metrics.json`; "
         "Frozen VideoMAE head <- `results/videomae_frozen_head/metrics.json`; "
+        "Fine-tuned VideoMAE <- `results/videomae_finetuned/metrics.json`; "
         "CIs <- `results/tables/bootstrap_ci.csv` "
         "(1000 resamples, seed 42, from saved TEST predictions).",
     ]

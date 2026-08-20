@@ -3,3 +3,4 @@ Rule baseline,EMOCA head rotation,None (DEV-tuned thresholds),N/A,0.636363636363
 Pose CNN raw,EMOCA pose xyz (128-step resampled),80 rule pseudo-labels,80,0.6153846153846154,0.8,0.6956521739130435,0.5333333333333333,N/A,N/A
 Pose CNN xyz_deriv,EMOCA pose xyz + derivatives,80 rule pseudo-labels,80,0.7,0.7,0.7,0.6,0.4,0.8888888888888888
 Frozen VideoMAE head,RGB 16x224x224 face crops (MCG-NJU/videomae-base),80 rule pseudo-labels,80,0.5454545454545454,0.6,0.5714285714285714,0.4,0.23529411764705882,0.75
+Fine-tuned VideoMAE (last 4 blocks),RGB 16x224x224 face crops (MCG-NJU/videomae-base),80 rule pseudo-labels,80,0.75,0.9,0.8181818181818182,0.7333333333333333,0.6,0.9629629629629629

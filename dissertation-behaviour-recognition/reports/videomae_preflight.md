@@ -122,7 +122,7 @@ There is no local HF cache (`.hf_cache`), no checkpoints dir content, and no vid
 | `opencv-python-headless` (present in that venv, 5.0.0.93; also pinned in `scripts/nod_pipeline/requirements.txt`) | Video decode + YuNet face detection (YuNet onnx model file is a ~0.3 MB download) |
 | `.gitignore` | Already excludes `*.mp4`, big tars, `models/*.pt` — nothing to fix |
 
-Not reusable / missing: trained CNN weights (`models/` empty), any RGB, any VideoMAE code (`15_/16_/videomae_model.py` are blocking stubs), any face-crop code, any decord/av fast-reader (optional, not required).
+Not reusable / missing: trained CNN weights (`models/` empty — the mode-C checkpoint is overwritten by later ablation modes; see `reports/repository_validation.md` §4.3), any RGB. Since this preflight was written, the frozen-head experiment it planned has been executed once via `scripts/extract_videomae_embeddings.py` + `scripts/train_videomae_head.py` (artifacts in `results/videomae_frozen_head/`; TEST F1 0.57 — below the pose CNN, not a headline). The numbered `15_/16_` scripts are documentation pointers; a decord/av fast-reader remains optional, not required.
 
 ### 11. Estimated extra storage for the smallest VideoMAE experiment
 

@@ -2,11 +2,14 @@
 """Planned experiment, not run: late fusion of VideoMAE and pose features.
 
 Fusion (concatenate the VideoMAE embedding with the pose summary, then a small
-MLP; see configs/fusion.yaml) requires the planned VideoMAE experiment first,
-which was not run (storage constraint; see reports/videomae_preflight_lab.md).
-The submitted study therefore reports pose-only results: the frozen rule
-(TEST F1 0.67) and the pseudo-labelled 1D CNN (TEST F1 0.70). No fusion score
-exists or is claimed.
+MLP; see ``configs/fusion.yaml``) has not been trained. Frozen VideoMAE
+embeddings for the 110 experiment clips now exist (20 August 2026;
+``results/videomae_embeddings_meta.json``), so the fusion variant is
+technically unblocked, but no fusion model has been trained or scored.
+
+The submitted study reports pose-only results: the frozen rule (TEST F1 0.67)
+and the pseudo-labelled 1D CNN (TEST F1 0.70). No fusion score exists or is
+claimed.
 
 This script intentionally performs no computation.
 """

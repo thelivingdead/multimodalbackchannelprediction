@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
-"""Planned experiment, not run: evaluation of the VideoMAE model.
+"""VideoMAE evaluation: documentation pointer.
 
-There is no trained VideoMAE model in this repository (see
-scripts/15_train_videomae.py and reports/videomae_preflight_lab.md), so there
-is nothing to evaluate. When the planned visual experiment is run, evaluation
-must follow the same protocol as the pose models: the frozen 15-video TEST
-split in data/splits/gold_test.txt is scored exactly once, with all selection
-on DEV. No TEST metric for VideoMAE exists or is claimed anywhere in this repo.
+The frozen-head run (see ``scripts/15_train_videomae.py``) was evaluated by
+``scripts/train_videomae_head.py`` itself, following the standard protocol —
+epoch and threshold selected on the 15 DEV windows, the 15 TEST windows scored
+exactly once — and plotted by ``scripts/plot_videomae_results.py``
+(``figures/videomae_training_curve.png``). Saved artifacts:
 
-This script intentionally performs no computation.
+  - ``results/videomae_frozen_head/training_history.csv``
+  - ``results/videomae_frozen_head/predictions.csv``
+  - ``results/videomae_frozen_head/metrics.json`` (TEST F1 0.57)
+
+There is no separate fine-tuned VideoMAE model to evaluate; fine-tuning was
+not run. This script intentionally performs no computation.
 """
 from __future__ import annotations
 

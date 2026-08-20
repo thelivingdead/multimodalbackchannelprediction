@@ -1,5 +1,14 @@
-status: blocked
-reason: "VideoMAE starts only after results/pilot_nod_rule_metrics.json exists."
+status: first_run_complete
+note: >
+  Frozen-encoder variant executed once on 20 August 2026 via
+  scripts/extract_videomae_embeddings.py (110 clips, 768-d embeddings;
+  results/videomae_embeddings_meta.json) and scripts/train_videomae_head.py
+  (MLP head on the 80 rule pseudo-labels, epoch and threshold selected on DEV
+  only). Results: results/videomae_frozen_head/ (DEV F1 0.90; TEST F1 0.57,
+  P 0.55, R 0.60; TP6 FP5 TN0 FN4) — below both pose models on the same
+  held-out TEST set, so it is a follow-up check, not a headline. The
+  submitted dissertation results remain pose-only (rule 0.67, CNN 0.70).
+  Fine-tuning was not run (see configs/videomae_finetune.yaml).
 model: MCG-NJU/videomae-base
 frames: 16
 window_s: 2.0

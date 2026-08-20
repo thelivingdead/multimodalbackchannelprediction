@@ -1,21 +1,24 @@
 #!/usr/bin/env python3
-"""Planned experiment, not run: VideoMAE on the 30 gold windows.
+"""VideoMAE frozen-head experiment: documentation pointer.
 
-Status (20 August 2026): no video pixels exist in this repository and no
-VideoMAE training or evaluation was performed. The submitted study is
-pose-only; the verified TEST numbers come from the pose rule and the 1D CNN
-(results/rule_test_metrics.json, results/classifier_test_metrics.json).
+Status (20 August 2026): a first **frozen-encoder + trained head** run exists.
+It was executed not by this numbered script but by:
 
-Why it was not run: the lab account used for pose extraction has a ~25 GB
-quota with ~6.5 GB free after a CPU PyTorch install, which cannot hold
-RealTalk video shards plus a VideoMAE checkpoint. EMOCA pose was streamed
-from the official archive without saving it.
+  - ``scripts/extract_videomae_embeddings.py`` — 16-frame face crops through
+    frozen ``MCG-NJU/videomae-base`` (768-d embeddings, 110 clips;
+    ``results/videomae_embeddings_meta.json``),
+  - ``scripts/train_videomae_head.py`` — small MLP head on the 80 rule
+    pseudo-labels, epoch and probability threshold selected on DEV only
+    (``results/videomae_frozen_head/``).
 
-Plan when storage allows (details and verification commands:
-reports/videomae_preflight_lab.md):
-  - model: MCG-NJU/videomae-base, 16-frame frozen encoder (configs/videomae_frozen.yaml),
-  - input: 2 s RGB windows around the annotated gold windows,
-  - protocol unchanged: tune on the 15 DEV windows, score the 15 TEST windows once.
+Result: DEV F1 0.90 (tuning split); **TEST F1 0.57** (P 0.55, R 0.60;
+TP 6, FP 5, TN 0, FN 4) — below the pose 1D CNN (0.70), so it is not a
+headline. The submitted dissertation results remain pose-only: frozen rule
+TEST F1 0.67 and 1D CNN TEST F1 0.70.
+
+Not run: VideoMAE **fine-tuning** (``configs/videomae_finetune.yaml``) — the
+lab quota cannot hold video shards plus a trainable backbone; see
+``reports/videomae_preflight_lab.md``.
 
 This script intentionally performs no computation and downloads nothing.
 """

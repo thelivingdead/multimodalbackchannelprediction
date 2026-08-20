@@ -24,6 +24,11 @@ LAB_NOTES.local.md
 *.local.md
 models/*.pt
 
+# Step 7 fine-tuned VideoMAE weights (~0.4 GB). The small json/csv outputs
+# in results/videomae_finetuned/ stay committed; only the checkpoint is ignored.
+results/videomae_finetuned/best_model.pt
+results/videomae_finetuned/best_model.pt
+
 # Keep gold + unlabelled pose clips in git (small npz only). Ignore other features/.
 features/*
 !features/gold/

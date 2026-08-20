@@ -209,4 +209,61 @@ python scripts/make_main_results.py
 
 ---
 
-*The §3 probe results were measured by the lab user on otter48 and pasted back. The agent wrote `scripts/build_video_shard_index.py` and the Step 3–6 scripts (`fetch_rgb_windows.py`, `extract_videomae_embeddings.py`, `train_videomae_head.py`, `check_split_leakage.py`, `bootstrap_f1.py`, `make_main_results.py`) but has not run any of them on otter48 — §4 runs first. Derived from the locked facts in `reports/videomae_preflight_lab.md` and `reports/SCOPE_MAP.md`.*
+## Step 7 (optional): fine-tune VideoMAE (GPU)
+
+**Gate:** §9/§10 outputs pasted back (frozen-head `metrics.json` and the main results table exist); `features/rgb16/*.npz` covers the wanted clips; `results/pseudo_labels.csv` is present. This step is **optional** and only now possible because the GPU torch install below was authorised for otter48's RTX A4000 — it supersedes the earlier "CUDA stack does not fit the quota" lock for this one step. Everything still aborts if free space on `~` drops below 5.4 GB.
+
+Script: `scripts/finetune_videomae.py`. It fine-tunes `MCG-NJU/videomae-base` on the rgb16 windows (patch embeddings + first 8 encoder blocks frozen; last 4 blocks + classification head trained; `--unfreeze-blocks` to change). Protocol is identical in shape to Step 5: TRAIN = pseudo ∩ rgb16 (labels from `results/pseudo_labels.csv`), DEV = 15 gold DEV for early stopping **and** the probability threshold (DEV F1 only), TEST = 15 gold TEST scored **exactly once** with the restored best-on-DEV weights and DEV-chosen threshold. The Step 9 leakage gate runs internally at startup; any FAIL aborts before training. Preprocessing is verified against the checkpoint's own HF processor on one clip before training starts.
+
+```bash
+cd ~/multimodalbackchannelprediction/dissertation-behaviour-recognition
+source ../.venv/bin/activate
+df -h ~                                                            # STOP if < 5.4 GB free
+pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cu126
+python -c "import torch; print(torch.__version__, 'cuda:', torch.cuda.is_available())"   # expect cuda: True
+df -h ~                                                            # re-check after install
+OMP_NUM_THREADS=1 python scripts/finetune_videomae.py
+```
+
+Writes `results/videomae_finetuned/{metrics.json, predictions.csv, training_history.csv}` (commitable; predictions cover TRAIN/DEV/TEST) and `results/videomae_finetuned/best_model.pt` (gitignored). `transformers` stays at the Step 4 install (5.15.1) — do not upgrade it.
+
+**TEST-once rule:** TEST is scored exactly once and the result is reported **regardless of outcome** — a weak or negative result is still the measured result. The script refuses to rerun while `metrics.json` exists; a rerun needs `--force` and must be recorded in `reports/dissertation_evidence/experiment_log.md`.
+
+**Gate:** `results/videomae_finetuned/metrics.json` exists with real measured values. Paste it back.
+
+---
+
+*The §3 probe results were measured by the lab user on otter48 and pasted back. The agent wrote `scripts/build_video_shard_index.py` and the Step 3–6 scripts (`fetch_rgb_windows.py`, `extract_videomae_embeddings.py`, `train_videomae_head.py`, `check_split_leakage.py`, `bootstrap_f1.py`, `make_main_results.py`) but has not run any of them on otter48 — §4 runs first. Step 7's `scripts/finetune_videomae.py` was likewise written but not run; it is optional and gated as above. Derived from the locked facts in `reports/videomae_preflight_lab.md` and `reports/SCOPE_MAP.md`.*
+
+---
+
+## 11. Step 7 (optional, otter95 GPU) — partial VideoMAE fine-tune
+
+**Why otter95:** the home quota (~5 GB free) cannot hold GPU PyTorch; otter95 has an idle RTX A4000 (16 GB) and 614 GB free on local `/scratch` (not quota-bound). Repo, rgb16 features and results stay in `~` (network home, identical on every otter). `/scratch` is unbacked-up local disk — only the throwaway venv lives there; every artefact that matters is written to `results/` in `~` and pushed.
+
+One-time environment (done 2026-08-20: torch 2.13.0+cu126, `cuda: True`):
+
+```bash
+mkdir -p /scratch/db01550
+python3 -m venv /scratch/db01550/venv
+/scratch/db01550/venv/bin/pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cu126
+/scratch/db01550/venv/bin/pip install --no-cache-dir transformers safetensors numpy pandas scikit-learn pillow
+/scratch/db01550/venv/bin/python -c "import torch; print(torch.__version__, 'cuda:', torch.cuda.is_available())"
+```
+
+Run (protocol identical in shape to the frozen head: TRAIN = pseudo clips with rgb16 windows labelled by the frozen rule, DEV = 15 gold DEV for early stopping **and** threshold, TEST = 15 gold scored **exactly once**, seed 42; the script re-runs the leakage gate itself at startup and aborts on any hit):
+
+```bash
+cd ~/multimodalbackchannelprediction/dissertation-behaviour-recognition
+/scratch/db01550/venv/bin/python scripts/finetune_videomae.py
+```
+
+Defaults: fine-tune the last 4 of 12 encoder blocks + linear head (`--unfreeze-blocks`), AdamW lr 1e-5 backbone / 1e-4 head, batch 8, up to 15 epochs, patience 5, horizontal-flip augmentation on TRAIN only (`--no-flip` disables), AMP on CUDA. Writes `results/videomae_finetuned/{metrics.json, predictions.csv, training_history.csv}` (commitable) and `best_model.pt` (gitignored). The script refuses to rerun while `metrics.json` exists unless `--force`; any forced rerun must be recorded in `reports/dissertation_evidence/experiment_log.md`.
+
+**Whatever the TEST number is — above or below the frozen head's 0.571 — it is reported as measured.** Then refresh the CI table so the fine-tuned row is included:
+
+```bash
+/scratch/db01550/venv/bin/python scripts/bootstrap_f1.py --pred videomae_finetuned=results/videomae_finetuned/predictions.csv
+```
+
+**Gate:** `metrics.json` pasted back with real measured values.

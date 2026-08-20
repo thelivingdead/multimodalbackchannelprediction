@@ -32,12 +32,17 @@ Insert **after** the paragraph that first mentions the result. Keep DEV plots ou
 
 **Figure 12.** TEST F1 for the frozen rule (0.67) and the 1D CNN (0.70). File: `figures/model_comparison_f1.jpg`.
 
+**Figure 13.** Frozen VideoMAE head training curve: training loss (left axis) and DEV F1 (right axis) by epoch. The star marks the early-stopped best epoch (10, DEV F1 0.90); TEST was scored once at that epoch and threshold. This is a tuning diagnostic — the DEV curve must not be read as generalisation. File: `figures/videomae_training_curve.png`.
+
+**Figure 14.** TEST F1 for the three systems (\(n=15\), scored once): frozen pose rule 0.67, pose 1D CNN (xyz + derivatives) 0.70, frozen VideoMAE head 0.57. Error bars are 95% bootstrap CIs (1000 resamples, seed 42). The intervals overlap widely; the differences are not statistically significant. File: `figures/model_comparison_f1.png` (three-model version; distinct from the two-model `model_comparison_f1.jpg`).
+
 ---
 
 ## Appendix only (not headlines)
 
 - `figures/training_loss.jpg` — TRAIN loss by epoch (feature set C).
 - `figures/dev_f1_by_epoch.jpg` — DEV F1 by epoch; used for early stopping only.
+- `figures/videomae_training_curve.png` — VideoMAE head TRAIN loss / DEV F1; tuning diagnostic (also usable as Figure 13 next to §5.6, with the caution caption above).
 
 ---
 
@@ -55,5 +60,5 @@ Insert **after** the paragraph that first mentions the result. Keep DEV plots ou
 | --- | --- |
 | Data / annotation | 1, 2, 3, 4 |
 | Methods | 5, 6, 7, 8, 9 |
-| Results | 10, 11, 12 |
-| Appendix | training loss, DEV F1 by epoch |
+| Results | 10, 11, 12, 14 (+13 beside §5.6 with caution caption) |
+| Appendix | training loss, DEV F1 by epoch, VideoMAE DEV curve |

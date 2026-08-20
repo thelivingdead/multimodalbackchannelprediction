@@ -1,0 +1,10 @@
+{
+  "n_videos": 30,
+  "seconds_watched_total": 1800,
+  "events_recorded_total": 30,
+  "annotators": [
+    "divya"
+  ],
+  "per_video_timing_recorded": false,
+  "note": "Per-video annotation wall-clock time was not logged during the online-watch protocol; no timing estimate is fabricated. One ~60 s window per video, one binary decision per window."
+}

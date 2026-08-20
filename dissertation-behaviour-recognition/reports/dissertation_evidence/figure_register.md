@@ -20,6 +20,8 @@
 | R2 | figures/classifier_confusion_matrix.jpg | CNN TEST confusion | 7 | TP7 FP3 TN2 FN3; F1 0.70 | classifier_test_metrics.json |
 | R3 | figures/model_comparison_f1.jpg | rule vs CNN TEST F1 | 7 | Headline comparison | final_results_summary.md |
 | R4 | figures/pseudo_label_distribution.jpg | 70/10 pseudo labels | 6 | Weak-label bias | pseudo_labels.csv |
+| R5 | figures/videomae_training_curve.png | VideoMAE head loss + DEV F1 | 7/appendix | Early stop epoch 10 (DEV F1 0.90); tuning diagnostic, not a headline | videomae_frozen_head/training_history.csv + metrics.json |
+| R6 | figures/model_comparison_f1.png | 3-model TEST F1 + 95% CI | 7 | Rule 0.67 / CNN 0.70 / VideoMAE 0.57; CIs overlap, not significant | tables/bootstrap_ci.csv |
 | G1 | figures/gold_visuals/label_counts.jpg | gold 19/11 | 4 | Human labels only | gold sheet |
 | G2 | figures/gold_visuals/labels_by_split.jpg | 15/15 | 4 | DEV vs TEST counts | gold sheet |
 | G3 | figures/gold_visuals/labels_by_person.jpg | LEFT/RIGHT | 4 | p0/p1 | gold sheet |

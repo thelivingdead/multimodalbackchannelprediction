@@ -1,17 +1,21 @@
 #!/usr/bin/env python3
-"""Later-phase scripts are blocked until the nod rule pilot is finished."""
+"""Planned experiment, not run: late fusion of VideoMAE and pose features.
+
+Fusion (concatenate the VideoMAE embedding with the pose summary, then a small
+MLP; see configs/fusion.yaml) requires the planned VideoMAE experiment first,
+which was not run (storage constraint; see reports/videomae_preflight_lab.md).
+The submitted study therefore reports pose-only results: the frozen rule
+(TEST F1 0.67) and the pseudo-labelled 1D CNN (TEST F1 0.70). No fusion score
+exists or is claimed.
+
+This script intentionally performs no computation.
+"""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-name = Path(sys.argv[0]).name
+def main() -> None:
+    print(__doc__)
 
-if name.startswith("15") or name.startswith("16") or "videomae" in name:
-    raise SystemExit("VideoMAE is blocked until results/pilot_nod_rule_metrics.json exists.")
 
-if not (ROOT / "results" / "pilot_nod_rule_metrics.json").exists():
-    raise SystemExit(f"{name}: finish the 1-hour nod rule pilot first (scripts/run_hour_pilot.sh).")
-
-raise SystemExit(f"{name}: not part of today's 1-hour run. See README phase 2+.")
+if __name__ == "__main__":
+    main()

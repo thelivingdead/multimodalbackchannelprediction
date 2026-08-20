@@ -1,0 +1,5 @@
+model,input,supervision,train_n,precision,recall,f1,accuracy,f1_ci_lo,f1_ci_hi
+Rule baseline,EMOCA head rotation,None (DEV-tuned thresholds),N/A,0.6363636363636364,0.7,0.6666666666666666,0.5333333333333333,0.35294117647058826,0.8695652173913043
+Pose CNN raw,EMOCA pose xyz (128-step resampled),80 rule pseudo-labels,80,0.6153846153846154,0.8,0.6956521739130435,0.5333333333333333,N/A,N/A
+Pose CNN xyz_deriv,EMOCA pose xyz + derivatives,80 rule pseudo-labels,80,0.7,0.7,0.7,0.6,0.4,0.8888888888888888
+Frozen VideoMAE head,RGB 16x224x224 face crops (VideoMAE),80 rule pseudo-labels,N/A,N/A,N/A,N/A,N/A,N/A,N/A

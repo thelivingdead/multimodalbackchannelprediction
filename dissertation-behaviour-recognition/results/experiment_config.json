@@ -1,0 +1,8 @@
+{
+  "seed": 42,
+  "pseudo_clips_requested": 80,
+  "epochs": 15,
+  "smoke_test": false,
+  "fps": 25.0,
+  "gold_csv": "/Users/divyabisht/Downloads/Msc Dissertation Divya/dissertation-behaviour-recognition/data/gold_annotations.csv"
+}

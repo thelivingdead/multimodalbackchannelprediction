@@ -1,0 +1,5 @@
+method,input,training_labels,split,precision,recall,f1,accuracy,balanced_accuracy,tp,fp,tn,fn,source
+Pose rule (frozen amplitude),"EMOCA head rotation, axis x, savgol(11,2), threshold 16.35 deg",none (threshold tuned on DEV),DEV (tuning; not a headline),0.75,1.0,0.8571428571428571,0.8,0.75,9,3,3,0,results/rule_selected_config.json + results/rule_dev_threshold_search.csv
+Pose rule (frozen amplitude),"EMOCA head rotation, axis x, savgol(11,2), threshold 16.35 deg",none (threshold tuned on DEV),TEST (scored once; headline),0.6363636363636364,0.7,0.6666666666666666,0.5333333333333333,0.44999999999999996,7,4,1,3,results/rule_test_metrics.json
+1D CNN (feature set C: xyz + first differences),EMOCA pose sequences resampled to 128 steps,80 rule pseudo-labels (70 nod / 10 unclear),DEV (epoch + threshold selection; not a headline),,,0.8888888888888888,,0.8611111111111112,,,,,"results/training_history.csv (best epoch 9, threshold 0.45)"
+1D CNN (feature set C: xyz + first differences),EMOCA pose sequences resampled to 128 steps,80 rule pseudo-labels (70 nod / 10 unclear),TEST (scored once; headline),0.7,0.7,0.7,0.6,0.55,7,3,2,3,results/classifier_test_metrics.json

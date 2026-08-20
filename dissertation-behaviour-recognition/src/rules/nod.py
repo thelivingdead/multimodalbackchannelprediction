@@ -2,6 +2,12 @@
 
 A nod is a short vertical oscillation (pitch), typically 0.25–1.4 s,
 with at least two direction changes after 1–3 Hz band-pass.
+
+Note: this band-pass detector (configured by configs/rule_nod.yaml) was the
+earlier pilot design. The configuration scored in the submitted 30-window
+experiment is the Savitzky-Golay turning-point amplitude rule in
+scripts/run_full_experiment.py (rule_score), frozen on DEV in
+results/rule_selected_config.json (axis x, threshold 16.35 deg).
 """
 from __future__ import annotations
 

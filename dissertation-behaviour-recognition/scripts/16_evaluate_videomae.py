@@ -1,17 +1,21 @@
 #!/usr/bin/env python3
-"""Later-phase scripts are blocked until the nod rule pilot is finished."""
+"""Planned experiment, not run: evaluation of the VideoMAE model.
+
+There is no trained VideoMAE model in this repository (see
+scripts/15_train_videomae.py and reports/videomae_preflight_lab.md), so there
+is nothing to evaluate. When the planned visual experiment is run, evaluation
+must follow the same protocol as the pose models: the frozen 15-video TEST
+split in data/splits/gold_test.txt is scored exactly once, with all selection
+on DEV. No TEST metric for VideoMAE exists or is claimed anywhere in this repo.
+
+This script intentionally performs no computation.
+"""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-name = Path(sys.argv[0]).name
+def main() -> None:
+    print(__doc__)
 
-if name.startswith("15") or name.startswith("16") or "videomae" in name:
-    raise SystemExit("VideoMAE is blocked until results/pilot_nod_rule_metrics.json exists.")
 
-if not (ROOT / "results" / "pilot_nod_rule_metrics.json").exists():
-    raise SystemExit(f"{name}: finish the 1-hour nod rule pilot first (scripts/run_hour_pilot.sh).")
-
-raise SystemExit(f"{name}: not part of today's 1-hour run. See README phase 2+.")
+if __name__ == "__main__":
+    main()

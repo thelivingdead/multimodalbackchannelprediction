@@ -1,11 +1,13 @@
-"""Reusable frame-level and event-level metrics. Headline is not accuracy."""
+"""Reusable frame-level, event-level, and clip-level metrics. Headline is not accuracy."""
 from __future__ import annotations
 
 from typing import Any
 
 import numpy as np
 from sklearn.metrics import (
+    accuracy_score,
     average_precision_score,
+    balanced_accuracy_score,
     confusion_matrix,
     f1_score,
     precision_score,
@@ -13,6 +15,24 @@ from sklearn.metrics import (
 )
 
 from .events import Event, greedy_match
+
+
+def binary_metrics(y_true: np.ndarray, y_pred: np.ndarray) -> dict:
+    """Clip-level binary P/R/F1 with accuracy, balanced accuracy, and the 2x2 counts."""
+    y_true = np.asarray(y_true).astype(int)
+    y_pred = np.asarray(y_pred).astype(int)
+    tn, fp, fn, tp = confusion_matrix(y_true, y_pred, labels=[0, 1]).ravel()
+    return {
+        "accuracy": float(accuracy_score(y_true, y_pred)),
+        "balanced_accuracy": float(balanced_accuracy_score(y_true, y_pred)),
+        "precision": float(precision_score(y_true, y_pred, zero_division=0)),
+        "recall": float(recall_score(y_true, y_pred, zero_division=0)),
+        "f1": float(f1_score(y_true, y_pred, zero_division=0)),
+        "tp": int(tp),
+        "fp": int(fp),
+        "tn": int(tn),
+        "fn": int(fn),
+    }
 
 
 def prf(tp: int, fp: int, fn: int) -> dict[str, float]:

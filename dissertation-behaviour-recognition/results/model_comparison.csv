@@ -1,0 +1,2 @@
+method,input,training_labels,precision,recall,f1,accuracy,balanced_accuracy
+Rule baseline,EMOCA head rotation,None,0.6363636363636364,0.7,0.6666666666666666,0.5333333333333333,0.44999999999999996

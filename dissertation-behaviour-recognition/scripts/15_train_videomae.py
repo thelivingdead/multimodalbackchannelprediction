@@ -1,17 +1,32 @@
 #!/usr/bin/env python3
-"""Later-phase scripts are blocked until the nod rule pilot is finished."""
+"""Planned experiment, not run: VideoMAE on the 30 gold windows.
+
+Status (20 August 2026): no video pixels exist in this repository and no
+VideoMAE training or evaluation was performed. The submitted study is
+pose-only; the verified TEST numbers come from the pose rule and the 1D CNN
+(results/rule_test_metrics.json, results/classifier_test_metrics.json).
+
+Why it was not run: the lab account used for pose extraction has a ~25 GB
+quota with ~6.5 GB free after a CPU PyTorch install, which cannot hold
+RealTalk video shards plus a VideoMAE checkpoint. EMOCA pose was streamed
+from the official archive without saving it.
+
+Plan when storage allows (details and verification commands:
+reports/videomae_preflight_lab.md):
+  - model: MCG-NJU/videomae-base, 16-frame frozen encoder (configs/videomae_frozen.yaml),
+  - input: 2 s RGB windows around the annotated gold windows,
+  - protocol unchanged: tune on the 15 DEV windows, score the 15 TEST windows once.
+
+This script intentionally performs no computation and downloads nothing.
+"""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
+PREFLIGHT = "reports/videomae_preflight_lab.md"
 
-ROOT = Path(__file__).resolve().parents[1]
-name = Path(sys.argv[0]).name
 
-if name.startswith("15") or name.startswith("16") or "videomae" in name:
-    raise SystemExit("VideoMAE is blocked until results/pilot_nod_rule_metrics.json exists.")
+def main() -> None:
+    print(__doc__)
 
-if not (ROOT / "results" / "pilot_nod_rule_metrics.json").exists():
-    raise SystemExit(f"{name}: finish the 1-hour nod rule pilot first (scripts/run_hour_pilot.sh).")
 
-raise SystemExit(f"{name}: not part of today's 1-hour run. See README phase 2+.")
+if __name__ == "__main__":
+    main()

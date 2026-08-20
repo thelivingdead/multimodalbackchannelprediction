@@ -1,15 +1,25 @@
-# Report outline
+# Report outline (submission, 48 h)
 
-1. Abstract
-2. Introduction (motivation, problem, RQs, contributions)
-3. Background and literature review
-4. Dataset and annotation (RealTalk, 1/0 protocol, 15/15 split, ethics)
-5. Methodology (EMOCA features, nod rule, weak labels, later VideoMAE)
-6. Experiments
-7. Results
-8. Discussion (including negative/mixed results)
-9. Conclusion
-10. References
-11. Appendices
+Use this outline, not the older 7-class / VideoMAE experiment list.
 
-Today fills §4–5 pilot and §6.2 rule baseline on PILOT/DEV only.
+1. Abstract (`abstract_intro_lit_draft.md`) — TEST F1 0.67 / 0.70 only
+2. Introduction — problem, scope reduction, RQ1–RQ3, contributions
+3. Related work — RealTalk, EMOCA/FLAME, backchannels, weak supervision; VideoMAE as unrun future work
+4. Data and annotation — 30 windows, 1/0 protocol, 15/15, ethics
+5. Methods — streamed EMOCA, frozen amplitude rule, 80 pseudo-labels, 1D CNN, clip-level P/R/F1
+6. Results — locked TEST table; ablations A–C; error list; no D; no VideoMAE
+7. Discussion
+8. Limitations
+9. Conclusion and future work
+10. References (`references_harvard.md`)
+11. Appendix — TRAIN loss / DEV F1-by-epoch if space
+
+Paste files (all under `reports/`):
+
+- `SUBMISSION_48H.md` — hour-by-hour (local planning note, Mac-only and uncommitted; not a committed repo artefact)
+- `abstract_intro_lit_draft.md`
+- `methods_chapter_draft.md`
+- `results_chapter_draft.md`
+- `discussion_conclusion_draft.md`
+- `figure_captions.md`
+- `WRITING_INVENTORY.md`

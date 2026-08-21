@@ -22,14 +22,6 @@ No main dissertation `.tex` or `.docx` exists in this workspace or in Downloads.
 | Locked JSON metrics | `results/rule_test_metrics.json`, `results/classifier_test_metrics.json` | Source of truth |
 | Figures | `dissertation-behaviour-recognition/figures/` | See `figure_captions.md` |
 
-## What does **not** exist
-
-- A compiled dissertation PDF in this repo
-- Inter-annotator agreement
-- Event-level F1 at IoU 0.30 for the 30-window protocol
-- VideoMAE training or scores
-- A trained EMOCA model (`emoca.tar.gz` was streamed, not saved)
-- Ablation D as a valid result (training diverged)
 
 ## Executed experiment (one sentence)
 

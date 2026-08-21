@@ -116,13 +116,24 @@ Three cautions apply, exactly as for the frozen head. First, **no pairwise diffe
 
 A process note for the record: an earlier bootstrap over all 110 saved predictions (`results/videomae_finetuned/predictions.csv`, which carries a `split` column) was **train-contaminated and invalid**; it was caught and corrected. The canonical CI file is the 15-row `results/videomae_finetuned/predictions_test.csv`, and every CI reported here uses TEST only.
 
-### 5.8 What is not in this chapter
+### 5.8 Scaling ablation: 80 → 200 pseudo-labels
+
+The same partial fine-tune recipe was repeated with **200** frozen-rule pseudo-labels (the original 80 rows left byte-identical, plus 120 new clips). DEV and TEST were unchanged. Outputs went to `results/videomae_finetuned_n200/` so the n=80 TEST score was not overwritten. Best-on-DEV: epoch **9**, threshold **0.80** (DEV F1 0.889 — tuning only). TEST was scored once.
+
+| Method | TRAIN n | Precision | Recall | F1 | Accuracy | F1 95% CI |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| Fine-tuned VideoMAE (canonical) | 80 | 0.75 | 0.90 | **0.82** | 0.73 | [0.60, 0.96] |
+| Fine-tuned VideoMAE (scaling) | 200 | 0.67 | 0.60 | **0.63** | 0.53 | [0.31, 0.84] |
+
+TEST counts at n=200: TP 6, FP 3, TN 2, FN 4. The point estimate **fell** relative to n=80. The 95% intervals overlap ([0.60, 0.96] vs [0.31, 0.84]), so the drop is **not statistically significant** at \(n=15\). The defensible reading is that extra automatic labels from the same noisy teacher did not help, and the canonical RGB result remains the 80-clip run. Do not treat n=200 as a second headline, and do not rerun it.
+
+### 5.9 What is not in this chapter
 
 - DEV F1 0.86 / 0.89 / 0.90 / 0.857 as a finding
 - Ablation D as a valid F1
 - Any synthetic `pilot_*` F1
 - Event-level F1 at IoU 0.30 for this 30-window protocol
-- A claim that F1 0.70 is significantly better than 0.67, that 0.57 is significantly worse than either, or that 0.82 is significantly better than any pose system — at \(n=15\) all 95% CIs overlap
+- A claim that F1 0.70 is significantly better than 0.67, that 0.57 is significantly worse than either, that 0.82 is significantly better than any pose system, or that n=200 is significantly worse than n=80 — at \(n=15\) all 95% CIs overlap
 
 ---
 

@@ -1,2 +1,5 @@
-status: blocked
-reason: "Do not fine-tune VideoMAE before frozen-head experiment and pilot rule."
+status: executed
+reason: "Partial fine-tune last 4 encoder blocks, otter95, 20-21 Aug 2026. Canonical TEST F1 0.82 in results/videomae_finetuned/. Scaling n=200 TEST F1 0.63 in results/videomae_finetuned_n200/. Do not rerun with --force."
+script: scripts/finetune_videomae.py
+model: MCG-NJU/videomae-base
+unfreeze_blocks: 4

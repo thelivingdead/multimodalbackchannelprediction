@@ -2,7 +2,21 @@
 
 MSc dissertation code and gold annotations for **weakly supervised head-nod recognition** on Columbia RealTalk (Geng et al., 2023).
 
-A small human gold set is used to tune a pose-based nod rule. The frozen rule can then produce pseudo-labels for a pose classifier. VideoMAE is not used until real rule metrics exist.
+The **task** is detecting a listener **head nod**. **Pose** is one input (EMOCA 3D head rotation). **RGB** is the other (16-frame face crops → VideoMAE). TRAIN uses automatic labels from a frozen pose rule; DEV/TEST are 30 human labels. TEST is scored once per model.
+
+## Headline TEST results (n = 15, scored once)
+
+Citable table: `dissertation-behaviour-recognition/results/tables/main_results.md`.
+
+| method | TRAIN | F1 | 95% CI |
+| --- | --- | --- | --- |
+| Pose rule (frozen amplitude) | — | **0.67** | [0.35, 0.87] |
+| Pose 1D CNN (xyz + derivatives) | 80 pseudo | **0.70** | [0.40, 0.89] |
+| Frozen VideoMAE head | 80 pseudo | **0.57** | [0.24, 0.75] |
+| Fine-tuned VideoMAE (last 4 blocks) | 80 pseudo | **0.82** | [0.60, 0.96] |
+| Fine-tuned VideoMAE (scaling) | 200 pseudo | **0.63** | [0.31, 0.84] |
+
+Canonical RGB result is **n = 80, F1 0.82**. n = 200 is a scaling ablation (point estimate fell). All CIs overlap at n = 15 — no significance claims.
 
 ## Labels
 
@@ -11,40 +25,24 @@ A small human gold set is used to tune a pose-based nod rule. The frozen rule ca
 | `1` | Clear nod (the only gold positive) |
 | `0` | Unclear / not a nod |
 
-Primary metric: event **F1 at IoU 0.30**. RealTalk: **p0 = left listener**, **p1 = right listener**, 25 fps.
+Metric: **clip-level** precision, recall, and F1 (not event IoU 0.30). RealTalk: **p0 = left listener**, **p1 = right listener**, 25 fps.
 
-## Current status
+## Where to look
 
-- 30 RealTalk videos labelled (15 DEV, 15 TEST)
-- Gold times and labels: `dissertation-behaviour-recognition/data/gold/`
-- DEV may be used to tune the rule; TEST is scored once and is not used for training
+The submitted package is **`dissertation-behaviour-recognition/`** (README there has the pipeline, scripts, and figure list).
 
-## Main package
+- Gold: `dissertation-behaviour-recognition/data/gold/`
+- Locked metrics: `dissertation-behaviour-recognition/results/`
+- Chapter drafts: `dissertation-behaviour-recognition/reports/`
+- Tests: `dissertation-behaviour-recognition/tests/`
 
-```
-dissertation-behaviour-recognition/
-  configs/     rule and model settings
-  data/gold/   annotation sheet, events, watch list
-  data/splits/ DEV and TEST video ids
-  scripts/     pipeline and annotation import
-  src/         events, metrics, nod rule
-  results/     predicted vs annotated table
-  tests/       split and label checks
-```
+## Not in this repository
 
-```bash
-cd dissertation-behaviour-recognition
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-pytest -q
-```
+Videos, EMOCA `.pkl` files, RGB `.npz` windows, VideoMAE `best_model.pt` (~345 MB), and virtual environments.
 
-Videos, EMOCA `.pkl` files, and virtual environments are not stored in this repository.
+## Other folders (not the submitted experiment)
 
-## Other folders
-
-Earlier notes and prototypes are kept for reference: `docs/`, `scripts/nod_pipeline/`, `api/`, `web/`. The dissertation experiments use `dissertation-behaviour-recognition/`.
+`scripts/nod_pipeline/`, `api/`, `web/` are earlier prototypes. Proposal-era notes: `docs/archive/`. Do not cite those as TEST scores.
 
 ## Citation
 

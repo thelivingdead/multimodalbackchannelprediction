@@ -1,6 +1,6 @@
 # Discussion, limitations, and conclusion (paste-ready)
 
-Paste after Results. Do not put DEV F1 in this chapter as a finding. Do not invent ablation-D scores. VideoMAE numbers are the locked TEST values only (frozen head 0.57; fine-tuned 0.82) — no others exist.
+Paste after Results. Do not put DEV F1 in this chapter as a finding. Do not invent ablation-D scores. VideoMAE numbers are the locked TEST values only (frozen head 0.57; fine-tuned n=80 **0.82**; scaling n=200 **0.63**).
 
 ---
 
@@ -16,7 +16,7 @@ With 15 TEST windows, a one-clip change is within ordinary sampling noise. The d
 
 DEV F1 was 0.86 for the rule and 0.89 for the CNN. Those numbers describe the set used to choose \(\tau\) and the epoch. They are expected to be optimistic. Reporting them as generalisation would be a leakage error.
 
-Two RGB systems ran under the same protocol (Results §5.6–5.7). The frozen VideoMAE head scored TEST F1 **0.57** — below both pose systems — while the partially fine-tuned VideoMAE (last 4 encoder blocks, GPU) scored TEST F1 **0.82** (TP 9, FP 3, TN 2, FN 1), the highest point estimate of the five systems. The frozen-vs-fine-tuned pair, on identical inputs, splits, and pseudo-labels, indicates that **task adaptation of the video backbone, not the RGB input alone, drove the gain**. The same statistical caution applies with full force: at \(n=15\) the fine-tuned 95% CI [0.60, 0.96] overlaps the pose CNN's [0.40, 0.89], the rule's [0.35, 0.87], and the frozen head's [0.24, 0.75], so **no pairwise difference is statistically significant**. The dissertation should claim the highest point estimate, not a proven superiority.
+Two RGB systems ran under the same protocol (Results §5.6–5.7). The frozen VideoMAE head scored TEST F1 **0.57** — below both pose systems — while the partially fine-tuned VideoMAE (last 4 encoder blocks, GPU, 80 pseudo-labels) scored TEST F1 **0.82** (TP 9, FP 3, TN 2, FN 1), the highest point estimate. The frozen-vs-fine-tuned pair, on identical inputs, splits, and 80 labels, indicates that **task adaptation of the video backbone, not the RGB input alone, drove the gain**. A scaling run with 200 pseudo-labels (Results §5.8) scored TEST F1 **0.63** (CI [0.31, 0.84]) — a lower point estimate than n=80, with overlapping intervals, so extra weak labels are not shown to help. The same statistical caution applies with full force: at \(n=15\) the n=80 fine-tuned 95% CI [0.60, 0.96] overlaps the pose CNN's [0.40, 0.89], the rule's [0.35, 0.87], the frozen head's [0.24, 0.75], and the n=200 run, so **no pairwise difference is statistically significant**. The dissertation should claim the highest point estimate (n=80 fine-tune), not a proven superiority.
 
 ### 8.2 Answers to the research questions
 
@@ -78,9 +78,9 @@ The following limitations are part of the result, not an afterthought.
 
 7. **Expression ablation.** Set D diverged. No conclusion about facial expression is licensed.
 
-8. **Constrained pixel modelling.** Otter had about 6.5 GB free after CPU PyTorch under a 25 GB quota, and video plus a full VideoMAE training stack do not fit. What was run: a frozen VideoMAE head (TEST F1 0.57) and a partial fine-tune of the last 4 encoder blocks on an RTX A4000 with CUDA PyTorch installed on `/scratch`, outside the quota (TEST F1 0.82). Full fine-tuning of all 86.2M parameters and a larger pseudo-label pool remain future work. EMOCA was streamed, not trained; `emoca.tar.gz` was never saved.
+8. **Constrained pixel modelling.** Otter had about 6.5 GB free after CPU PyTorch under a 25 GB quota, and video plus a full VideoMAE training stack do not fit on home. What was run: a frozen VideoMAE head (TEST F1 0.57) and a partial fine-tune of the last 4 encoder blocks on an RTX A4000 with CUDA PyTorch installed on `/scratch`, outside the quota (canonical TEST F1 0.82 at 80 pseudo-labels). Full fine-tuning of all 86.2M parameters remains future work. EMOCA was streamed, not trained; `emoca.tar.gz` was never saved.
 
-9. **Small-sample RGB comparison.** The fine-tuned VideoMAE F1 of 0.82 is the highest point estimate, but at \(n=15\) its 95% CI [0.60, 0.96] overlaps every other system's; no pairwise difference is statistically significant. An earlier bootstrap over all 110 predictions was train-contaminated and was corrected to the 15-row TEST-only file (`results/videomae_finetuned/predictions_test.csv`) before reporting. For the pose CNN, TEST counts would not change on one GPU; the model is small.
+9. **Small-sample RGB comparison.** The fine-tuned VideoMAE F1 of 0.82 (80 pseudo-labels) is the highest point estimate, but at \(n=15\) its 95% CI [0.60, 0.96] overlaps every other system's; no pairwise difference is statistically significant. Enlarging TRAIN to 200 rule pseudo-labels **lowered** the TEST point estimate to 0.63 (CI [0.31, 0.84]); that drop also has overlapping CIs and is reported as a negative scaling check, not as a second headline. An earlier bootstrap over all 110 predictions was train-contaminated and was corrected to the 15-row TEST-only file (`results/videomae_finetuned/predictions_test.csv`) before reporting. For the pose CNN, TEST counts would not change on one GPU; the model is small.
 
 10. **In-the-wild dyads.** RealTalk is unconstrained video. Lighting, occlusion, and who is the “listener” can all corrupt both pose and human judgement.
 
@@ -92,9 +92,9 @@ This dissertation asked whether a pose-based detector can recognise **clear list
 
 A Savitzky–Golay amplitude rule, frozen on DEV at axis \(x\) and \(16.35^\circ\), reached TEST precision 0.64, recall 0.70, and F1 **0.67**. A pose-based 1D CNN — a temporal classifier over `rotation_xyz`, with no RGB input — trained on 80 pseudo-labels from that same rule reached TEST precision 0.70, recall 0.70, and F1 **0.70**. The CNN matched the rule on nods (7/10) and rejected one additional unclear clip. That is a modest, one-clip difference on a 15-window test, not a demonstration that learned models supersede the heuristic.
 
-The study’s defensible contributions are a documented 1/0 annotation protocol, a leakage-controlled split, streamed (not retrained) EMOCA pose, four locked TEST confusion matrices across pose and RGB systems, and a controlled frozen-vs-fine-tuned VideoMAE contrast. The study does not deliver seven-class backchannel typing, multimodal fusion, or full VideoMAE fine-tuning. Those items remain **future work**.
+The study’s defensible contributions are a documented 1/0 annotation protocol, a leakage-controlled split, streamed (not retrained) EMOCA pose, locked TEST scores across pose and RGB systems, a controlled frozen-vs-fine-tuned VideoMAE contrast, and a 80→200 pseudo-label scaling check. The study does not deliver seven-class backchannel typing, multimodal fusion, or full VideoMAE fine-tuning. Those items remain **future work**.
 
-A useful next experiment would be to enlarge the human TEST set, add a second annotator, score events at IoU 0.30, and only then fully fine-tune a video backbone on a larger pseudo-label pool. Until those steps are taken, the supported headline remains: **on 15 held-out RealTalk windows, all systems sit between F1 0.57 and 0.82, with the fine-tuned VideoMAE highest at 0.82 — and every 95% interval overlapping, so the ordering is a point-estimate ranking, not a tested one**.
+A useful next experiment would be to enlarge the human TEST set, add a second annotator, score events at IoU 0.30, and only then fully fine-tune a video backbone on **cleaner** labels — the 200-clip run already showed that more rule pseudo-labels did not raise TEST F1. Until those steps are taken, the supported headline remains: **on 15 held-out RealTalk windows, all systems sit between F1 0.57 and 0.82, with the 80-clip fine-tuned VideoMAE highest at 0.82 — and every 95% interval overlapping, so the ordering is a point-estimate ranking, not a tested one**.
 
 ---
 
@@ -104,7 +104,7 @@ A useful next experiment would be to enlarge the human TEST set, add a second an
 - Align the marked nod interval with the pose window; drop or relabel off-window cases *before* freezing a new TEST (do not relabel the present TEST after seeing scores).
 - Report event-level F1 at IoU 0.30 on time intervals, in addition to clip-level F1.
 - Retrain only if a new TEST is collected; do not retune on the present 15.
-- **Full** VideoMAE fine-tuning (all 86.2M parameters) and a larger pseudo-label pool, building on the partial fine-tune reported here (frozen head 0.57 → partial fine-tune 0.82 on identical splits). Any further VideoMAE F1 will be reported only if actually measured on a held-out TEST set under the same protocol.
+- **Full** VideoMAE fine-tuning (all 86.2M parameters), building on the partial fine-tune reported here (frozen head 0.57 → partial fine-tune 0.82 on 80 labels). A 200-clip rule-pseudo pool was already measured and did not improve TEST F1 (0.63). Further scaling needs cleaner labels or more gold, not only more teacher clips. Any further VideoMAE F1 will be reported only if actually measured on a held-out TEST set under the same protocol.
 - Multi-class head gestures only after a pose rule for each class has a human-checked TEST score.
 
 **Otter should stay idle until after submission.** No further training is required for this document.

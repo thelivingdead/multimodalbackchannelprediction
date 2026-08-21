@@ -1,16 +1,16 @@
 # Results index
 
-Everything in this directory is a saved artifact of the submitted experiment. The two
-headline TEST numbers are **locked** and are not recomputed when this repository is
-cleaned or re-documented:
+Everything in this directory is a saved artifact. **TEST is locked** (scored once per
+model). The citable comparison is `tables/main_results.md` (pose + VideoMAE, with CIs).
+
+Pose headlines (also in `final_results.csv`):
 
 | method | split | precision | recall | F1 | confusion |
 |---|---|---|---|---|---|
 | Pose rule (frozen amplitude) | TEST | 0.64 | 0.70 | **0.67** | TP 7, FP 4, TN 1, FN 3 |
 | 1D CNN (feature set C) | TEST | 0.70 | 0.70 | **0.70** | TP 7, FP 3, TN 2, FN 3 |
 
-`final_results.csv` is the single table to cite; it points back to the per-file sources
-below. DEV scores (0.86 rule, 0.89 CNN) are tuning-split values, not headlines.
+DEV scores (0.86 rule, 0.89 CNN, VideoMAE DEV F1s) are tuning-split values, not headlines.
 
 ## Headline artifacts (locked)
 
@@ -47,20 +47,20 @@ below. DEV scores (0.86 rule, 0.89 CNN) are tuning-split values, not headlines.
 Figures live in the top-level `figures/` directory (see its own README), produced by
 `scripts/make_figures.py` and `scripts/plot_gold_visuals.py`.
 
-## VideoMAE frozen-head follow-up (20 Aug 2026; not a headline)
-
-A first frozen-VideoMAE run landed after the pose-only submission artifacts were locked.
-It is indexed here for completeness; it does **not** change the locked headlines above.
+## VideoMAE (RGB; same DEV/TEST as pose)
 
 | file | produced by | contains |
 |---|---|---|
-| `videomae_embeddings_meta.json` | `scripts/extract_videomae_embeddings.py` | frozen `MCG-NJU/videomae-base` embeddings, 768-d, 110 clips (extraction provenance) |
-| `videomae_frozen_head/training_history.csv` | `scripts/train_videomae_head.py` | per-epoch loss / DEV F1 / DEV threshold for the MLP head |
-| `videomae_frozen_head/predictions.csv` | same | per-window TEST probabilities and predictions |
-| `videomae_frozen_head/metrics.json` | same | DEV F1 0.90; TEST F1 0.57 (P 0.55, R 0.60; TP 6, FP 5, TN 0, FN 4) |
+| `videomae_embeddings_meta.json` | `scripts/extract_videomae_embeddings.py` | frozen 768-D embeddings (provenance) |
+| `videomae_frozen_head/` | `scripts/train_videomae_head.py` | TEST F1 **0.57** (TP6 FP5 TN0 FN4) |
+| `videomae_finetuned/` | `scripts/finetune_videomae.py` | canonical RGB: TEST F1 **0.82** (TP9 FP3 TN2 FN1); `predictions_test.csv` is the 15-row CI file |
+| `videomae_finetuned_n200/` | same script, `--out-dir` | scaling ablation: TEST F1 **0.63** (TP6 FP3 TN2 FN4) |
+| `pseudo_labels.csv` | frozen rule | 80 TRAIN labels |
+| `pseudo_labels_200.csv` | `scripts/scale_pseudo_pool_200.py` | 200 TRAIN labels (first 80 byte-identical) |
+| `tables/bootstrap_ci.csv` | `scripts/bootstrap_f1.py` | 1000 resamples, seed 42, **TEST rows only** |
+| `tables/main_results.md` | `scripts/make_main_results.py` | six-row master table |
 
-Metrics were recomputed from `predictions.csv` during post-cleanup validation and match
-`metrics.json` exactly. Fine-tuning and fusion remain not run.
+`best_model.pt` is gitignored (~345 MB). Fusion was not run.
 
 ## Reproducing vs. re-scoring
 

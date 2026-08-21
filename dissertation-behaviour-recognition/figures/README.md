@@ -17,6 +17,10 @@ when a proposal-era pilot input is absent, and creates subfolders on demand).
 | `model_comparison_f1`, `ablation_f1` | rule vs CNN; feature-set ablations A-C |
 | `gold_label_counts`, `gold_label_distribution`, `gold_split_distribution` | gold-set composition |
 | `github_overview` | one-figure pipeline summary |
+| `videomae_training_curve` | frozen-head DEV F1 / loss (tuning diagnostic) |
+| `videomae_finetuned_training_curve` | fine-tune n=80 DEV F1 / loss (tuning diagnostic) |
+| `pipeline_diagram` | offline training + webcam inference schematic |
+| `model_comparison_f1` | TEST F1 bars (include CIs in the dissertation caption) |
 
 ## Subfolders
 

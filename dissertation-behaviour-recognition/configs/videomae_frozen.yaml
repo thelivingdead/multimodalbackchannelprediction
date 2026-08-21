@@ -7,8 +7,9 @@ note: >
   only). Results: results/videomae_frozen_head/ (DEV F1 0.90; TEST F1 0.57,
   P 0.55, R 0.60; TP6 FP5 TN0 FN4) — below both pose models on the same
   held-out TEST set, so it is a follow-up check, not a headline. The
-  submitted dissertation results remain pose-only (rule 0.67, CNN 0.70).
-  Fine-tuning was not run (see configs/videomae_finetune.yaml).
+  submitted dissertation reports both pose (rule 0.67, CNN 0.70) and RGB
+  (frozen 0.57, fine-tune n=80 0.82, n=200 0.63). Canonical RGB is n=80.
+  Fine-tuning: configs/videomae_finetune.yaml and results/videomae_finetuned/.
 model: MCG-NJU/videomae-base
 frames: 16
 window_s: 2.0

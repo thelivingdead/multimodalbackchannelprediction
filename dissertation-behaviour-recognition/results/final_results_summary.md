@@ -20,4 +20,4 @@ DEV F1: 0.8888888888888888
 
 TEST F1: 0.7
 
-Missing values mean EMOCA features were not obtained. They were not invented.
+Missing values mean EMOCA features were not obtained.

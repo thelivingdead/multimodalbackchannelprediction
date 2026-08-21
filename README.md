@@ -1,5 +1,5 @@
 # Multimodal Backchannel Prediction
-### Head-nod recognition on RealTalk
+## Head-nod recognition on RealTalk
 
 MSc dissertation code and gold annotations for **weakly supervised head-nod recognition** on Columbia RealTalk (Geng et al., 2023).
 

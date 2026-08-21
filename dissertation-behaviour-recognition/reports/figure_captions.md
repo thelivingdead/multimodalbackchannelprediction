@@ -36,7 +36,17 @@ Insert **after** the paragraph that first mentions the result. Keep DEV plots ou
 
 **Figure 14.** TEST F1 for the four systems with saved TEST predictions (\(n=15\), scored once): frozen pose rule 0.67, pose 1D CNN (xyz + derivatives) 0.70, frozen VideoMAE head 0.57, fine-tuned VideoMAE 0.82 (highlighted). Error bars are 95% bootstrap CIs (1000 resamples, seed 42). The intervals overlap widely; the differences are not statistically significant — 0.82 is the highest point estimate, not a proven win. File: `figures/model_comparison_f1.png` (four-model version; distinct from the two-model `model_comparison_f1.jpg`).
 
-**Figure 15.** Fine-tuned VideoMAE (last 4 encoder blocks + head) training curve: training loss (left axis) and DEV F1 (right axis) by epoch. The star marks the early-stopped best epoch (5, DEV F1 0.857, threshold 0.45); TEST was scored once at that epoch and threshold. This is a tuning diagnostic — the DEV curve must not be read as generalisation. File: `figures/videomae_finetuned_training_curve.png`.
+**Figure 15.** Defining qualitative figure. Two locked TEST windows where the two people sit left and right of the frame. Top: `gold_020` (human **clear nod**, partner speaks the whole minute). Bottom: `gold_024` (human **unclear**). Blue box = labelled listener, orange = partner. Pose is EMOCA rotation \(x\) with \(\tau=16.35^\circ\). Speaker lanes are official RealTalk TalkNet. File: `figures/paper/teaser_backchannel.jpg`.
+
+**Figure 16.** Executed architecture (binary nod only): EMOCA pose → rule + 1D CNN; RGB 16-frame crops → VideoMAE. No BERT/HuBERT/LMF. File: `figures/paper/architecture.png`.
+
+**Figure 17.** TEST P/R (text on bars) and F1 with 95% bootstrap CIs, n=15, scored once. File: `figures/paper/test_metrics.png`.
+
+**Figure 18.** All 15 TEST windows: human gold vs rule / CNN / frozen VideoMAE / fine-tuned n=80 / n=200. File: `figures/paper/test_clip_grid.png`.
+
+**Figure 19.** Qualitative TEST cases on pose axis \(x\): TP `gold_016`, FP `gold_017`, FN `gold_018`, TN `gold_024`, with locked 0/1 predictions. File: `figures/paper/error_cases.png`.
+
+**Figure 21.** Sixteen listener face crops per TEST window — the actual RGB input to VideoMAE. Rows: `gold_016` TP, `gold_017` FP, `gold_018` FN, `gold_024` TN. File: `figures/paper/rgb_frame_strips.png` (generated on otter95 from `features/rgb16`).
 
 ---
 
@@ -60,7 +70,7 @@ Insert **after** the paragraph that first mentions the result. Keep DEV plots ou
 
 | Chapter | Figures |
 | --- | --- |
-| Data / annotation | 1, 2, 3, 4 |
+| Intro / data | **15** (teaser: faces + pose + who speaks), 1, 2, 3, 4 |
 | Methods | 5, 6, 7, 8, 9 |
 | Results | 10, 11, 12, 14 (+13 beside §5.6 and 15 beside §5.7, with caution captions) |
 | Appendix | training loss, DEV F1 by epoch, VideoMAE DEV curves |

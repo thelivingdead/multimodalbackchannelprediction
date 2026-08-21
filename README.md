@@ -34,7 +34,6 @@ The submitted package is **`dissertation-behaviour-recognition/`** (README there
 
 - Gold: `dissertation-behaviour-recognition/data/gold/`
 - Locked metrics: `dissertation-behaviour-recognition/results/`
-- Chapter drafts: `dissertation-behaviour-recognition/reports/`
 - Tests: `dissertation-behaviour-recognition/tests/`
 
 ## Not in this repository

@@ -35,3 +35,4 @@ features/*
 !features/gold/*.npz
 !features/pseudo/
 !features/pseudo/*.npz
+results/videomae_finetuned_n200/best_model.pt

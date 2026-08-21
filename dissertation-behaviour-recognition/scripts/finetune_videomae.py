@@ -191,16 +191,32 @@ def main() -> None:
                         default=True,
                         help="horizontal-flip augmentation on TRAIN "
                              "(default on; use --no-flip to disable)")
+    parser.add_argument("--pseudo-labels", type=Path, default=PSEUDO_LABELS,
+                        help="CSV of sample_id,pseudo_label (default: "
+                             "results/pseudo_labels.csv, the 80-clip run)")
+    parser.add_argument("--out-dir", type=Path, default=OUT_DIR,
+                        help="output directory (default: "
+                             "results/videomae_finetuned). Use a NEW directory "
+                             "for a scaling run so the 80-clip TEST score is "
+                             "never overwritten.")
     args = parser.parse_args()
 
-    if (OUT_DIR / "metrics.json").exists() and not args.force:
+    pseudo_labels_path = args.pseudo_labels
+    if not pseudo_labels_path.is_absolute():
+        pseudo_labels_path = ROOT / pseudo_labels_path
+    out_dir = args.out_dir
+    if not out_dir.is_absolute():
+        out_dir = ROOT / out_dir
+    best_pt = out_dir / "best_model.pt"
+
+    if (out_dir / "metrics.json").exists() and not args.force:
         raise SystemExit(
-            f"STOP: {OUT_DIR / 'metrics.json'} already exists — TEST has "
+            f"STOP: {out_dir / 'metrics.json'} already exists — TEST has "
             "already been scored once under this protocol. Pass --force only "
             "if the earlier run is being formally invalidated (record why in "
             "reports/dissertation_evidence/experiment_log.md)."
         )
-    for needed in (GOLD_CSV, PSEUDO_LABELS):
+    for needed in (GOLD_CSV, pseudo_labels_path):
         if not needed.exists():
             raise SystemExit(
                 f"STOP: {needed} is missing. Run Steps 3-6 (fetch + extract + "
@@ -218,7 +234,7 @@ def main() -> None:
 
     gold = pd.read_csv(GOLD_CSV)
     gold["split"] = gold["split"].astype(str).str.upper()
-    pseudo = pd.read_csv(PSEUDO_LABELS)
+    pseudo = pd.read_csv(pseudo_labels_path)
 
     dev = gold[gold.split == "DEV"].sort_values("sample_id")
     tes = gold[gold.split == "TEST"].sort_values("sample_id")
@@ -468,8 +484,8 @@ def main() -> None:
             best_state = {k_: v.detach().cpu().clone()
                           for k_, v in model.state_dict().items()}
             check_disk("best_model.pt save")
-            OUT_DIR.mkdir(parents=True, exist_ok=True)
-            torch.save(best_state, BEST_PT)
+            out_dir.mkdir(parents=True, exist_ok=True)
+            torch.save(best_state, best_pt)
             bad = 0
         else:
             bad += 1
@@ -489,8 +505,8 @@ def main() -> None:
     test_metrics = binary_metrics(y_te, (prob_te >= thr).astype(int))
 
     check_disk("write")
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
-    pd.DataFrame(history).to_csv(OUT_DIR / "training_history.csv", index=False)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    pd.DataFrame(history).to_csv(out_dir / "training_history.csv", index=False)
     pd.DataFrame(
         {
             "clip_id": train_ids + dev_ids + tes_ids,
@@ -502,10 +518,12 @@ def main() -> None:
                       + ["DEV"] * len(dev_ids)
                       + ["TEST"] * len(tes_ids)),
         }
-    ).to_csv(OUT_DIR / "predictions.csv", index=False)
+    ).to_csv(out_dir / "predictions.csv", index=False)
     metrics = {
         "model": f"VideoMAE fine-tuned (last {k} blocks + head)",
         "script": Path(__file__).name,
+        "pseudo_labels": str(pseudo_labels_path),
+        "out_dir": str(out_dir),
         "checkpoint": CHECKPOINT,
         "processor": proc_name,
         "transformers_version": transformers.__version__,
@@ -537,11 +555,11 @@ def main() -> None:
         "selection_rule": "epoch + threshold by DEV F1 only; TEST scored once",
         "test_metrics": test_metrics,
     }
-    (OUT_DIR / "metrics.json").write_text(json.dumps(metrics, indent=2) + "\n")
+    (out_dir / "metrics.json").write_text(json.dumps(metrics, indent=2) + "\n")
     print(
         f"\nbest epoch {best['epoch']}  DEV F1={best['dev_f1']:.3f}  "
         f"threshold={thr:.2f}\n"
-        f"wrote {OUT_DIR}/metrics.json, predictions.csv, "
+        f"wrote {out_dir}/metrics.json, predictions.csv, "
         f"training_history.csv (+ best_model.pt, gitignored)\n"
         f"TEST (scored once): {test_metrics}"
     )

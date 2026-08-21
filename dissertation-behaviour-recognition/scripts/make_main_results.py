@@ -196,6 +196,29 @@ def build_rows() -> tuple[list[dict], list[str]]:
         "accuracy": metric(tm, "accuracy"),
         **ci_fields(cis, "videomae_finetuned"),
     })
+
+    # --- Fine-tuned VideoMAE, 200 pseudo (Step 8 scaling) ---------------
+    n200 = ROOT / "results" / "videomae_finetuned_n200" / "metrics.json"
+    m = load_json(n200)
+    if m is None:
+        notes.append(
+            "Fine-tuned VideoMAE n=200: results/videomae_finetuned_n200/"
+            "metrics.json missing (Step 8 not run) -> N/A row"
+        )
+    tm = (m or {}).get("test_metrics")
+    if not isinstance(tm, dict):
+        tm = m
+    rows.append({
+        "model": "Fine-tuned VideoMAE (last 4 blocks, 200 pseudo)",
+        "input": f"RGB 16x224x224 face crops ({(m or {}).get('checkpoint', 'VideoMAE')})",
+        "supervision": f"{(m or {}).get('train_n', 200)} rule pseudo-labels",
+        "train_n": (m or {}).get("train_n", NA),
+        "precision": metric(tm, "precision"),
+        "recall": metric(tm, "recall"),
+        "f1": metric(tm, "f1"),
+        "accuracy": metric(tm, "accuracy"),
+        **ci_fields(cis, "videomae_finetuned_n200"),
+    })
     return rows, notes
 
 
@@ -231,6 +254,7 @@ def main() -> None:
         "Pose CNN xyz_deriv <- `results/classifier_test_metrics.json`; "
         "Frozen VideoMAE head <- `results/videomae_frozen_head/metrics.json`; "
         "Fine-tuned VideoMAE <- `results/videomae_finetuned/metrics.json`; "
+        "Fine-tuned VideoMAE n=200 <- `results/videomae_finetuned_n200/metrics.json`; "
         "CIs <- `results/tables/bootstrap_ci.csv` "
         "(1000 resamples, seed 42, from saved TEST predictions).",
     ]

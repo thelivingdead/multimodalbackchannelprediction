@@ -9,13 +9,13 @@ The **task** is detecting a listener **head nod**. **Pose** is one input (EMOCA 
 
 Citable table: `dissertation-behaviour-recognition/results/tables/main_results.md`.
 
-| method | TRAIN | F1 | 95% CI |
-| --- | --- | --- | --- |
-| Pose rule (frozen amplitude) | — | **0.67** | [0.35, 0.87] |
-| Pose 1D CNN (xyz + derivatives) | 80 pseudo | **0.70** | [0.40, 0.89] |
-| Frozen VideoMAE head | 80 pseudo | **0.57** | [0.24, 0.75] |
-| Fine-tuned VideoMAE (last 4 blocks) | 80 pseudo | **0.82** | [0.60, 0.96] |
-| Fine-tuned VideoMAE (scaling) | 200 pseudo | **0.63** | [0.31, 0.84] |
+| method | TRAIN | P | R | F1 | 95% CI |
+| --- | --- | --- | --- | --- | --- |
+| Pose rule (frozen amplitude) | — | 0.64 | 0.70 | **0.67** | [0.35, 0.87] |
+| Pose 1D CNN (xyz + derivatives) | 80 pseudo | 0.70 | 0.70 | **0.70** | [0.40, 0.89] |
+| Frozen VideoMAE head | 80 pseudo | 0.55 | 0.60 | **0.57** | [0.24, 0.75] |
+| Fine-tuned VideoMAE (last 4 blocks) | 80 pseudo | 0.75 | 0.90 | **0.82** | [0.60, 0.96] |
+| Fine-tuned VideoMAE (scaling) | 200 pseudo | 0.67 | 0.60 | **0.63** | [0.31, 0.84] |
 
 Canonical RGB result is **n = 80, F1 0.82**. n = 200 is a scaling ablation (point estimate fell). All CIs overlap at n = 15 — no significance claims.
 

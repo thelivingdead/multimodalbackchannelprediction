@@ -1,8 +1,9 @@
 # 48-hour submission plan
 
+**SUPERSEDED — 21 August 2026.** VideoMAE **was run**. Ignore any line below that says it was not. Locked TEST scores: `results/tables/main_results.md` (rule 0.67, pose CNN 0.70, frozen VideoMAE 0.57, fine-tune n=80 **0.82**, n=200 ablation **0.63**). Paste from `results_chapter_draft.md` and `discussion_conclusion_draft.md`. This file is only an old writing timetable.
+
 **Candidate:** Divya Bisht, MSc, University of Surrey  
-**Today:** Wednesday 19 August 2026  
-**Rule:** writing and figures only. **Otter stays idle.** Do not start VideoMAE. Do not download `emoca.tar.gz`. Do not train anything. Do not retune TEST.
+**Originally written:** Wednesday 19 August 2026 (pose-only plan; now outdated)
 
 Paste from the markdown files in this folder into your Word (or Overleaf) template. There is **no** existing `.docx`/`.tex` dissertation in the workspace.
 
@@ -22,7 +23,7 @@ Copy this table exactly. Rounding is intentional (rule precision 0.636… → 0.
 - CNN TRAIN: 70 nod / 10 unclear **pseudo-labels** (automatic rule labels, not gold). DEV F1 **0.89 is not a headline**.
 - Clip-level P/R/F1. **Not** event IoU.
 - Ablation D diverged (`nan` / F1 0): **do not report as a result**.
-- VideoMAE: **not run**. Say so once, as future work / disk quota, not as a TEST failure.
+- VideoMAE **was run** (see master table). Do not write “not run.”
 
 JSON originals: `../results/rule_test_metrics.json`, `../results/classifier_test_metrics.json`.
 

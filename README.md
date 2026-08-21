@@ -42,7 +42,7 @@ Videos, EMOCA `.pkl` files, RGB `.npz` windows, VideoMAE `best_model.pt` (~345 M
 
 ## Other folders (not the submitted experiment)
 
-`scripts/nod_pipeline/`, `api/`, `web/` are earlier prototypes. Proposal-era notes: `docs/archive/`. Do not cite those as TEST scores.
+`api/` and `web/` are a leftover **7-class heuristic demo** (BERT/HuBERT were never used). `scripts/nod_pipeline/` and `notebooks/` are early lab sketches. The submitted study lives only in **`dissertation-behaviour-recognition/`**.
 
 ## Citation
 

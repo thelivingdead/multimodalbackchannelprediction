@@ -1,5 +1,7 @@
 # Tiny-subset nod-detection pipeline (25 GB safe)
 
+**Not the submitted experiment.** The dissertation package is `dissertation-behaviour-recognition/` (30 gold clips, locked TEST table). This folder is an early 10-clip lab sketch.
+
 Prove the **entire** nod pipeline on **10 × 1-minute** clips. Do **not** download `emoca.tar.gz` (~23.6 GB).
 
 ```

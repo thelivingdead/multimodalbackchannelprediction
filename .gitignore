@@ -21,3 +21,4 @@ outputs/
 *.avi
 *.pkl
 web/node_modules/
+realtalk_nod_forecasting/

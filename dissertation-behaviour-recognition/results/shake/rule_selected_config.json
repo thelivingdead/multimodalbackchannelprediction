@@ -1,0 +1,35 @@
+{
+  "task": "head_shake",
+  "chosen_rotation_axis": 2,
+  "axis_name": "z",
+  "smoothing": "savgol_11_2",
+  "min_movement_frames": 5,
+  "max_movement_frames": 50,
+  "selected_amplitude_threshold": 11.150367799838971,
+  "dev_metrics": {
+    "precision": 0.7692307692307693,
+    "recall": 1.0,
+    "f1": 0.8695652173913043,
+    "accuracy": 0.8,
+    "balanced_accuracy": 0.7
+  },
+  "n_dev_with_features": 15,
+  "dev_sample_ids": [
+    "gold_001",
+    "gold_002",
+    "gold_003",
+    "gold_004",
+    "gold_005",
+    "gold_006",
+    "gold_007",
+    "gold_008",
+    "gold_009",
+    "gold_010",
+    "gold_011",
+    "gold_012",
+    "gold_013",
+    "gold_014",
+    "gold_015"
+  ],
+  "note": "Shake rule: same amplitude detector as nod, labels from shake_annotation_sheet.csv. Axis/threshold frozen on DEV. Hypothesis: yaw is Euler y, but DEV is allowed to pick x/y/z. Nod results were not overwritten."
+}

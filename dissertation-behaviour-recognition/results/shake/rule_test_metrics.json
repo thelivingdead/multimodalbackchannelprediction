@@ -1,0 +1,11 @@
+{
+  "accuracy": 0.6,
+  "balanced_accuracy": 0.625,
+  "precision": 0.5384615384615384,
+  "recall": 1.0,
+  "f1": 0.7,
+  "tp": 7,
+  "fp": 6,
+  "tn": 2,
+  "fn": 0
+}

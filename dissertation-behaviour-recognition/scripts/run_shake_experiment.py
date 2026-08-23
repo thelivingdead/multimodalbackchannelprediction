@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Head-shake experiment on the same 30 gold windows (DEV 15 / TEST 15).
+"""Head-shake RULE experiment on the same 30 gold windows (DEV 15 / TEST 15).
+
+This script is the amplitude **rule only** (axis + threshold on DEV, TEST
+once). The 1D CNN is a **separate** script: ``scripts/train_shake_cnn.py``.
+Do not treat this file as the CNN trainer.
 
 Does **not** overwrite nod artefacts in results/rule_*.json.
 Does **not** invent shake labels or TEST F1.

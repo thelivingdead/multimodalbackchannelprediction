@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""VideoMAE Step 7 (optional, otter48 GPU): fine-tune VideoMAE on the RGB windows.
+"""VideoMAE Step 7 (optional, otter95 GPU): fine-tune VideoMAE on the RGB windows.
 
 Fine-tunes ``MCG-NJU/videomae-base`` directly on the cached 16-frame face-crop
 windows (``features/rgb16/<sample_id>.npz``, Step 3 output: uint8 ``rgb``
@@ -11,10 +11,14 @@ Protocol — identical in shape to Step 5 (TEST is never used for any
 selection):
 
 * **TRAIN** = pseudo clips that have an rgb16 npz, labelled by the frozen
-  DEV-tuned rule (``results/pseudo_labels.csv``).
-* **DEV** = the 15 gold DEV clips: early stopping (best weights restored)
-  AND the probability threshold, both chosen on DEV F1 only (threshold swept
-  over ``np.linspace(0.2, 0.8, 13)``, ties broken by balanced accuracy).
+  DEV-tuned rule (``--pseudo-labels``, default ``results/pseudo_labels.csv``;
+  head-shake: ``results/shake/pseudo_labels.csv``).
+* **DEV** = the 15 gold DEV clips (``--gold-csv`` / ``--label-col``, default
+  nod ``data/gold_annotations.csv`` ``label``; head-shake:
+  ``data/gold/shake_annotation_sheet.csv`` ``shake_label``): early stopping
+  (best weights restored) AND the probability threshold, both chosen on DEV
+  F1 only (threshold swept over ``np.linspace(0.2, 0.8, 13)``, ties broken
+  by balanced accuracy).
 * **TEST** = the 15 gold TEST clips, **scored exactly once** with the
   best-on-DEV weights and the DEV-chosen threshold, and reported regardless
   of outcome.
@@ -39,30 +43,45 @@ pipeline is verified against the processor itself on one clip at startup
 flip on TRAIN (``--flip``, default on).
 
 The split-leakage gate of ``scripts/check_split_leakage.py`` runs internally
-at startup; any FAIL aborts before training. HF caches stay pinned to the
+at startup against the **same** gold CSV and pseudo-label file used for
+training; any FAIL aborts before training. HF caches stay pinned to the
 gitignored ``.hf_cache/`` inside the repo.
 
-Outputs::
+Outputs (nod defaults)::
 
     results/videomae_finetuned/metrics.json
     results/videomae_finetuned/predictions.csv        (all splits)
     results/videomae_finetuned/training_history.csv
     results/videomae_finetuned/best_model.pt          (gitignored)
 
-TEST-once guard: if ``metrics.json`` already exists the script refuses to
-rerun unless ``--force`` is passed, so TEST cannot be silently re-scored.
+Head-shake: pass ``--gold-csv data/gold/shake_annotation_sheet.csv``,
+``--label-col shake_label``, ``--pseudo-labels results/shake/pseudo_labels.csv``,
+and ``--out-dir results/shake/videomae_finetuned`` (or run
+``scripts/finetune_videomae_shake.py``). Mixed nod/shake paths abort. Shake
+runs never write ``results/videomae_finetuned/`` or nod gold.
+
+TEST-once guard: if ``metrics.json`` already exists under ``--out-dir`` the
+script refuses to rerun unless ``--force`` is passed, so TEST cannot be
+silently re-scored. Do not pass ``--force`` by default.
 A clip whose rgb16 npz is missing is skipped with a warning and counted; if
 more than 10% of wanted clips are missing the run aborts before training.
 Free space on ``~`` must stay above 5.4 GB, checked at start and before
 every checkpoint save.
 
 Run with ``OMP_NUM_THREADS=1`` (same determinism caveat as the pose CNN and
-Step 5). Lab invocation (after the GPU torch install)::
+Step 5). Nod invocation (already scored — do not rerun)::
 
     cd ~/multimodalbackchannelprediction/dissertation-behaviour-recognition
-    source ../.venv/bin/activate
-    pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cu126
-    OMP_NUM_THREADS=1 python scripts/finetune_videomae.py
+    /scratch/db01550/venv/bin/python scripts/finetune_videomae.py
+
+Head-shake on otter95 (RTX A4000, ``/scratch`` venv, **no Docker**)::
+
+    cd ~/multimodalbackchannelprediction/dissertation-behaviour-recognition
+    OMP_NUM_THREADS=1 /scratch/db01550/venv/bin/python scripts/finetune_videomae.py \\
+        --gold-csv data/gold/shake_annotation_sheet.csv \\
+        --label-col shake_label \\
+        --pseudo-labels results/shake/pseudo_labels.csv \\
+        --out-dir results/shake/videomae_finetuned
 """
 
 from __future__ import annotations
@@ -167,15 +186,57 @@ def best_threshold(y: np.ndarray, prob: np.ndarray):
     return thr_best, f1_best, bal_best
 
 
-def run_leakage_gate() -> None:
+def resolve_repo_path(path: Path) -> Path:
+    if not path.is_absolute():
+        path = ROOT / path
+    return path.resolve()
+
+
+def gold_y(frame: pd.DataFrame, label_col: str, gold_csv: Path) -> list[int]:
+    if label_col not in frame.columns:
+        raise SystemExit(
+            f"STOP: {gold_csv} has no column {label_col!r}. For head-shake "
+            "use --gold-csv data/gold/shake_annotation_sheet.csv "
+            "--label-col shake_label."
+        )
+    y = pd.to_numeric(frame[label_col], errors="coerce")
+    if y.isna().any():
+        bad = frame.loc[y.isna(), "sample_id"].tolist()
+        raise SystemExit(
+            f"STOP: empty/non-numeric {label_col} in {gold_csv} for {bad}"
+        )
+    y = y.astype(int)
+    if set(y.unique()) - {0, 1}:
+        raise SystemExit(f"STOP: {label_col} must be 0/1 only ({gold_csv}).")
+    return y.tolist()
+
+
+def run_leakage_gate(gold_csv: Path, pseudo_labels: Path) -> None:
     """Run scripts/check_split_leakage.py's asserts; SystemExit on any FAIL."""
     sys.path.insert(0, str(ROOT / "scripts"))
     import check_split_leakage
 
-    check_split_leakage.main()
+    check_split_leakage.run(
+        gold_csv=gold_csv,
+        pseudo_labels=pseudo_labels,
+        labelled_train_only=True,
+    )
 
 
-def main() -> None:
+def main(
+    argv: list[str] | None = None,
+    *,
+    gold_csv: Path | str | None = None,
+    label_col: str | None = None,
+    pseudo_labels: Path | str | None = None,
+    out_dir: Path | str | None = None,
+    force: bool | None = None,
+    unfreeze_blocks: int | None = None,
+    batch_size: int | None = None,
+    epochs: int | None = None,
+    patience: int | None = None,
+    flip: bool | None = None,
+) -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--force", action="store_true",
                         help="allow re-scoring TEST (overwrites metrics.json)")
@@ -191,32 +252,70 @@ def main() -> None:
                         default=True,
                         help="horizontal-flip augmentation on TRAIN "
                              "(default on; use --no-flip to disable)")
+    parser.add_argument("--gold-csv", type=Path, default=GOLD_CSV,
+                        help="gold CSV with split + label column (default: "
+                             "data/gold_annotations.csv). Head-shake: "
+                             "data/gold/shake_annotation_sheet.csv")
+    parser.add_argument("--label-col", default="label",
+                        help="DEV/TEST label column (default: label = nod). "
+                             "Head-shake: shake_label")
     parser.add_argument("--pseudo-labels", type=Path, default=PSEUDO_LABELS,
                         help="CSV of sample_id,pseudo_label (default: "
-                             "results/pseudo_labels.csv, the 80-clip run)")
+                             "results/pseudo_labels.csv, the 80-clip nod run). "
+                             "Head-shake: results/shake/pseudo_labels.csv")
     parser.add_argument("--out-dir", type=Path, default=OUT_DIR,
                         help="output directory (default: "
-                             "results/videomae_finetuned). Use a NEW directory "
-                             "for a scaling run so the 80-clip TEST score is "
+                             "results/videomae_finetuned). Head-shake MUST use "
+                             "results/shake/videomae_finetuned so nod TEST is "
                              "never overwritten.")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
-    pseudo_labels_path = args.pseudo_labels
-    if not pseudo_labels_path.is_absolute():
-        pseudo_labels_path = ROOT / pseudo_labels_path
-    out_dir = args.out_dir
-    if not out_dir.is_absolute():
-        out_dir = ROOT / out_dir
+    gold_csv_path = resolve_repo_path(
+        gold_csv if gold_csv is not None else args.gold_csv
+    )
+    pseudo_labels_path = resolve_repo_path(
+        pseudo_labels if pseudo_labels is not None else args.pseudo_labels
+    )
+    out_dir = resolve_repo_path(out_dir if out_dir is not None else args.out_dir)
     best_pt = out_dir / "best_model.pt"
+    label_col = str(
+        args.label_col if label_col is None else label_col
+    ).strip()
+    if force is None:
+        force = args.force
+    if unfreeze_blocks is None:
+        unfreeze_blocks = args.unfreeze_blocks
+    if batch_size is None:
+        batch_size = args.batch_size
+    if epochs is None:
+        epochs = args.epochs
+    if patience is None:
+        patience = args.patience
+    if flip is None:
+        flip = args.flip
 
-    if (out_dir / "metrics.json").exists() and not args.force:
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import check_split_leakage
+    task = check_split_leakage.assert_videomae_task_isolation(
+        gold_csv=gold_csv_path,
+        label_col=label_col,
+        pseudo_labels=pseudo_labels_path,
+        out_dir=out_dir,
+        model_pt=best_pt,
+    )
+    print(
+        f"task={task}  gold={gold_csv_path}  label_col={label_col}\n"
+        f"pseudo={pseudo_labels_path}  out_dir={out_dir}"
+    )
+
+    if (out_dir / "metrics.json").exists() and not force:
         raise SystemExit(
             f"STOP: {out_dir / 'metrics.json'} already exists — TEST has "
             "already been scored once under this protocol. Pass --force only "
             "if the earlier run is being formally invalidated (record why in "
             "reports/dissertation_evidence/experiment_log.md)."
         )
-    for needed in (GOLD_CSV, pseudo_labels_path):
+    for needed in (gold_csv_path, pseudo_labels_path):
         if not needed.exists():
             raise SystemExit(
                 f"STOP: {needed} is missing. Run Steps 3-6 (fetch + extract + "
@@ -229,12 +328,16 @@ def main() -> None:
         )
 
     print("running the split-leakage gate before anything else…")
-    run_leakage_gate()
+    run_leakage_gate(gold_csv_path, pseudo_labels_path)
     check_disk("start")
 
-    gold = pd.read_csv(GOLD_CSV)
+    gold = pd.read_csv(gold_csv_path)
     gold["split"] = gold["split"].astype(str).str.upper()
     pseudo = pd.read_csv(pseudo_labels_path)
+    if "pseudo_label" not in pseudo.columns:
+        raise SystemExit(
+            f"STOP: {pseudo_labels_path} has no pseudo_label column."
+        )
 
     dev = gold[gold.split == "DEV"].sort_values("sample_id")
     tes = gold[gold.split == "TEST"].sort_values("sample_id")
@@ -243,10 +346,10 @@ def main() -> None:
         pseudo["sample_id"].tolist(), pseudo["pseudo_label"].tolist(), "TRAIN"
     )
     dv_clips, y_dv, dev_ids, miss_dv = build_split(
-        dev["sample_id"].tolist(), dev["label"].tolist(), "DEV"
+        dev["sample_id"].tolist(), gold_y(dev, label_col, gold_csv_path), "DEV"
     )
     te_clips, y_te, tes_ids, miss_te = build_split(
-        tes["sample_id"].tolist(), tes["label"].tolist(), "TEST"
+        tes["sample_id"].tolist(), gold_y(tes, label_col, gold_csv_path), "TEST"
     )
 
     wanted = len(pseudo) + len(dev) + len(tes)
@@ -396,7 +499,7 @@ def main() -> None:
     # ---- freeze patch embeddings + first (n - k) blocks; train rest ----
     layers = model.videomae.encoder.layer
     n_layers = len(layers)
-    k = args.unfreeze_blocks
+    k = unfreeze_blocks
     if not 0 <= k <= n_layers:
         raise SystemExit(
             f"STOP: --unfreeze-blocks {k} out of range 0..{n_layers}."
@@ -436,9 +539,9 @@ def main() -> None:
     print(f"TRAIN {len(y_tr)} clips ({pos} pos / {neg} neg), "
           f"pos_weight={neg / pos:.3f}; DEV {len(y_dv)}, TEST {len(y_te)}")
 
-    ds = ClipDataset(tr_clips, y_tr, mean_t, std_t, flip=args.flip)
+    ds = ClipDataset(tr_clips, y_tr, mean_t, std_t, flip=flip)
     gen = torch.Generator().manual_seed(SEED)
-    loader = DataLoader(ds, batch_size=args.batch_size, shuffle=True,
+    loader = DataLoader(ds, batch_size=batch_size, shuffle=True,
                         generator=gen)
     use_amp = device.type == "cuda"
     scaler = torch.amp.GradScaler("cuda") if use_amp else None
@@ -447,7 +550,7 @@ def main() -> None:
     best: dict | None = None
     best_state = None
     bad = 0
-    for epoch in range(1, args.epochs + 1):
+    for epoch in range(1, epochs + 1):
         model.train()
         losses = []
         for xb, yb in loader:
@@ -468,7 +571,7 @@ def main() -> None:
                 opt.step()
             losses.append(float(loss.item()))
 
-        prob_dv = predict_probs(model, dv_clips, args.batch_size)
+        prob_dv = predict_probs(model, dv_clips, batch_size)
         thr_best, f1_best, bal_best = best_threshold(y_dv, prob_dv)
         row = {
             "epoch": epoch,
@@ -489,7 +592,7 @@ def main() -> None:
             bad = 0
         else:
             bad += 1
-            if bad >= args.patience:
+            if bad >= patience:
                 break
 
     if best_state is None:
@@ -498,9 +601,9 @@ def main() -> None:
     # ---- single TEST scoring with best-on-DEV weights + DEV threshold ----
     model.load_state_dict(best_state)
     thr = best["dev_probability_threshold"]
-    prob_dv = predict_probs(model, dv_clips, args.batch_size)
-    prob_tr = predict_probs(model, tr_clips, args.batch_size)
-    prob_te = predict_probs(model, te_clips, args.batch_size)
+    prob_dv = predict_probs(model, dv_clips, batch_size)
+    prob_tr = predict_probs(model, tr_clips, batch_size)
+    prob_te = predict_probs(model, te_clips, batch_size)
     dev_metrics = binary_metrics(y_dv, (prob_dv >= thr).astype(int))
     test_metrics = binary_metrics(y_te, (prob_te >= thr).astype(int))
 
@@ -520,8 +623,11 @@ def main() -> None:
         }
     ).to_csv(out_dir / "predictions.csv", index=False)
     metrics = {
+        "task": task,
         "model": f"VideoMAE fine-tuned (last {k} blocks + head)",
         "script": Path(__file__).name,
+        "gold_csv": str(gold_csv_path),
+        "label_col": label_col,
         "pseudo_labels": str(pseudo_labels_path),
         "out_dir": str(out_dir),
         "checkpoint": CHECKPOINT,
@@ -533,10 +639,10 @@ def main() -> None:
         "unfreeze_blocks": k,
         "lr_backbone": LR_BACKBONE,
         "lr_head": LR_HEAD,
-        "batch_size": args.batch_size,
-        "max_epochs": args.epochs,
-        "patience": args.patience,
-        "flip_augmentation": bool(args.flip),
+        "batch_size": batch_size,
+        "max_epochs": epochs,
+        "patience": patience,
+        "flip_augmentation": bool(flip),
         "train_ids": train_ids,
         "train_n": int(len(y_tr)),
         "train_pos": int((y_tr == 1).sum()),

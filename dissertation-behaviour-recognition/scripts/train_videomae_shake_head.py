@@ -30,24 +30,38 @@ Otter95 (``/scratch`` venv, **no Docker**; CPU is fine)::
 """
 from __future__ import annotations
 
+import argparse
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULTS = [
-    "--gold-csv", str(ROOT / "data" / "gold" / "shake_annotation_sheet.csv"),
-    "--label-col", "shake_label",
-    "--pseudo-labels", str(ROOT / "results" / "shake" / "pseudo_labels.csv"),
-    "--out-dir", str(ROOT / "results" / "shake" / "videomae_frozen_head"),
-]
+SHAKE_GOLD = ROOT / "data" / "gold" / "shake_annotation_sheet.csv"
+SHAKE_PSEUDO = ROOT / "results" / "shake" / "pseudo_labels.csv"
+SHAKE_OUT = ROOT / "results" / "shake" / "videomae_frozen_head"
 
 
 def main() -> None:
-    sys.path.insert(0, str(Path(__file__).resolve().parent))
-    sys.argv = [sys.argv[0]] + DEFAULTS + sys.argv[1:]
-    from train_videomae_head import main as _main
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="allow re-scoring TEST (overwrites metrics.json). Default refuses "
+             "if results/shake/videomae_frozen_head/metrics.json exists.",
+    )
+    args = parser.parse_args()
 
-    _main()
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from train_videomae_head import main as train_head
+
+    # Paths are kwargs, not argv: the nod parser must not see --gold-csv here.
+    train_head(
+        argv=[],
+        gold_csv=SHAKE_GOLD,
+        label_col="shake_label",
+        pseudo_labels=SHAKE_PSEUDO,
+        out_dir=SHAKE_OUT,
+        force=args.force,
+    )
 
 
 if __name__ == "__main__":

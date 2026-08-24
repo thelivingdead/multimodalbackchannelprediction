@@ -54,6 +54,109 @@ def test_split_files_no_overlap() -> None:
     assert d.isdisjoint(t)
 
 
+def test_videomae_shake_path_isolation() -> None:
+    root = Path(__file__).resolve().parents[1]
+    sys.path.insert(0, str(root / "scripts"))
+    import check_split_leakage as gate
+
+    nod = gate.assert_videomae_task_isolation(
+        gold_csv=root / "data" / "gold_annotations.csv",
+        label_col="label",
+        pseudo_labels=root / "results" / "pseudo_labels.csv",
+        out_dir=root / "results" / "videomae_finetuned",
+    )
+    assert nod == "head_nod"
+    nod_head = gate.assert_videomae_task_isolation(
+        gold_csv=root / "data" / "gold_annotations.csv",
+        label_col="label",
+        pseudo_labels=root / "results" / "pseudo_labels.csv",
+        out_dir=root / "results" / "videomae_frozen_head",
+        model_pt=root / "models" / "videomae_head.pt",
+    )
+    assert nod_head == "head_nod"
+
+    shake = gate.assert_videomae_task_isolation(
+        gold_csv=root / "data" / "gold" / "shake_annotation_sheet.csv",
+        label_col="shake_label",
+        pseudo_labels=root / "results" / "shake" / "pseudo_labels.csv",
+        out_dir=root / "results" / "shake" / "videomae_finetuned",
+    )
+    assert shake == "head_shake"
+    shake_head = gate.assert_videomae_task_isolation(
+        gold_csv=root / "data" / "gold" / "shake_annotation_sheet.csv",
+        label_col="shake_label",
+        pseudo_labels=root / "results" / "shake" / "pseudo_labels.csv",
+        out_dir=root / "results" / "shake" / "videomae_frozen_head",
+        model_pt=root / "results" / "shake" / "videomae_frozen_head" / "best_model.pt",
+    )
+    assert shake_head == "head_shake"
+
+    try:
+        gate.assert_videomae_task_isolation(
+            gold_csv=root / "data" / "gold_annotations.csv",
+            label_col="label",
+            pseudo_labels=root / "results" / "shake" / "pseudo_labels.csv",
+            out_dir=root / "results" / "shake" / "videomae_finetuned",
+        )
+    except SystemExit as exc:
+        msg = str(exc)
+        assert "shake_label" in msg
+        assert "videomae_finetuned" in msg or "gold_annotations" in msg
+    else:
+        raise AssertionError("mixed nod gold + shake out-dir must abort")
+
+    try:
+        gate.assert_videomae_task_isolation(
+            gold_csv=root / "data" / "gold" / "shake_annotation_sheet.csv",
+            label_col="shake_label",
+            pseudo_labels=root / "results" / "shake" / "pseudo_labels.csv",
+            out_dir=root / "results" / "videomae_finetuned",
+        )
+    except SystemExit as exc:
+        assert "results/shake" in str(exc) or "videomae_finetuned" in str(exc)
+    else:
+        raise AssertionError("shake labels must not write nod out-dir")
+
+    try:
+        gate.assert_videomae_task_isolation(
+            gold_csv=root / "data" / "gold" / "shake_annotation_sheet.csv",
+            label_col="shake_label",
+            pseudo_labels=root / "results" / "shake" / "pseudo_labels.csv",
+            out_dir=root / "results" / "videomae_frozen_head",
+            model_pt=root / "models" / "videomae_head.pt",
+        )
+    except SystemExit as exc:
+        msg = str(exc)
+        assert "videomae_frozen_head" in msg or "videomae_head.pt" in msg
+        assert "results/shake" in msg or "videomae_head.pt" in msg
+    else:
+        raise AssertionError("shake must not write nod frozen-head artefacts")
+
+    try:
+        gate.assert_videomae_task_isolation(
+            gold_csv=root / "data" / "gold_annotations.csv",
+            label_col="label",
+            pseudo_labels=root / "results" / "pseudo_labels.csv",
+            out_dir=root / "results" / "shake" / "videomae_frozen_head",
+        )
+    except SystemExit as exc:
+        assert "results/shake" in str(exc) or "shake_label" in str(exc)
+    else:
+        raise AssertionError("nod run must not write under results/shake/")
+
+
+def test_shake_videomae_leakage_gate() -> None:
+    root = Path(__file__).resolve().parents[1]
+    sys.path.insert(0, str(root / "scripts"))
+    import check_split_leakage as gate
+
+    gate.run(
+        gold_csv=root / "data" / "gold" / "shake_annotation_sheet.csv",
+        pseudo_labels=root / "results" / "shake" / "pseudo_labels.csv",
+        labelled_train_only=True,
+    )
+
+
 def test_save_publication_figure_writes_png_and_jpg(tmp_path: Path) -> None:
     import matplotlib.pyplot as plt
 

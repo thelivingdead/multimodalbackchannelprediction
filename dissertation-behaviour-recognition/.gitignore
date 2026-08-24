@@ -38,3 +38,5 @@ features/*
 !features/pseudo/*.npz
 results/videomae_finetuned_n200/best_model.pt
 results/videomae_finetuned_n120/best_model.pt
+results/shake/videomae_finetuned/best_model.pt
+results/shake/videomae_frozen_head/best_model.pt

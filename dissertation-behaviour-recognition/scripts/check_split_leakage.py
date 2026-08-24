@@ -5,18 +5,27 @@ Asserts, using only committed artefacts (no network, no decoding):
 
 1. gold DEV and gold TEST are disjoint by ``sample_id`` **and** by
    ``video_id`` (no video crosses the DEV/TEST boundary).
-2. No pseudo ``sample_id`` collides with any gold ``sample_id``.
-3. No pseudo ``video_id`` appears among gold TEST videos (pseudo = TRAIN
-   split) — nor among gold DEV videos.
+2. No TRAIN pseudo ``sample_id`` collides with any gold ``sample_id``.
+3. No TRAIN pseudo ``video_id`` appears among gold TEST videos (pseudo =
+   TRAIN split) — nor among gold DEV videos.
 4. Every selected TRAIN/DEV/TEST clip actually has its expected artefacts
    where those artefacts already exist (warn-only: coverage is Step 3/4's
    job, this gate is about leakage).
 
-Exit 0 prints PASS with the counts; any violation exits non-zero listing
-every offender. Run this before ``train_videomae_head.py`` — if it fails,
-training must not start.
+Default (no flags) is the **nod** gate: gold from
+``data/gold_annotations.csv``, TRAIN = every ``features/pseudo/*.npz``.
+Head-shake VideoMAE must pass the same asserts on shake gold +
+``results/shake/pseudo_labels.csv``::
 
-Lab invocation::
+    python scripts/check_split_leakage.py \\
+        --gold-csv data/gold/shake_annotation_sheet.csv \\
+        --pseudo-labels results/shake/pseudo_labels.csv
+
+Exit 0 prints PASS with the counts; any violation exits non-zero listing
+every offender. Run this before ``train_videomae_head.py`` /
+``finetune_videomae.py`` — if it fails, training must not start.
+
+Lab invocation (nod defaults)::
 
     cd ~/multimodalbackchannelprediction/dissertation-behaviour-recognition
     source ../.venv/bin/activate
@@ -25,6 +34,7 @@ Lab invocation::
 
 from __future__ import annotations
 
+import argparse
 import csv
 import io
 import sys
@@ -35,10 +45,129 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 GOLD_CSV = ROOT / "data" / "gold_annotations.csv"
+SHAKE_GOLD_CSV = ROOT / "data" / "gold" / "shake_annotation_sheet.csv"
 PSEUDO_DIR = ROOT / "features" / "pseudo"
 PSEUDO_LABELS = ROOT / "results" / "pseudo_labels.csv"
+SHAKE_PSEUDO_LABELS = ROOT / "results" / "shake" / "pseudo_labels.csv"
+SHAKE_RESULTS = ROOT / "results" / "shake"
 RGB16_DIR = ROOT / "features" / "rgb16"
 EMB_DIR = ROOT / "data" / "features" / "videomae"
+NOD_HEAD_PT = ROOT / "models" / "videomae_head.pt"
+NOD_VMAE_OUT_DIRS = (
+    ROOT / "results" / "videomae_finetuned",
+    ROOT / "results" / "videomae_finetuned_n200",
+    ROOT / "results" / "videomae_finetuned_n120",
+    ROOT / "results" / "videomae_frozen_head",
+)
+
+
+def resolve_repo_path(path: Path | str) -> Path:
+    path = Path(path)
+    if not path.is_absolute():
+        path = ROOT / path
+    return path.resolve()
+
+
+def path_under(path: Path | str, parent: Path | str) -> bool:
+    try:
+        resolve_repo_path(path).relative_to(resolve_repo_path(parent))
+        return True
+    except ValueError:
+        return False
+
+
+def assert_videomae_task_isolation(
+    *,
+    gold_csv: Path | str,
+    label_col: str,
+    pseudo_labels: Path | str,
+    out_dir: Path | str,
+    model_pt: Path | str | None = None,
+) -> str:
+    """Return ``head_nod`` or ``head_shake``. Abort if the two tasks mix.
+
+    Shake runs must use ``shake_label``, the shake annotation sheet, shake
+    pseudo-labels, and an out-dir under ``results/shake/``. They must never
+    write nod VideoMAE artefacts (``results/videomae_finetuned/``,
+    ``results/videomae_frozen_head/``, ``models/videomae_head.pt``) or nod
+    gold ``data/gold_annotations.csv``.
+    """
+    gold_csv = resolve_repo_path(gold_csv)
+    pseudo_labels = resolve_repo_path(pseudo_labels)
+    out_dir = resolve_repo_path(out_dir)
+    model_pt_res = (
+        resolve_repo_path(model_pt) if model_pt is not None else None
+    )
+    label_col = str(label_col).strip()
+
+    shake_hits: list[str] = []
+    if label_col == "shake_label":
+        shake_hits.append("--label-col shake_label")
+    if gold_csv == resolve_repo_path(SHAKE_GOLD_CSV):
+        shake_hits.append("shake gold CSV")
+    if path_under(pseudo_labels, SHAKE_RESULTS):
+        shake_hits.append("shake pseudo-labels")
+    if path_under(out_dir, SHAKE_RESULTS):
+        shake_hits.append("out-dir under results/shake/")
+
+    if shake_hits:
+        errors: list[str] = []
+        if label_col != "shake_label":
+            errors.append(
+                f"--label-col {label_col!r} but shake paths were given; "
+                "DEV/TEST must use shake_label, not nod label"
+            )
+        if gold_csv != resolve_repo_path(SHAKE_GOLD_CSV):
+            errors.append(
+                f"--gold-csv {gold_csv} is not "
+                "data/gold/shake_annotation_sheet.csv "
+                "(do not train shake against nod gold_annotations.csv label)"
+            )
+        if not path_under(pseudo_labels, SHAKE_RESULTS):
+            errors.append(
+                f"--pseudo-labels {pseudo_labels} is not under results/shake/ "
+                "(refusing nod results/pseudo_labels.csv)"
+            )
+        if not path_under(out_dir, SHAKE_RESULTS):
+            errors.append(
+                f"--out-dir {out_dir} is not under results/shake/ "
+                "(refusing to overwrite results/videomae_finetuned/ "
+                "or results/videomae_frozen_head/)"
+            )
+        for blocked in NOD_VMAE_OUT_DIRS:
+            if path_under(out_dir, blocked):
+                errors.append(
+                    "refusing nod out-dir "
+                    f"{blocked.relative_to(ROOT).as_posix()}"
+                )
+        if model_pt_res is not None:
+            if model_pt_res == resolve_repo_path(NOD_HEAD_PT):
+                errors.append("refusing to overwrite models/videomae_head.pt")
+            for blocked in NOD_VMAE_OUT_DIRS:
+                if path_under(model_pt_res, blocked):
+                    errors.append(
+                        "refusing nod checkpoint under "
+                        f"{blocked.relative_to(ROOT).as_posix()}"
+                    )
+                    break
+        if errors:
+            raise SystemExit(
+                "STOP: mixed or unsafe head-shake VideoMAE paths "
+                f"({'; '.join(shake_hits)}):\n- "
+                + "\n- ".join(errors)
+            )
+        return "head_shake"
+
+    if path_under(out_dir, SHAKE_RESULTS):
+        raise SystemExit(
+            "STOP: nod VideoMAE run refuses to write under results/shake/"
+        )
+    if model_pt_res is not None and path_under(model_pt_res, SHAKE_RESULTS):
+        raise SystemExit(
+            "STOP: nod VideoMAE run refuses to write a checkpoint under "
+            "results/shake/"
+        )
+    return "head_nod"
 
 
 def npz_video_id(path: Path) -> str:
@@ -51,11 +180,97 @@ def npz_video_id(path: Path) -> str:
     return str(arr).strip()
 
 
-def main() -> None:
-    with GOLD_CSV.open(newline="") as fh:
+def _pseudo_train_ids(
+    pseudo_labels: Path | None,
+    labelled_train_only: bool,
+    failures: list[str],
+) -> tuple[set[str], dict[str, str]]:
+    """TRAIN sample_ids and sample_id → video_id for the leakage asserts."""
+    if labelled_train_only:
+        if pseudo_labels is None:
+            raise SystemExit(
+                "STOP: labelled_train_only requires a --pseudo-labels path."
+            )
+        pl = resolve_repo_path(pseudo_labels)
+        if not pl.exists():
+            raise SystemExit(f"STOP: {pl} is missing; cannot certify no leak.")
+        with pl.open(newline="") as fh:
+            rows = list(csv.DictReader(fh))
+        if not rows:
+            raise SystemExit(f"STOP: {pl} has no rows.")
+        if "sample_id" not in rows[0]:
+            raise SystemExit(f"STOP: {pl} has no sample_id column.")
+        ids = {r["sample_id"] for r in rows}
+        vids: dict[str, str] = {}
+        for r in rows:
+            sid = r["sample_id"]
+            vid = str(r.get("video_id") or "").strip()
+            if vid:
+                vids[sid] = vid
+                continue
+            npz = PSEUDO_DIR / f"{sid}.npz"
+            if not npz.exists():
+                failures.append(
+                    f"pseudo {sid} has no video_id in {pl.name} and no "
+                    f"{npz.name}; cannot certify no leak"
+                )
+                continue
+            vids[sid] = npz_video_id(npz)
+        return ids, vids
+
+    pseudo_npz = sorted(PSEUDO_DIR.glob("*.npz"))
+    ids = {p.stem for p in pseudo_npz}
+    vids = {p.stem: npz_video_id(p) for p in pseudo_npz}
+    if pseudo_labels is not None and resolve_repo_path(pseudo_labels).exists():
+        with resolve_repo_path(pseudo_labels).open(newline="") as fh:
+            labelled = {r["sample_id"] for r in csv.DictReader(fh)}
+        if labelled != ids:
+            print(
+                "WARNING: pseudo_labels.csv ids and features/pseudo/*.npz "
+                f"differ ({len(labelled)} vs {len(ids)}): "
+                f"labels-only={sorted(labelled - ids)[:5]}, "
+                f"npz-only={sorted(ids - labelled)[:5]}"
+            )
+    elif PSEUDO_LABELS.exists():
+        with PSEUDO_LABELS.open(newline="") as fh:
+            labelled = {r["sample_id"] for r in csv.DictReader(fh)}
+        if labelled != ids:
+            print(
+                "WARNING: pseudo_labels.csv ids and features/pseudo/*.npz "
+                f"differ ({len(labelled)} vs {len(ids)}): "
+                f"labels-only={sorted(labelled - ids)[:5]}, "
+                f"npz-only={sorted(ids - labelled)[:5]}"
+            )
+    return ids, vids
+
+
+def run(
+    gold_csv: Path | str | None = None,
+    pseudo_labels: Path | str | None = None,
+    labelled_train_only: bool = False,
+) -> None:
+    """Run the leakage asserts. ``SystemExit`` on any FAIL.
+
+    Training scripts must call this (not ``main()``) so parent argparse
+    flags such as ``--unfreeze-blocks`` are not re-parsed here.
+    """
+    gold_path = resolve_repo_path(gold_csv or GOLD_CSV)
+    pl_path = (
+        resolve_repo_path(pseudo_labels) if pseudo_labels is not None else None
+    )
+    if not gold_path.exists():
+        raise SystemExit(f"STOP: gold CSV missing: {gold_path}")
+
+    with gold_path.open(newline="") as fh:
         gold = list(csv.DictReader(fh))
-    dev = [r for r in gold if r["split"].upper() == "DEV"]
-    tes = [r for r in gold if r["split"].upper() == "TEST"]
+    needed = {"sample_id", "video_id", "split"}
+    if not gold or needed - set(gold[0].keys()):
+        raise SystemExit(
+            f"STOP: {gold_path} must have columns {sorted(needed)}."
+        )
+
+    dev = [r for r in gold if r["split"].strip().upper() == "DEV"]
+    tes = [r for r in gold if r["split"].strip().upper() == "TEST"]
     if not dev or not tes:
         raise SystemExit("STOP: gold CSV must contain both DEV and TEST rows.")
 
@@ -64,21 +279,10 @@ def main() -> None:
     dev_vids = {r["video_id"] for r in dev}
     tes_vids = {r["video_id"] for r in tes}
 
-    pseudo_npz = sorted(PSEUDO_DIR.glob("*.npz"))
-    pseudo_ids = {p.stem for p in pseudo_npz}
-    pseudo_vids = {p.stem: npz_video_id(p) for p in pseudo_npz}
-    if PSEUDO_LABELS.exists():
-        with PSEUDO_LABELS.open(newline="") as fh:
-            labelled = {r["sample_id"] for r in csv.DictReader(fh)}
-        if labelled != pseudo_ids:
-            print(
-                "WARNING: pseudo_labels.csv ids and features/pseudo/*.npz "
-                f"differ ({len(labelled)} vs {len(pseudo_ids)}): "
-                f"labels-only={sorted(labelled - pseudo_ids)[:5]}, "
-                f"npz-only={sorted(pseudo_ids - labelled)[:5]}"
-            )
-
     failures: list[str] = []
+    pseudo_ids, pseudo_vids = _pseudo_train_ids(
+        pl_path, labelled_train_only, failures
+    )
 
     both = sorted(dev_ids & tes_ids)
     if both:
@@ -100,7 +304,6 @@ def main() -> None:
     if in_dev:
         failures.append(f"pseudo video_id present in gold DEV: {in_dev}")
 
-    # artefact coverage warnings (not leakage; never fatal here)
     for name, folder in (("rgb16", RGB16_DIR), ("embeddings", EMB_DIR)):
         if folder.exists():
             have = {p.stem for p in folder.glob("*.npz")}
@@ -114,17 +317,58 @@ def main() -> None:
                 )
 
     print("---- split-leakage gate ----")
-    print(f"gold: {len(dev)} DEV / {len(tes)} TEST; "
-          f"{len(dev_vids)} / {len(tes_vids)} unique videos")
-    print(f"pseudo: {len(pseudo_ids)} clips, "
-          f"{len(set(pseudo_vids.values()))} unique videos")
+    try:
+        gold_disp = gold_path.relative_to(ROOT)
+    except ValueError:
+        gold_disp = gold_path
+    print(
+        f"gold: {gold_disp}  "
+        f"{len(dev)} DEV / {len(tes)} TEST; "
+        f"{len(dev_vids)} / {len(tes_vids)} unique videos"
+    )
+    src = (
+        "labelled TRAIN"
+        if labelled_train_only
+        else "features/pseudo/*.npz"
+    )
+    print(
+        f"pseudo ({src}): {len(pseudo_ids)} clips, "
+        f"{len(set(pseudo_vids.values()))} unique videos"
+    )
     if failures:
         raise SystemExit(
             "FAIL: split leakage detected — DO NOT TRAIN:\n- "
             + "\n- ".join(failures)
         )
-    print("PASS: DEV/TEST disjoint (ids and videos); no pseudo clip or video "
-          "in TEST (or DEV); no id collisions.")
+    print(
+        "PASS: DEV/TEST disjoint (ids and videos); no pseudo clip or video "
+        "in TEST (or DEV); no id collisions."
+    )
+
+
+def main(argv: list[str] | None = None) -> None:
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument(
+        "--gold-csv",
+        type=Path,
+        default=GOLD_CSV,
+        help="gold CSV with sample_id, video_id, split "
+        "(default: data/gold_annotations.csv)",
+    )
+    parser.add_argument(
+        "--pseudo-labels",
+        type=Path,
+        default=None,
+        help="if set, TRAIN = these labelled ids (and their video_id) "
+        "instead of every features/pseudo/*.npz. Required for head-shake.",
+    )
+    args = parser.parse_args(argv)
+    labelled = args.pseudo_labels is not None
+    run(
+        gold_csv=args.gold_csv,
+        pseudo_labels=args.pseudo_labels,
+        labelled_train_only=labelled,
+    )
 
 
 if __name__ == "__main__":

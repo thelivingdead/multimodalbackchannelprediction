@@ -1,10 +1,10 @@
 # Weakly supervised head-nod recognition
 
-MSc dissertation package for **head-nod recognition** on Columbia RealTalk (Geng et al., 2023).
+MSc dissertation package for **head-nod recognition** on Columbia RealTalk (Geng et al., 2023), plus a locked **head-shake** experiment on the same gold clips.
 
-**Head nod** = the behaviour (gold label 1/0). **Pose** = EMOCA head rotation used by the rule and 1D CNN. **RGB** = 16×224×224 face crops used by VideoMAE.
+**Head nod** = the behaviour (gold label 1/0). **Head shake** = `shake_label` on the same 30 windows. **Pose** = EMOCA head rotation used by the rule and 1D CNN. **RGB** = 16×224×224 face crops used by VideoMAE. EMOCA/FLAME were **used, not trained**.
 
-Synthetic `pilot_*` clips are not RealTalk results. Fusion and seven-class backchannels were **not** run.
+Synthetic `pilot_*` clips are not RealTalk results. Seven-class backchannels were **not** run. Shake late fusion is in the table below.
 
 ## Labels and protocol
 
@@ -18,7 +18,7 @@ Synthetic `pilot_*` clips are not RealTalk results. Fusion and seven-class backc
 - Metric: **clip-level** P/R/F1. Event F1 at IoU 0.30 exists in `src/metrics.py` but is **not** this protocol.
 - RealTalk: **p0 = LEFT**, **p1 = RIGHT**, 25 fps.
 
-Gold: `data/gold/annotation_sheet.csv`, `data/gold/events.csv`. Splits: `data/splits/gold_dev.txt`, `data/splits/gold_test.txt`.
+Gold: `data/gold/annotation_sheet.csv`, `data/gold/shake_annotation_sheet.csv`, `data/gold/events.csv`. Splits: `data/splits/gold_dev.txt`, `data/splits/gold_test.txt`.
 
 ## Locked TEST table (n = 15)
 
@@ -32,7 +32,29 @@ Master file: `results/tables/main_results.md` (with bootstrap CIs).
 | Fine-tuned VideoMAE (last 4/12 blocks) | 80 | 0.75 | 0.90 | **0.82** | [0.60, 0.96] |
 | Fine-tuned VideoMAE (scaling) | 200 | 0.67 | 0.60 | **0.63** | [0.31, 0.84] |
 
-Canonical RGB result: **80-clip fine-tune, F1 0.82**. Do not headline DEV F1. Do not claim statistical significance (CIs overlap).
+Canonical RGB result: **80-clip fine-tune, F1 0.82**. Do not headline DEV F1. Do not claim statistical significance (CIs overlap). **Nod headline: RGB fine-tune F1 0.82.**
+
+## Head-shake TEST (n = 15, scored once)
+
+Same 30 gold videos; `shake_label`; TEST scored **once**; DEV tuning only. TRAIN = frozen-rule **pseudo-labels** (**75/5**), not gold. No shake CIs.
+
+**Shake headline: pose rule F1 0.70.** RGB did not beat pose. VideoMAE F1 **0.60** is below always-predict-shake **0.64**.
+
+| method | TRAIN | P | R | F1 |
+| --- | --- | --- | --- | --- |
+| Pose rule (axis z, τ≈11.15°) | — | 0.54 | 1.00 | **0.70** |
+| Pose 1D CNN | 80 (75/5) | 0.47 | 1.00 | **0.64** |
+| Always-predict-shake | — | 0.47 | 1.00 | **0.64** |
+| Frozen VideoMAE head | 80 (75/5) | 0.46 | 0.86 | **0.60** |
+| Frozen VideoMAE head (balanced TRAIN) | 10 | 0.47 | 1.00 | **0.64** |
+| Fine-tuned VideoMAE (last 4/12 blocks) | 80 (75/5) | 0.46 | 0.86 | **0.60** |
+| Fine-tuned VideoMAE (balanced TRAIN) | 10 | 0.50 | 0.86 | **0.63** |
+| Fine-tuned VideoMAE (DEV-threshold protocol) | 80 (75/5) | 0.60 | 0.43 | **0.50** |
+| Late fusion pose + RGB | — | 0.54 | 1.00 | **0.70** |
+
+Late fusion F1 **0.70** equals the pose rule. Joint two-head TEST: shake F1 **0.64** (always-shake, TP 7 FP 8); nod F1 **0.70** (does not beat dedicated nod **0.82**). Joint frozen-head TEST: nod F1 **0.53** (P 0.56 R 0.50), shake F1 **0.67** (P 0.50 R 1.00).
+
+Locked json: `results/shake/` and `results/joint/`.
 
 ## Layout
 

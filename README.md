@@ -1,9 +1,9 @@
 # Multimodal Backchannel Prediction
-## Head-nod recognition on RealTalk
+## Head-nod recognition on RealTalk (plus locked head-shake)
 
-MSc dissertation code and gold annotations for **weakly supervised head-nod recognition** on Columbia RealTalk (Geng et al., 2023).
+MSc dissertation code and gold annotations for **weakly supervised head-nod recognition** on Columbia RealTalk (Geng et al., 2023), with a second locked experiment on **head shake**.
 
-The **task** is detecting a listener **head nod**. The main pose input is official **EMOCA** 3D head rotation **x, y, z** (FLAME face parameters shipped with RealTalk). EMOCA and FLAME were **not trained** in this project: the published tracks were streamed and used as features. **RGB** is the other input (16-frame face crops → VideoMAE). TRAIN uses automatic labels from a frozen pose rule; DEV/TEST are 30 human labels. TEST is scored once per model.
+The primary **task** is detecting a listener **head nod**. Head **shake** uses the **same 30 gold videos** and a separate `shake_label`. The main pose input is official **EMOCA** 3D head rotation **x, y, z** (FLAME face parameters shipped with RealTalk). EMOCA and FLAME were **not trained** in this project: the published tracks were streamed and used as features. **RGB** is the other input (16-frame face crops → VideoMAE). TRAIN uses automatic labels from a frozen pose rule (**not gold**); DEV/TEST are 30 human labels. TEST is scored once per model; DEV is tuning only.
 
 ## Headline TEST results (n = 15, scored once)
 
@@ -17,7 +17,27 @@ Citable table: `dissertation-behaviour-recognition/results/tables/main_results.m
 | Fine-tuned VideoMAE (last 4 blocks) | RGB 16-frame face crops | 80 pseudo | 0.75 | 0.90 | **0.82** | [0.60, 0.96] |
 | Fine-tuned VideoMAE (scaling) | RGB 16-frame face crops | 200 pseudo | 0.67 | 0.60 | **0.63** | [0.31, 0.84] |
 
-Canonical RGB result is **n = 80, F1 0.82**. n = 200 is a scaling ablation (point estimate fell). All CIs overlap at n = 15 — no significance claims. The EMOCA/FLAME results are the pose rule (**F1 0.67**) and the pose 1D CNN (**F1 0.70**).
+Canonical RGB result is **n = 80, F1 0.82**. n = 200 is a scaling ablation (point estimate fell). All CIs overlap at n = 15 — no significance claims. The EMOCA/FLAME results are the pose rule (**F1 0.67**) and the pose 1D CNN (**F1 0.70**). **Nod headline: RGB fine-tune F1 0.82.**
+
+## Head-shake TEST (n = 15, scored once)
+
+Same 30 videos / 15–15 splits; gold is `shake_label` in `dissertation-behaviour-recognition/data/gold/shake_annotation_sheet.csv`. No shake CIs (none computed).
+
+**Shake headline: pose rule F1 0.70.** RGB did not beat pose. Shake TRAIN is **75/5** frozen-rule pseudo-labels. Fine-tuned VideoMAE **F1 0.60** is below always-predict-shake **F1 0.64**.
+
+| method | input | TRAIN | P | R | F1 |
+| --- | --- | --- | --- | --- | --- |
+| Pose rule (axis z, τ≈11.15°) | EMOCA/FLAME rotation x, y, z (rule uses z) | — | 0.54 | 1.00 | **0.70** |
+| Pose 1D CNN (xyz + derivatives) | EMOCA/FLAME rotation x, y, z + derivatives | 80 (75/5) | 0.47 | 1.00 | **0.64** |
+| Always-predict-shake | — | — | 0.47 | 1.00 | **0.64** |
+| Frozen VideoMAE head | RGB 16-frame face crops | 80 (75/5) | 0.46 | 0.86 | **0.60** |
+| Frozen VideoMAE head (balanced TRAIN) | RGB 16-frame face crops | 10 | 0.47 | 1.00 | **0.64** |
+| Fine-tuned VideoMAE (last 4 blocks) | RGB 16-frame face crops | 80 (75/5) | 0.46 | 0.86 | **0.60** |
+| Fine-tuned VideoMAE (balanced TRAIN) | RGB 16-frame face crops | 10 | 0.50 | 0.86 | **0.63** |
+| Fine-tuned VideoMAE (DEV-threshold protocol) | RGB 16-frame face crops | 80 (75/5) | 0.60 | 0.43 | **0.50** |
+| Late fusion pose + RGB | pose-rule scores + VideoMAE probs | — | 0.54 | 1.00 | **0.70** |
+
+Late fusion matches the pose rule (F1 **0.70**). Joint two-head VideoMAE (TEST once per head): shake F1 **0.64** (always-shake, TP 7 FP 8); nod F1 **0.70** (does not beat dedicated nod **0.82**). Joint frozen-head: nod F1 **0.53** (P 0.56 R 0.50), shake F1 **0.67** (P 0.50 R 1.00).
 
 ## Labels
 
@@ -25,6 +45,7 @@ Canonical RGB result is **n = 80, F1 0.82**. n = 200 is a scaling ablation (poin
 | --- | --- |
 | `1` | Clear nod (the only gold positive) |
 | `0` | Unclear / not a nod |
+| `shake_label` `1` / `0` | Clear shake / unclear or not a shake (same 30 clips) |
 
 Metric: **clip-level** precision, recall, and F1 (not event IoU 0.30). RealTalk: **p0 = left listener**, **p1 = right listener**, 25 fps.
 

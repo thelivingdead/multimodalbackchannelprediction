@@ -1,0 +1,60 @@
+{
+  "task": "joint_nod_shake",
+  "model": "Frozen VideoMAE embedding + two-head MLP",
+  "script": "train_videomae_joint_head.py",
+  "gold_csv": "/user/HS400/db01550/multimodalbackchannelprediction/dissertation-behaviour-recognition/data/gold/shake_annotation_sheet.csv",
+  "out_dir": "/user/HS400/db01550/multimodalbackchannelprediction/dissertation-behaviour-recognition/results/joint/videomae_frozen_head",
+  "embed_dim": 768,
+  "checkpoint": "MCG-NJU/videomae-base",
+  "seed": 42,
+  "train_n": 80,
+  "best_epoch": 10,
+  "dev_f1_mean": 0.8541666666666667,
+  "dev_threshold_nod": 0.45000000000000007,
+  "dev_threshold_shake": 0.45000000000000007,
+  "dev_metrics_nod": {
+    "accuracy": 0.8666666666666667,
+    "balanced_accuracy": 0.8888888888888888,
+    "precision": 1.0,
+    "recall": 0.7777777777777778,
+    "f1": 0.875,
+    "tp": 7,
+    "fp": 0,
+    "tn": 6,
+    "fn": 2
+  },
+  "dev_metrics_shake": {
+    "accuracy": 0.7333333333333333,
+    "balanced_accuracy": 0.6,
+    "precision": 0.7142857142857143,
+    "recall": 1.0,
+    "f1": 0.8333333333333334,
+    "tp": 10,
+    "fp": 4,
+    "tn": 1,
+    "fn": 0
+  },
+  "test_metrics_nod": {
+    "accuracy": 0.4,
+    "balanced_accuracy": 0.35,
+    "precision": 0.5555555555555556,
+    "recall": 0.5,
+    "f1": 0.5263157894736842,
+    "tp": 5,
+    "fp": 4,
+    "tn": 1,
+    "fn": 5
+  },
+  "test_metrics_shake": {
+    "accuracy": 0.5333333333333333,
+    "balanced_accuracy": 0.5625,
+    "precision": 0.5,
+    "recall": 1.0,
+    "f1": 0.6666666666666666,
+    "tp": 7,
+    "fp": 7,
+    "tn": 1,
+    "fn": 0
+  },
+  "selection_rule": "epoch by mean DEV F1; independent DEV thresholds; TEST once"
+}

@@ -40,3 +40,7 @@ results/videomae_finetuned_n200/best_model.pt
 results/videomae_finetuned_n120/best_model.pt
 results/shake/videomae_finetuned/best_model.pt
 results/shake/videomae_frozen_head/best_model.pt
+results/shake/videomae_finetuned_balanced/best_model.pt
+results/shake/videomae_frozen_head_balanced/best_model.pt
+results/joint/videomae_finetuned/best_model.pt
+results/joint/videomae_frozen_head/best_model.pt

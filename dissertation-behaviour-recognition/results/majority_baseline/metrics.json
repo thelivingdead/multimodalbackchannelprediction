@@ -1,0 +1,39 @@
+{
+  "task": "head_nod",
+  "model": "always-constant baseline (not a trained system)",
+  "script": "majority_baseline.py",
+  "gold_csv": "data/gold_annotations.csv",
+  "label_col": "label",
+  "split": "TEST",
+  "n": 15,
+  "n_pos": 10,
+  "n_neg": 5,
+  "always_positive": {
+    "accuracy": 0.6666666666666666,
+    "balanced_accuracy": 0.5,
+    "precision": 0.6666666666666666,
+    "recall": 1.0,
+    "f1": 0.8,
+    "tp": 10,
+    "fp": 5,
+    "tn": 0,
+    "fn": 0
+  },
+  "always_negative": {
+    "accuracy": 0.3333333333333333,
+    "balanced_accuracy": 0.5,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "tp": 0,
+    "fp": 0,
+    "tn": 5,
+    "fn": 10
+  },
+  "selection_rule": "no training; TEST labels from gold only",
+  "comparisons_read_only": {
+    "videomae_frozen_test_f1": 0.5714285714285714,
+    "videomae_finetuned_test_f1": 0.8181818181818182
+  },
+  "note": "Always-positive is the majority class on nod TEST (10/15) and the *minority* class on shake TEST (7/15). It is still the relevant RGB collapse check because VideoMAE predicted almost all 1s."
+}

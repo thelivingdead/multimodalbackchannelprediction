@@ -1,0 +1,72 @@
+{
+  "task": "head_shake",
+  "model": "always-constant baseline (not a trained system)",
+  "script": "majority_baseline.py",
+  "gold_csv": "data/gold/shake_annotation_sheet.csv",
+  "label_col": "shake_label",
+  "split": "TEST",
+  "n": 15,
+  "n_pos": 7,
+  "n_neg": 8,
+  "always_positive": {
+    "accuracy": 0.4666666666666667,
+    "balanced_accuracy": 0.5,
+    "precision": 0.4666666666666667,
+    "recall": 1.0,
+    "f1": 0.6363636363636364,
+    "tp": 7,
+    "fp": 8,
+    "tn": 0,
+    "fn": 0
+  },
+  "always_negative": {
+    "accuracy": 0.5333333333333333,
+    "balanced_accuracy": 0.5,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "tp": 0,
+    "fp": 0,
+    "tn": 8,
+    "fn": 7
+  },
+  "selection_rule": "no training; TEST labels from gold only",
+  "comparisons_read_only": {
+    "videomae_frozen_test_f1": 0.6,
+    "videomae_finetuned_test_f1": 0.6,
+    "pose_rule_test_f1": 0.7
+  },
+  "note": "Always-positive is the majority class on nod TEST (10/15) and the *minority* class on shake TEST (7/15). It is still the relevant RGB collapse check because VideoMAE predicted almost all 1s.",
+  "videomae_locked_test_compare": {
+    "n_test": 15,
+    "pred_labels_identical": false,
+    "probabilities_identical": false,
+    "confusion_counts_identical": true,
+    "n_clips_pred_disagree": 4,
+    "disagree_sample_ids": [
+      "gold_018",
+      "gold_021",
+      "gold_023",
+      "gold_028"
+    ],
+    "frozen_confusion": {
+      "precision": 0.46153846153846156,
+      "recall": 0.8571428571428571,
+      "f1": 0.6,
+      "tp": 6,
+      "fp": 7,
+      "tn": 1,
+      "fn": 1
+    },
+    "finetuned_confusion": {
+      "precision": 0.46153846153846156,
+      "recall": 0.8571428571428571,
+      "f1": 0.6,
+      "tp": 6,
+      "fp": 7,
+      "tn": 1,
+      "fn": 1
+    },
+    "note": "TEST rows of the two predictions.csv files were compared. Matching 2\u00d72 *counts* at n=15 does not imply matching clip decisions or matching probabilities."
+  }
+}

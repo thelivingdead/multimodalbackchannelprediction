@@ -1,0 +1,40 @@
+{
+  "task": "head_shake",
+  "model": "late fusion pose + VideoMAE (linear, DEV-tuned)",
+  "script": "late_fusion_pose_rgb.py",
+  "out_dir": "/Users/divyabisht/Downloads/Msc Dissertation Divya/dissertation-behaviour-recognition/results/shake/fusion_pose_rgb",
+  "pose_source": "shake_amplitude_rule_score_minmax_on_DEV",
+  "pose_path": "rule_dev_predictions.csv+rule_test_predictions.csv",
+  "rgb_preds": "/Users/divyabisht/Downloads/Msc Dissertation Divya/dissertation-behaviour-recognition/results/shake/videomae_finetuned/predictions.csv",
+  "gold_csv": "/Users/divyabisht/Downloads/Msc Dissertation Divya/dissertation-behaviour-recognition/data/gold/shake_annotation_sheet.csv",
+  "label_col": "shake_label",
+  "w_rgb": 0.2,
+  "w_pose": 0.8,
+  "dev_probability_threshold": 0.2,
+  "dev_n": 15,
+  "test_n": 15,
+  "dev_metrics": {
+    "accuracy": 0.8,
+    "balanced_accuracy": 0.7,
+    "precision": 0.7692307692307693,
+    "recall": 1.0,
+    "f1": 0.8695652173913044,
+    "tp": 10,
+    "fp": 3,
+    "tn": 2,
+    "fn": 0
+  },
+  "test_metrics": {
+    "accuracy": 0.6,
+    "balanced_accuracy": 0.625,
+    "precision": 0.5384615384615384,
+    "recall": 1.0,
+    "f1": 0.7000000000000001,
+    "tp": 7,
+    "fp": 6,
+    "tn": 2,
+    "fn": 0
+  },
+  "selection_rule": "w and threshold by DEV F1 (ties: balanced accuracy); TEST scored once",
+  "note": "Locked shake CNN predictions.csv is TEST-only and no best_model.pt was saved, so CNN probabilities could not be used on DEV. Pose stream = frozen amplitude-rule scores (axis z, \u03c4\u224811.15\u00b0), min-max scaled on DEV. RGB = locked fine-tuned VideoMAE probabilities (read-only). Neither locked metrics.json was overwritten. predictions.csv has 15 rows and no split column."
+}

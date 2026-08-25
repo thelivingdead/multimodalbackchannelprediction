@@ -100,6 +100,11 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+from src.balance import (  # noqa: E402
+    apply_index_list,
+    balance_indices,
+    boosted_pos_weight,
+)
 from src.metrics import binary_metrics  # noqa: E402
 
 GOLD_CSV = ROOT / "data" / "gold_annotations.csv"
@@ -140,6 +145,21 @@ def check_disk(where: str = "") -> None:
             f"{' at ' + where if where else ''}. Remove partial artefacts "
             "before rerunning."
         )
+
+
+def load_rgb_clips(sample_ids: list[str], name: str):
+    clips, kept, missing = [], [], []
+    for sid in sample_ids:
+        rgb = load_rgb(sid)
+        if rgb is None:
+            missing.append(sid)
+            continue
+        clips.append(rgb)
+        kept.append(sid)
+    if missing:
+        print(f"NOTE: {name}: {len(missing)} clips have no rgb16 npz and are "
+              f"excluded: {missing}")
+    return clips, kept, missing
 
 
 def load_rgb(sample_id: str) -> np.ndarray | None:
@@ -236,6 +256,9 @@ def main(
     epochs: int | None = None,
     patience: int | None = None,
     flip: bool | None = None,
+    balance_train: str | None = None,
+    balance_ratio: float | None = None,
+    pos_weight_boost: float | None = None,
 ) -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--force", action="store_true",
@@ -268,6 +291,28 @@ def main(
                              "results/videomae_finetuned). Head-shake MUST use "
                              "results/shake/videomae_finetuned so nod TEST is "
                              "never overwritten.")
+    parser.add_argument(
+        "--balance-train",
+        choices=("none", "subsample", "oversample"),
+        default="none",
+        help="rebalance TRAIN pseudo-labels only (gold DEV/TEST untouched). "
+             "subsample = keep all minority rows, downsample majority to "
+             "1:1 (or --balance-ratio). oversample = repeat minority rows. "
+             "Shake 75/5 collapse test: subsample into a NEW out-dir.",
+    )
+    parser.add_argument(
+        "--balance-ratio",
+        type=float,
+        default=1.0,
+        help="subsample: majority kept ≈ minority × ratio (default 1.0 = 1:1)",
+    )
+    parser.add_argument(
+        "--pos-weight-boost",
+        type=float,
+        default=1.0,
+        help="further emphasise the minority class in BCE pos_weight "
+             "(1.0 = existing neg/pos recipe)",
+    )
     args = parser.parse_args(argv)
 
     gold_csv_path = resolve_repo_path(
@@ -293,6 +338,13 @@ def main(
         patience = args.patience
     if flip is None:
         flip = args.flip
+    if balance_train is None:
+        balance_train = args.balance_train
+    if balance_ratio is None:
+        balance_ratio = args.balance_ratio
+    if pos_weight_boost is None:
+        pos_weight_boost = args.pos_weight_boost
+    balance_train = str(balance_train).strip().lower()
 
     sys.path.insert(0, str(ROOT / "scripts"))
     import check_split_leakage
@@ -345,6 +397,27 @@ def main(
     tr_clips, y_tr, train_ids, miss_tr = build_split(
         pseudo["sample_id"].tolist(), pseudo["pseudo_label"].tolist(), "TRAIN"
     )
+    train_ids_before_balance = list(train_ids)
+    y_tr_before = np.asarray(y_tr, dtype=np.int64)
+    if balance_train not in ("none", "off", ""):
+        bidx = balance_indices(
+            y_tr, mode=balance_train, ratio=float(balance_ratio), seed=SEED
+        )
+        tr_clips = apply_index_list(tr_clips, bidx)
+        train_ids = apply_index_list(train_ids, bidx)
+        y_tr = np.asarray(y_tr, dtype=np.int64)[bidx]
+        print(
+            f"TRAIN balance={balance_train} ratio={balance_ratio}: "
+            f"{int((y_tr_before == 1).sum())} pos / "
+            f"{int((y_tr_before == 0).sum())} neg → "
+            f"{int((y_tr == 1).sum())} pos / {int((y_tr == 0).sum())} neg "
+            f"(n={len(y_tr)})"
+        )
+        if len(y_tr) < MIN_TRAIN or len(np.unique(y_tr)) < 2:
+            raise SystemExit(
+                f"BLOCKED: after {balance_train} TRAIN has {len(y_tr)} clips "
+                f"(need >= {MIN_TRAIN} with both classes)."
+            )
     dv_clips, y_dv, dev_ids, miss_dv = build_split(
         dev["sample_id"].tolist(), gold_y(dev, label_col, gold_csv_path), "DEV"
     )
@@ -533,11 +606,13 @@ def main(
 
     pos = max(int((y_tr == 1).sum()), 1)
     neg = max(int((y_tr == 0).sum()), 1)
+    pos_w = boosted_pos_weight(pos, neg, boost=float(pos_weight_boost))
     crit = nn.BCEWithLogitsLoss(
-        pos_weight=torch.tensor([neg / pos], dtype=torch.float32).to(device)
+        pos_weight=torch.tensor([pos_w], dtype=torch.float32).to(device)
     )
     print(f"TRAIN {len(y_tr)} clips ({pos} pos / {neg} neg), "
-          f"pos_weight={neg / pos:.3f}; DEV {len(y_dv)}, TEST {len(y_te)}")
+          f"pos_weight={pos_w:.3f} (boost={float(pos_weight_boost):.3f}); "
+          f"DEV {len(y_dv)}, TEST {len(y_te)}")
 
     ds = ClipDataset(tr_clips, y_tr, mean_t, std_t, flip=flip)
     gen = torch.Generator().manual_seed(SEED)
@@ -652,7 +727,14 @@ def main(
         "skipped_missing_rgb16": {
             "TRAIN": miss_tr, "DEV": miss_dv, "TEST": miss_te,
         },
-        "pos_weight": neg / pos,
+        "pos_weight": pos_w,
+        "pos_weight_boost": float(pos_weight_boost),
+        "balance_train": balance_train,
+        "balance_ratio": float(balance_ratio),
+        "train_n_before_balance": int(len(y_tr_before)),
+        "train_pos_before_balance": int((y_tr_before == 1).sum()),
+        "train_neg_before_balance": int((y_tr_before == 0).sum()),
+        "train_ids_before_balance": train_ids_before_balance,
         "best_epoch": int(best["epoch"]),
         "dev_f1": float(best["dev_f1"]),
         "dev_balanced_accuracy": float(best["dev_balanced_accuracy"]),

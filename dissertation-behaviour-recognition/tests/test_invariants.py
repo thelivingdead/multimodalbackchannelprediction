@@ -144,6 +144,77 @@ def test_videomae_shake_path_isolation() -> None:
     else:
         raise AssertionError("nod run must not write under results/shake/")
 
+    joint = gate.assert_joint_videomae_paths(
+        gold_csv=root / "data" / "gold" / "shake_annotation_sheet.csv",
+        nod_pseudo=root / "results" / "pseudo_labels.csv",
+        shake_pseudo=root / "results" / "shake" / "pseudo_labels.csv",
+        out_dir=root / "results" / "joint" / "videomae_finetuned",
+    )
+    assert joint == "joint_nod_shake"
+    try:
+        gate.assert_joint_videomae_paths(
+            gold_csv=root / "data" / "gold" / "shake_annotation_sheet.csv",
+            nod_pseudo=root / "results" / "pseudo_labels.csv",
+            shake_pseudo=root / "results" / "shake" / "pseudo_labels.csv",
+            out_dir=root / "results" / "shake" / "videomae_finetuned",
+        )
+    except SystemExit as exc:
+        assert "joint" in str(exc).lower() or "locked" in str(exc).lower()
+    else:
+        raise AssertionError("joint run must not write locked shake VideoMAE dir")
+    try:
+        gate.assert_unlocked_out_dir(
+            root / "results" / "shake" / "videomae_finetuned"
+        )
+    except SystemExit:
+        pass
+    else:
+        raise AssertionError("locked shake finetune dir must be refused")
+
+
+def test_shake_balance_subsample_75_5() -> None:
+    import numpy as np
+
+    from src.balance import balance_indices, boosted_pos_weight
+
+    y = np.array([1] * 75 + [0] * 5)
+    idx = balance_indices(y, mode="subsample", ratio=1.0, seed=42)
+    yy = y[idx]
+    assert int((yy == 1).sum()) == 5
+    assert int((yy == 0).sum()) == 5
+    ov = balance_indices(y, mode="oversample", ratio=1.0, seed=42)
+    yo = y[ov]
+    assert int((yo == 1).sum()) == 75
+    assert int((yo == 0).sum()) == 75
+    # majority is positive: boost should shrink pos_weight
+    assert boosted_pos_weight(75, 5, boost=1.0) == 5 / 75
+    assert boosted_pos_weight(75, 5, boost=5.0) == (5 / 75) / 5.0
+
+
+def test_majority_always_positive_from_gold() -> None:
+    import pandas as pd
+
+    from src.clip_metrics import always_predict
+
+    root = Path(__file__).resolve().parents[1]
+    shake = pd.read_csv(root / "data" / "gold" / "shake_annotation_sheet.csv")
+    y = shake.loc[
+        shake["split"].astype(str).str.upper() == "TEST", "shake_label"
+    ].astype(int).to_numpy()
+    m = always_predict(y, 1)
+    assert len(y) == 15
+    assert int((y == 1).sum()) == 7
+    assert m["tp"] == 7 and m["fp"] == 8 and m["tn"] == 0 and m["fn"] == 0
+    assert abs(m["f1"] - (2 * (7 / 15) * 1.0) / ((7 / 15) + 1.0)) < 1e-9
+
+    nod = pd.read_csv(root / "data" / "gold_annotations.csv")
+    yn = nod.loc[
+        nod["split"].astype(str).str.upper() == "TEST", "label"
+    ].astype(int).to_numpy()
+    mn = always_predict(yn, 1)
+    assert int((yn == 1).sum()) == 10
+    assert abs(mn["f1"] - 0.8) < 1e-9
+
 
 def test_shake_videomae_leakage_gate() -> None:
     root = Path(__file__).resolve().parents[1]

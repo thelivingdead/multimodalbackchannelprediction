@@ -59,6 +59,19 @@ NOD_VMAE_OUT_DIRS = (
     ROOT / "results" / "videomae_finetuned_n120",
     ROOT / "results" / "videomae_frozen_head",
 )
+JOINT_ROOT = ROOT / "results" / "joint"
+LOCKED_OUT_DIRS = (
+    ROOT / "results" / "videomae_finetuned",
+    ROOT / "results" / "videomae_frozen_head",
+    ROOT / "results" / "shake" / "videomae_finetuned",
+    ROOT / "results" / "shake" / "videomae_frozen_head",
+    ROOT / "results" / "shake" / "cnn",
+)
+LOCKED_SHAKE_RULE_FILES = (
+    ROOT / "results" / "shake" / "rule_test_metrics.json",
+    ROOT / "results" / "shake" / "rule_test_predictions.csv",
+    ROOT / "results" / "shake" / "rule_selected_config.json",
+)
 
 
 def resolve_repo_path(path: Path | str) -> Path:
@@ -168,6 +181,74 @@ def assert_videomae_task_isolation(
             "results/shake/"
         )
     return "head_nod"
+
+
+def assert_unlocked_out_dir(out_dir: Path | str) -> Path:
+    """Abort if ``out_dir`` is a locked TEST artefact directory."""
+    out_dir = resolve_repo_path(out_dir)
+    for blocked in LOCKED_OUT_DIRS:
+        blocked_r = resolve_repo_path(blocked)
+        if out_dir == blocked_r or path_under(out_dir, blocked_r):
+            raise SystemExit(
+                f"STOP: refusing to write locked TEST dir "
+                f"{blocked.relative_to(ROOT).as_posix()}. Use a new out-dir "
+                "(never --force on locked shake/nod VideoMAE, CNN, or rule)."
+            )
+    for locked in LOCKED_SHAKE_RULE_FILES:
+        if out_dir == resolve_repo_path(locked):
+            raise SystemExit(f"STOP: refusing to overwrite locked {locked}")
+    return out_dir
+
+
+def assert_joint_videomae_paths(
+    *,
+    gold_csv: Path | str,
+    nod_pseudo: Path | str,
+    shake_pseudo: Path | str,
+    out_dir: Path | str,
+    model_pt: Path | str | None = None,
+) -> str:
+    """Joint nod+shake VideoMAE must write only under ``results/joint/``."""
+    gold_csv = resolve_repo_path(gold_csv)
+    nod_pseudo = resolve_repo_path(nod_pseudo)
+    shake_pseudo = resolve_repo_path(shake_pseudo)
+    out_dir = assert_unlocked_out_dir(out_dir)
+    model_pt_res = (
+        resolve_repo_path(model_pt) if model_pt is not None else None
+    )
+    errors: list[str] = []
+    if not path_under(out_dir, JOINT_ROOT):
+        errors.append(
+            f"--out-dir {out_dir} is not under results/joint/ "
+            "(refusing nod and shake locked VideoMAE dirs)"
+        )
+    if gold_csv != resolve_repo_path(SHAKE_GOLD_CSV):
+        errors.append(
+            f"--gold-csv {gold_csv} is not "
+            "data/gold/shake_annotation_sheet.csv "
+            "(joint DEV/TEST needs nod_label and shake_label on the same 30 videos)"
+        )
+    if path_under(nod_pseudo, SHAKE_RESULTS):
+        errors.append(
+            f"nod pseudo {nod_pseudo} is under results/shake/ — "
+            "expected results/pseudo_labels.csv"
+        )
+    if not path_under(shake_pseudo, SHAKE_RESULTS):
+        errors.append(
+            f"shake pseudo {shake_pseudo} is not under results/shake/"
+        )
+    if model_pt_res is not None:
+        if model_pt_res == resolve_repo_path(NOD_HEAD_PT):
+            errors.append("refusing to overwrite models/videomae_head.pt")
+        if not path_under(model_pt_res, JOINT_ROOT):
+            errors.append(
+                f"joint checkpoint {model_pt_res} must live under results/joint/"
+            )
+    if errors:
+        raise SystemExit(
+            "STOP: joint VideoMAE path check failed:\n- " + "\n- ".join(errors)
+        )
+    return "joint_nod_shake"
 
 
 def npz_video_id(path: Path) -> str:

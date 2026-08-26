@@ -68,7 +68,11 @@ from src.balance import (  # noqa: E402
     balance_indices,
     boosted_pos_weight,
 )
-from src.metrics import binary_metrics  # noqa: E402
+from src.metrics import (  # noqa: E402
+    binary_metrics,
+    choose_dev_threshold,
+    collapse_diagnostics,
+)
 
 GOLD_CSV = ROOT / "data" / "gold_annotations.csv"
 PSEUDO_LABELS = ROOT / "results" / "pseudo_labels.csv"
@@ -97,7 +101,8 @@ def check_disk(where: str = "") -> None:
         )
 
 
-def resolve_repo_path(path: Path) -> Path:
+def resolve_repo_path(path: Path | str) -> Path:
+    path = Path(path)
     if not path.is_absolute():
         path = ROOT / path
     return path.resolve()
@@ -171,10 +176,32 @@ def main(
     balance_train: str | None = None,
     balance_ratio: float | None = None,
     pos_weight_boost: float | None = None,
+    dev_only: bool | None = None,
+    score_test: bool | None = None,
+    select_dev: str | None = None,
+    seed: int | None = None,
 ) -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--force", action="store_true",
-                        help="allow re-scoring TEST (overwrites metrics.json)")
+                        help="allow re-scoring TEST (overwrites metrics.json). "
+                             "Ignored for locked dirs under --dev-only.")
+    parser.add_argument(
+        "--dev-only",
+        "--no-test",
+        dest="dev_only",
+        action="store_true",
+        help="select on GOLD DEV only; do not score TEST or write "
+             "metrics.json. Writes dev_metrics.json + DEV predictions.csv. "
+             "Refuses locked TEST out-dirs.",
+    )
+    parser.add_argument(
+        "--select-dev",
+        choices=("f1", "balanced_accuracy"),
+        default="f1",
+        help="DEV epoch/threshold criterion (use balanced_accuracy for "
+             "new shake search).",
+    )
+    parser.add_argument("--seed", type=int, default=SEED)
     parser.add_argument("--gold-csv", type=Path, default=GOLD_CSV,
                         help="gold CSV with split + label column (default: "
                              "data/gold_annotations.csv). Head-shake: "
@@ -241,6 +268,14 @@ def main(
         balance_ratio = args.balance_ratio
     if pos_weight_boost is None:
         pos_weight_boost = args.pos_weight_boost
+    if score_test is not None:
+        dev_only = not bool(score_test)
+    elif dev_only is None:
+        dev_only = bool(args.dev_only)
+    if select_dev is None:
+        select_dev = str(args.select_dev)
+    if seed is None:
+        seed = int(args.seed)
     balance_train = str(balance_train).strip().lower()
 
     sys.path.insert(0, str(ROOT / "scripts"))
@@ -257,7 +292,25 @@ def main(
         f"pseudo={pseudo_labels_path}  out_dir={out_dir}  model_pt={model_pt}"
     )
 
-    if (out_dir / "metrics.json").exists() and not force:
+    if dev_only:
+        import check_split_leakage
+        check_split_leakage.assert_unlocked_out_dir(out_dir)
+        if (out_dir / "metrics.json").exists():
+            raise SystemExit(
+                f"STOP: --dev-only refuses {out_dir / 'metrics.json'} "
+                "(TEST-style artefact). Use a new out-dir under "
+                "results/shake/dev_search/."
+            )
+        already = (out_dir / "dev_metrics.json").exists() or (
+            out_dir / "metrics_dev.json"
+        ).exists()
+        if already and not force:
+            raise SystemExit(
+                f"STOP: DEV-only metrics already exist under {out_dir}. "
+                "Pass --force only to invalidate this DEV-only run "
+                "(not to shop GOLD TEST)."
+            )
+    elif (out_dir / "metrics.json").exists() and not force:
         raise SystemExit(
             f"STOP: {out_dir / 'metrics.json'} already exists — TEST has "
             "already been scored once under this protocol. Pass --force only "
@@ -296,9 +349,14 @@ def main(
     X_dv, y_dv, dev_ids = build_split(
         dev["sample_id"].tolist(), gold_y(dev, label_col, gold_csv_path), "DEV"
     )
-    X_te, y_te, tes_ids = build_split(
-        tes["sample_id"].tolist(), gold_y(tes, label_col, gold_csv_path), "TEST"
-    )
+    if dev_only:
+        print("NOTE: --dev-only: TEST embeddings are not loaded and will not "
+              "be scored. Ignore any old TEST F1 from locked folders.")
+        X_te, y_te, tes_ids = None, None, []
+    else:
+        X_te, y_te, tes_ids = build_split(
+            tes["sample_id"].tolist(), gold_y(tes, label_col, gold_csv_path), "TEST"
+        )
     if X_tr is None or len(y_tr) < MIN_TRAIN or len(np.unique(y_tr)) < 2:
         raise SystemExit(
             f"BLOCKED: TRAIN has {0 if X_tr is None else len(y_tr)} usable "
@@ -326,7 +384,13 @@ def main(
                 f"BLOCKED: after {balance_train} TRAIN has {len(y_tr)} clips "
                 f"(need >= {MIN_TRAIN} with both classes)."
             )
-    if X_dv is None or len(y_dv) < MIN_EVAL or X_te is None or len(y_te) < MIN_EVAL:
+    if X_dv is None or len(y_dv) < MIN_EVAL:
+        raise SystemExit(
+            f"BLOCKED: DEV usable clips "
+            f"{0 if X_dv is None else len(y_dv)} (need >= {MIN_EVAL}). "
+            "No metrics fabricated; paste this back."
+        )
+    if not dev_only and (X_te is None or len(y_te) < MIN_EVAL):
         raise SystemExit(
             f"BLOCKED: DEV/TEST usable clips "
             f"{0 if X_dv is None else len(y_dv)}/"
@@ -338,8 +402,8 @@ def main(
     from torch import nn
     from torch.utils.data import DataLoader, TensorDataset
 
-    torch.manual_seed(SEED)
-    np.random.seed(SEED)
+    torch.manual_seed(int(seed))
+    np.random.seed(int(seed))
 
     dim = int(X_tr.shape[1])
     model = nn.Sequential(
@@ -358,7 +422,7 @@ def main(
     ds = TensorDataset(
         torch.from_numpy(X_tr), torch.from_numpy(y_tr.astype(np.float32))
     )
-    gen = torch.Generator().manual_seed(SEED)
+    gen = torch.Generator().manual_seed(int(seed))
     loader = DataLoader(ds, batch_size=BATCH, shuffle=True, generator=gen)
 
     x_dv_t = torch.from_numpy(X_dv)
@@ -379,25 +443,35 @@ def main(
         with torch.no_grad():
             logits = model(x_dv_t).squeeze(-1).numpy()
         prob = 1 / (1 + np.exp(-logits))
-        thr_best, f1_best, bal_best = 0.5, -1.0, -1.0
-        for t in np.linspace(0.2, 0.8, 13):
-            m = binary_metrics(y_dv, (prob >= t).astype(int))
-            if m["f1"] > f1_best or (
-                m["f1"] == f1_best and m["balanced_accuracy"] > bal_best
-            ):
-                thr_best, f1_best, bal_best = (
-                    float(t), m["f1"], m["balanced_accuracy"],
-                )
+        thr_best, mm_best = choose_dev_threshold(y_dv, prob, criterion=select_dev)
         row = {
             "epoch": epoch,
             "train_loss": float(np.mean(losses) if losses else 0.0),
-            "dev_f1": f1_best,
-            "dev_balanced_accuracy": bal_best,
-            "dev_probability_threshold": thr_best,
+            "dev_f1": float(mm_best["f1"]),
+            "dev_precision": float(mm_best["precision"]),
+            "dev_balanced_accuracy": float(mm_best["balanced_accuracy"]),
+            "dev_probability_threshold": float(thr_best),
         }
         history.append(row)
-        print(f"epoch {epoch} loss={row['train_loss']:.4f} DEV F1={f1_best:.3f}")
-        if best is None or f1_best > best["dev_f1"]:
+        print(
+            f"epoch {epoch} loss={row['train_loss']:.4f} "
+            f"DEV F1={row['dev_f1']:.3f} bAcc={row['dev_balanced_accuracy']:.3f}"
+        )
+        if best is None:
+            better = True
+        elif select_dev in ("balanced_accuracy", "bacc", "bal"):
+            better = (
+                row["dev_balanced_accuracy"],
+                row["dev_precision"],
+                row["dev_f1"],
+            ) > (
+                best["dev_balanced_accuracy"],
+                best.get("dev_precision", 0.0),
+                best["dev_f1"],
+            )
+        else:
+            better = row["dev_f1"] > best["dev_f1"]
+        if better:
             best = {**row}
             best_state = {k: v.clone() for k, v in model.state_dict().items()}
             bad = 0
@@ -409,14 +483,14 @@ def main(
     if best_state is None:
         raise SystemExit("BLOCKED: training produced no epochs; nothing saved.")
 
-    # ---- single TEST scoring with best-on-DEV weights + DEV threshold ----
     model.load_state_dict(best_state)
     model.eval()
     with torch.no_grad():
-        te_logits = model(torch.from_numpy(X_te)).squeeze(-1).numpy()
-    te_prob = 1 / (1 + np.exp(-te_logits))
-    te_pred = (te_prob >= best["dev_probability_threshold"]).astype(int)
-    test_metrics = binary_metrics(y_te, te_pred)
+        dv_logits = model(x_dv_t).squeeze(-1).numpy()
+    dv_prob = 1 / (1 + np.exp(-dv_logits))
+    dv_pred = (dv_prob >= best["dev_probability_threshold"]).astype(int)
+    dev_metrics = binary_metrics(y_dv, dv_pred)
+    collapse = collapse_diagnostics(dv_pred, dev_metrics["tn"])
 
     check_disk("write")
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -425,15 +499,7 @@ def main(
 
     meta = json.loads(EMB_META.read_text())
     pd.DataFrame(history).to_csv(out_dir / "training_history.csv", index=False)
-    pd.DataFrame(
-        {
-            "sample_id": tes_ids,
-            "label": y_te,
-            "prob": te_prob,
-            "pred": te_pred,
-        }
-    ).to_csv(out_dir / "predictions.csv", index=False)
-    metrics = {
+    common = {
         "task": task,
         "model": "Frozen VideoMAE + MLP head",
         "script": Path(__file__).name,
@@ -446,14 +512,13 @@ def main(
         "embed_dim": dim,
         "transformers_version": meta.get("transformers_version"),
         "torch_version": torch.__version__,
-        "seed": SEED,
+        "seed": int(seed),
         "train_ids": train_ids,
         "train_n": int(len(y_tr)),
         "train_pos": int((y_tr == 1).sum()),
         "train_neg": int((y_tr == 0).sum()),
         "dev_n": int(len(y_dv)),
-        "test_n": int(len(y_te)),
-        "pos_weight": pos_w,
+        "pos_weight": float(pos_w),
         "pos_weight_boost": float(pos_weight_boost),
         "balance_train": balance_train,
         "balance_ratio": float(balance_ratio),
@@ -462,13 +527,90 @@ def main(
         "train_neg_before_balance": int((y_tr_before == 0).sum()),
         "train_ids_before_balance": train_ids_before_balance,
         "best_epoch": int(best["epoch"]),
-        "dev_f1": float(best["dev_f1"]),
-        "dev_balanced_accuracy": float(best["dev_balanced_accuracy"]),
+        "dev_f1": float(dev_metrics["f1"]),
+        "dev_precision": float(dev_metrics["precision"]),
+        "dev_recall": float(dev_metrics["recall"]),
+        "dev_balanced_accuracy": float(dev_metrics["balanced_accuracy"]),
         "dev_probability_threshold": float(best["dev_probability_threshold"]),
+        "dev_metrics": dev_metrics,
+        "select_dev": select_dev,
+        **collapse,
+    }
+    (out_dir / "config.json").write_text(json.dumps({
+        "dev_only": bool(dev_only),
+        "seed": int(seed),
+        "pseudo_labels": str(pseudo_labels_path),
+        "out_dir": str(out_dir),
+        "label_col": label_col,
+        "balance_train": balance_train,
+    }, indent=2, default=str) + "\n")
+
+    if dev_only:
+        pd.DataFrame(
+            {
+                "sample_id": dev_ids,
+                "label": y_dv,
+                "prob": dv_prob,
+                "pred": dv_pred,
+                "split": "DEV",
+            }
+        ).to_csv(out_dir / "predictions.csv", index=False)
+        pd.DataFrame(
+            {
+                "sample_id": dev_ids,
+                "label": y_dv,
+                "prob": dv_prob,
+                "pred": dv_pred,
+                "split": "DEV",
+            }
+        ).to_csv(out_dir / "predictions_dev.csv", index=False)
+        payload = {
+            **common,
+            "selection_rule": (
+                f"epoch + threshold by DEV {select_dev}; TEST not scored "
+                "(--dev-only / --no-test). Ignore any locked TEST F1."
+            ),
+            "test_scored": False,
+        }
+        (out_dir / "dev_metrics.json").write_text(
+            json.dumps(payload, indent=2, default=str) + "\n"
+        )
+        (out_dir / "metrics_dev.json").write_text(
+            json.dumps(payload, indent=2, default=str) + "\n"
+        )
+        flag = "COLLAPSE" if collapse["collapse"] else "ok"
+        print(
+            f"\nwrote {out_dir}/metrics_dev.json, predictions_dev.csv (DEV), "
+            f"training_history.csv\nDEV F1={dev_metrics['f1']:.3f}  "
+            f"P={dev_metrics['precision']:.3f} R={dev_metrics['recall']:.3f}  "
+            f"TP{dev_metrics['tp']} FP{dev_metrics['fp']} "
+            f"TN{dev_metrics['tn']} FN{dev_metrics['fn']}  "
+            f"pred+={collapse['predicted_positive_rate']:.3f} [{flag}]\n"
+            "TEST was not scored. Do not use locked TEST numbers for selection."
+        )
+        return
+
+    # ---- single TEST scoring with best-on-DEV weights + DEV threshold ----
+    with torch.no_grad():
+        te_logits = model(torch.from_numpy(X_te)).squeeze(-1).numpy()
+    te_prob = 1 / (1 + np.exp(-te_logits))
+    te_pred = (te_prob >= best["dev_probability_threshold"]).astype(int)
+    test_metrics = binary_metrics(y_te, te_pred)
+    pd.DataFrame(
+        {
+            "sample_id": tes_ids,
+            "label": y_te,
+            "prob": te_prob,
+            "pred": te_pred,
+        }
+    ).to_csv(out_dir / "predictions.csv", index=False)
+    metrics = {
+        **common,
+        "test_n": int(len(y_te)),
         "selection_rule": "epoch + threshold by DEV F1 only; TEST scored once",
         "test_metrics": test_metrics,
     }
-    (out_dir / "metrics.json").write_text(json.dumps(metrics, indent=2) + "\n")
+    (out_dir / "metrics.json").write_text(json.dumps(metrics, indent=2, default=str) + "\n")
     print(
         f"\nwrote {out_dir}/metrics.json, predictions.csv, "
         f"training_history.csv\nTEST (scored once): {test_metrics}"

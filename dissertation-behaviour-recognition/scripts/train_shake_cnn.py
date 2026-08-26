@@ -247,8 +247,16 @@ def train(
     y_tr: np.ndarray,
     epochs: int,
     seed: int,
+    out_dir: Path | None = None,
+    dev_only: bool = False,
+    select_dev: str = "f1",
+    seq_len: int = 128,
 ) -> dict:
-    from src.metrics import binary_metrics
+    from src.clip_metrics import (  # sklearn-free; otter still has sklearn
+        choose_dev_threshold,
+        clip_binary_metrics as binary_metrics,
+        collapse_diagnostics,
+    )
     from src.pose_cnn import _build_cnn, _torch, build_matrix
     from src.utils import dump_json
 
@@ -269,15 +277,17 @@ def train(
     if y_tr.min() == y_tr.max():
         raise SystemExit(
             "STOP: frozen shake rule produced a single class on TRAIN. "
-            "Not inventing labels. Check results/shake/pseudo_labels.csv."
+            "Not inventing labels. Check the pseudo-label CSV."
         )
 
     dev_p, y_dev = _gold_paths(gold, work, "DEV")
-    tes_p, y_tes = _gold_paths(gold, work, "TEST")
+    if not dev_only:
+        tes_p, y_tes = _gold_paths(gold, work, "TEST")
 
-    Xtr, mean, std = build_matrix(pseudo_paths, FEATURE_MODE)
-    Xdv, _, _ = build_matrix(dev_p, FEATURE_MODE, mean, std)
-    Xte, _, _ = build_matrix(tes_p, FEATURE_MODE, mean, std)
+    Xtr, mean, std = build_matrix(pseudo_paths, FEATURE_MODE, seq_len=seq_len)
+    Xdv, _, _ = build_matrix(dev_p, FEATURE_MODE, mean, std, seq_len=seq_len)
+    if not dev_only:
+        Xte, _, _ = build_matrix(tes_p, FEATURE_MODE, mean, std, seq_len=seq_len)
     d = int(Xtr.shape[-1])
     model = _build_cnn(nn, d)
     pos = max(int((y_tr == 1).sum()), 1)
@@ -307,23 +317,35 @@ def train(
         with torch.no_grad():
             logits = model(torch.from_numpy(np.transpose(Xdv, (0, 2, 1)))).numpy()
         prob = 1 / (1 + np.exp(-logits))
-        thr_best, f1_best, bal_best = 0.5, -1.0, -1.0
-        for t in np.linspace(0.2, 0.8, 13):
-            mm = binary_metrics(y_dev, (prob >= t).astype(int))
-            if mm["f1"] > f1_best or (
-                mm["f1"] == f1_best and mm["balanced_accuracy"] > bal_best
-            ):
-                thr_best, f1_best, bal_best = float(t), mm["f1"], mm["balanced_accuracy"]
+        thr_best, mm_best = choose_dev_threshold(y_dev, prob, criterion=select_dev)
         row = {
             "epoch": epoch,
             "train_loss": float(np.mean(losses) if losses else 0),
-            "dev_f1": f1_best,
-            "dev_balanced_accuracy": bal_best,
-            "dev_probability_threshold": thr_best,
+            "dev_f1": float(mm_best["f1"]),
+            "dev_precision": float(mm_best["precision"]),
+            "dev_balanced_accuracy": float(mm_best["balanced_accuracy"]),
+            "dev_probability_threshold": float(thr_best),
         }
         hist.append(row)
-        print(f"epoch {epoch} loss={row['train_loss']:.4f} DEV F1={f1_best:.3f}")
-        if best is None or f1_best > best["dev_f1"]:
+        print(
+            f"epoch {epoch} loss={row['train_loss']:.4f} "
+            f"DEV F1={row['dev_f1']:.3f} bAcc={row['dev_balanced_accuracy']:.3f}"
+        )
+        if best is None:
+            better = True
+        elif select_dev in ("balanced_accuracy", "bacc", "bal"):
+            better = (
+                row["dev_balanced_accuracy"],
+                row["dev_precision"],
+                row["dev_f1"],
+            ) > (
+                best["dev_balanced_accuracy"],
+                best.get("dev_precision", 0.0),
+                best["dev_f1"],
+            )
+        else:
+            better = row["dev_f1"] > best["dev_f1"]
+        if better:
             best = {**row}
             best_state = {k: v.detach().cpu().clone() for k, v in model.state_dict().items()}
             bad = 0
@@ -336,18 +358,105 @@ def train(
     model.load_state_dict(best_state)
     model.eval()
     with torch.no_grad():
-        te = model(torch.from_numpy(np.transpose(Xte, (0, 2, 1)))).numpy()
         dv = model(torch.from_numpy(np.transpose(Xdv, (0, 2, 1)))).numpy()
-    pte = 1 / (1 + np.exp(-te))
     pdv = 1 / (1 + np.exp(-dv))
     thr = float(best["dev_probability_threshold"])
-    pred = (pte >= thr).astype(int)
-    test_m = binary_metrics(y_tes, pred)
-    dev_m = binary_metrics(y_dev, (pdv >= thr).astype(int))
+    dv_pred = (pdv >= thr).astype(int)
+    dev_m = binary_metrics(y_dev, dv_pred)
+    collapse = collapse_diagnostics(dv_pred, dev_m["tn"])
 
-    out_dir = work / CNN_DIR_REL
+    if out_dir is None:
+        out_dir = work / CNN_DIR_REL
+    out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     pd.DataFrame(hist).to_csv(out_dir / "training_history.csv", index=False)
+    dump_json(
+        out_dir / "config.json",
+        {
+            "dev_only": bool(dev_only),
+            "select_dev": select_dev,
+            "seq_len": int(seq_len),
+            "seed": int(seed),
+            "feature_set": FEATURE_MODE,
+            "out_dir": str(out_dir),
+            "train_n": int(len(y_tr)),
+            "train_pos": int((y_tr == 1).sum()),
+            "train_neg": int((y_tr == 0).sum()),
+            "frozen_rule": rule,
+        },
+    )
+    common = {
+        "task": "head_shake",
+        "model": "1D CNN (feature set C = xyz + first differences)",
+        "script": "train_shake_cnn.py",
+        "feature_set": FEATURE_MODE,
+        "feature_set_name": "xyz_deriv",
+        "input_dimensions": d,
+        "seq_len": int(seq_len),
+        "seed": int(seed),
+        "epochs_budget": int(epochs),
+        "early_stopping_patience": PATIENCE,
+        "best_epoch": int(best["epoch"]),
+        "dev_f1": float(dev_m["f1"]),
+        "dev_precision": float(dev_m["precision"]),
+        "dev_recall": float(dev_m["recall"]),
+        "dev_balanced_accuracy": float(dev_m["balanced_accuracy"]),
+        "dev_probability_threshold": thr,
+        "dev_metrics": dev_m,
+        "frozen_rule": rule,
+        "train_n": int(len(y_tr)),
+        "train_pos": int((y_tr == 1).sum()),
+        "train_neg": int((y_tr == 0).sum()),
+        "train_ids": [p.stem for p in pseudo_paths],
+        "normalization": {"mean": mean.tolist(), "std": std.tolist(), "mode": FEATURE_MODE},
+        **collapse,
+    }
+
+    if dev_only:
+        pred_df = pd.DataFrame(
+            {
+                "sample_id": [p.stem for p in dev_p],
+                "label": y_dev,
+                "prob": pdv,
+                "pred": dv_pred,
+                "split": "DEV",
+            }
+        )
+        pred_df.to_csv(out_dir / "predictions.csv", index=False)
+        pred_df.to_csv(out_dir / "predictions_dev.csv", index=False)
+        metrics = {
+            **common,
+            "select_dev": select_dev,
+            "selection_rule": (
+                f"epoch + threshold by DEV {select_dev}; TEST not scored "
+                "(--dev-only / --no-test). Ignore any locked TEST F1."
+            ),
+            "test_scored": False,
+            "note": (
+                "Did not retune or rescore the shake rule TEST. "
+                "Nod results/ artefacts were not written."
+            ),
+        }
+        dump_json(out_dir / "dev_metrics.json", metrics)
+        dump_json(out_dir / "metrics_dev.json", metrics)
+        dump_json(
+            out_dir / "config.json",
+            {
+                "dev_only": True,
+                "seed": int(seed),
+                "select_dev": select_dev,
+                "seq_len": int(seq_len),
+                "out_dir": str(out_dir),
+                "test_scored": False,
+            },
+        )
+        return metrics
+
+    with torch.no_grad():
+        te = model(torch.from_numpy(np.transpose(Xte, (0, 2, 1)))).numpy()
+    pte = 1 / (1 + np.exp(-te))
+    pred = (pte >= thr).astype(int)
+    test_m = binary_metrics(y_tes, pred)
     pd.DataFrame(
         {
             "sample_id": [p.stem for p in tes_p],
@@ -356,30 +465,10 @@ def train(
             "pred": pred,
         }
     ).to_csv(out_dir / "predictions.csv", index=False)
-
     metrics = {
-        "task": "head_shake",
-        "model": "1D CNN (feature set C = xyz + first differences)",
-        "script": "train_shake_cnn.py",
-        "feature_set": FEATURE_MODE,
-        "feature_set_name": "xyz_deriv",
-        "input_dimensions": d,
-        "seed": int(seed),
-        "epochs_budget": int(epochs),
-        "early_stopping_patience": PATIENCE,
-        "best_epoch": int(best["epoch"]),
-        "dev_f1": float(best["dev_f1"]),
-        "dev_balanced_accuracy": float(best["dev_balanced_accuracy"]),
-        "dev_probability_threshold": thr,
-        "dev_metrics": dev_m,
+        **common,
         "test_metrics": test_m,
         "selection_rule": "epoch + threshold by DEV F1 only; TEST scored once",
-        "frozen_rule": rule,
-        "train_n": int(len(y_tr)),
-        "train_pos": int((y_tr == 1).sum()),
-        "train_neg": int((y_tr == 0).sum()),
-        "train_ids": [p.stem for p in pseudo_paths],
-        "normalization": {"mean": mean.tolist(), "std": std.tolist(), "mode": FEATURE_MODE},
         "note": (
             "Did not retune or rescore the shake rule TEST. "
             "Nod results/ artefacts were not written."
@@ -389,7 +478,7 @@ def train(
     return metrics
 
 
-def main() -> None:
+def main(argv: list[str] | None = None) -> None:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--workdir", type=Path, default=ROOT)
     ap.add_argument("--epochs", type=int, default=15)
@@ -399,35 +488,136 @@ def main() -> None:
         action="store_true",
         help=(
             "overwrite results/shake/cnn/metrics.json — invalidation only. "
-            "Do not pass this to shop TEST scores."
+            "Do not pass this to shop TEST scores. Under --dev-only, "
+            "overwrites that run's dev_metrics.json in a NEW out-dir."
         ),
     )
-    args = ap.parse_args()
+    ap.add_argument(
+        "--dev-only",
+        "--no-test",
+        dest="dev_only",
+        action="store_true",
+        help="select on GOLD DEV only; do not score TEST or write "
+             "metrics.json. Requires --out-dir and --pseudo-labels.",
+    )
+    ap.add_argument(
+        "--select-dev",
+        choices=("f1", "balanced_accuracy"),
+        default="f1",
+        help="DEV epoch/threshold criterion. New shake search should use "
+             "balanced_accuracy (F1 alone rewards always-shake).",
+    )
+    ap.add_argument(
+        "--out-dir",
+        type=Path,
+        default=None,
+        help="output directory. Required with --dev-only (must not be the "
+             "locked results/shake/cnn/).",
+    )
+    ap.add_argument(
+        "--pseudo-labels",
+        type=Path,
+        default=None,
+        help="existing pseudo CSV (read-only). If set, does not write "
+             "results/shake/pseudo_labels.csv.",
+    )
+    ap.add_argument(
+        "--seq-len",
+        type=int,
+        default=128,
+        help="resampled pose length (default 128; 64 is the cheap window variant)",
+    )
+    args = ap.parse_args(argv)
     work = args.workdir.resolve()
 
-    cnn_metrics = work / CNN_DIR_REL / "metrics.json"
-    if cnn_metrics.exists() and not args.force:
-        raise SystemExit(
-            f"STOP: {cnn_metrics} already exists — shake CNN TEST has "
-            "already been scored once. Pass --force only if that run is "
-            "being formally invalidated (record why). --force is not for "
-            "retrying TEST until the number looks better."
+    sys.path.insert(0, str(work / "scripts"))
+    import check_split_leakage
+
+    out_dir: Path | None = None
+    if args.dev_only:
+        if args.out_dir is None:
+            raise SystemExit(
+                "STOP: --dev-only/--no-test requires --out-dir (a new path "
+                "under results/shake/dev_balanced/, never results/shake/cnn/)."
+            )
+        out_dir = check_split_leakage.assert_unlocked_out_dir(
+            args.out_dir if args.out_dir.is_absolute() else work / args.out_dir
         )
+        if (out_dir / "metrics.json").exists():
+            raise SystemExit(
+                f"STOP: --dev-only refuses {out_dir / 'metrics.json'} "
+                "(TEST-style). Use a new out-dir."
+            )
+        already = (out_dir / "dev_metrics.json").exists() or (
+            out_dir / "metrics_dev.json"
+        ).exists()
+        if already and not args.force:
+            raise SystemExit(
+                f"STOP: DEV-only metrics already exist under {out_dir}."
+            )
+        if args.pseudo_labels is None:
+            raise SystemExit(
+                "STOP: --dev-only requires --pseudo-labels pointing at a "
+                "new manifest (will not overwrite results/shake/pseudo_labels.csv)."
+            )
+    else:
+        cnn_metrics = work / CNN_DIR_REL / "metrics.json"
+        if cnn_metrics.exists() and not args.force:
+            raise SystemExit(
+                f"STOP: {cnn_metrics} already exists — shake CNN TEST has "
+                "already been scored once. Pass --force only if that run is "
+                "being formally invalidated (record why). --force is not for "
+                "retrying TEST until the number looks better."
+            )
+        out_dir = work / CNN_DIR_REL
 
     rule = load_frozen_shake_rule(work)
     from run_shake_experiment import load_shake_gold
     gold = load_shake_gold()
     gold["split"] = gold["split"].astype(str).str.upper()
 
-    pseudo_paths = select_pseudo_paths(work / "features" / "pseudo")
+    locked_pseudo = work / "results" / "shake" / "pseudo_labels.csv"
+    if args.pseudo_labels is not None:
+        pl = args.pseudo_labels if args.pseudo_labels.is_absolute() else work / args.pseudo_labels
+        pl = pl.resolve()
+        if not pl.exists():
+            raise SystemExit(f"STOP: missing --pseudo-labels {pl}")
+        df = pd.read_csv(pl)
+        if "pseudo_label" not in df.columns or "sample_id" not in df.columns:
+            raise SystemExit(f"STOP: {pl} needs sample_id and pseudo_label")
+        pseudo_paths = [
+            work / "features" / "pseudo" / f"{sid}.npz"
+            for sid in df["sample_id"].astype(str)
+        ]
+        missing = [p.name for p in pseudo_paths if not p.exists()]
+        if missing:
+            raise SystemExit(f"STOP: missing pose npz: {missing[:8]}")
+        y_tr = df["pseudo_label"].to_numpy(dtype=int)
+        print(
+            f"using existing {pl} ({int((y_tr == 1).sum())} pos / "
+            f"{int((y_tr == 0).sum())} neg); not writing {locked_pseudo}"
+        )
+        assert_no_leakage(pseudo_paths, gold)
+        check_split_leakage.run(
+            gold_csv=work / "data" / "gold" / "shake_annotation_sheet.csv",
+            pseudo_labels=pl,
+            labelled_train_only=True,
+        )
+    else:
+        pseudo_paths = select_pseudo_paths(work / "features" / "pseudo")
+        if len(pseudo_paths) < 8:
+            raise SystemExit(
+                f"STOP: only {len(pseudo_paths)} pseudo clips (need >= 8)"
+            )
+        video_ids = assert_no_leakage(pseudo_paths, gold)
+        y_tr, _ = write_shake_pseudo_labels(
+            pseudo_paths, video_ids, rule, locked_pseudo
+        )
+
     if len(pseudo_paths) < 8:
         raise SystemExit(
             f"STOP: only {len(pseudo_paths)} pseudo clips (need >= 8)"
         )
-    video_ids = assert_no_leakage(pseudo_paths, gold)
-
-    labels_path = work / "results" / "shake" / "pseudo_labels.csv"
-    y_tr, _ = write_shake_pseudo_labels(pseudo_paths, video_ids, rule, labels_path)
 
     out = train(
         gold,
@@ -437,12 +627,27 @@ def main() -> None:
         y_tr,
         epochs=args.epochs,
         seed=args.seed,
+        out_dir=out_dir,
+        dev_only=bool(args.dev_only),
+        select_dev=str(args.select_dev),
+        seq_len=int(args.seq_len),
     )
-    tm = out["test_metrics"]
     print("=====================================")
     print("Shake 1D CNN (feature set C = xyz + first differences)")
     print(f"  frozen rule: axis {rule['axis_name']}  thr={rule['selected_amplitude_threshold']:.3f}°")
     print(f"  best epoch (DEV): {out['best_epoch']}   DEV F1: {out['dev_f1']:.3f}")
+    if args.dev_only:
+        dm = out["dev_metrics"]
+        flag = "COLLAPSE" if out.get("collapse") else "ok"
+        print(
+            f"  DEV P {dm['precision']:.3f}  R {dm['recall']:.3f}  "
+            f"F1 {dm['f1']:.3f}  (TP{dm['tp']} FP{dm['fp']} "
+            f"TN{dm['tn']} FN{dm['fn']})  [{flag}]"
+        )
+        print(f"  artefacts: {out_dir}/metrics_dev.json, predictions_dev.csv")
+        print("  TEST was not scored.")
+        return
+    tm = out["test_metrics"]
     print(
         f"  TEST P {tm['precision']:.3f}  R {tm['recall']:.3f}  F1 {tm['f1']:.3f}  "
         f"(TP{tm['tp']} FP{tm['fp']} TN{tm['tn']} FN{tm['fn']})"

@@ -35,7 +35,17 @@ def main() -> None:
     )
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--workdir", type=Path, default=ROOT)
+    parser.add_argument(
+        "--score-test",
+        action="store_true",
+        default=False,
+        help="refused. GOLD TEST is locked.",
+    )
     args = parser.parse_args()
+    if args.score_test:
+        raise SystemExit(
+            "STOP: DEV-only wrapper refuses --score-test. Do not score GOLD TEST."
+        )
 
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     import check_split_leakage
@@ -44,20 +54,19 @@ def main() -> None:
         args.out_dir if args.out_dir.is_absolute() else ROOT / args.out_dir
     )
     argv = [
-        "--no-test",
+        "--dev-only",
         "--pseudo-labels", str(args.pseudo_labels),
         "--out-dir", str(args.out_dir),
-        "--epochs", str(args.epochs),
-        "--seed", str(args.seed),
-        "--seq-len", str(args.seq_len),
+        "--epochs", str(int(args.epochs)),
+        "--seed", str(int(args.seed)),
+        "--seq-len", str(int(args.seq_len)),
         "--select-dev", str(args.select_dev),
         "--workdir", str(args.workdir),
     ]
     if args.force:
         argv.append("--force")
     from train_shake_cnn import main as train_cnn
-    sys.argv = [sys.argv[0], *argv]
-    train_cnn()
+    train_cnn(argv)
 
 
 if __name__ == "__main__":

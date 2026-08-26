@@ -105,7 +105,11 @@ from src.balance import (  # noqa: E402
     balance_indices,
     boosted_pos_weight,
 )
-from src.metrics import binary_metrics  # noqa: E402
+from src.metrics import (  # noqa: E402
+    binary_metrics,
+    choose_dev_threshold,
+    collapse_diagnostics,
+)
 
 GOLD_CSV = ROOT / "data" / "gold_annotations.csv"
 PSEUDO_LABELS = ROOT / "results" / "pseudo_labels.csv"
@@ -206,7 +210,8 @@ def best_threshold(y: np.ndarray, prob: np.ndarray):
     return thr_best, f1_best, bal_best
 
 
-def resolve_repo_path(path: Path) -> Path:
+def resolve_repo_path(path: Path | str) -> Path:
+    path = Path(path)
     if not path.is_absolute():
         path = ROOT / path
     return path.resolve()
@@ -259,10 +264,31 @@ def main(
     balance_train: str | None = None,
     balance_ratio: float | None = None,
     pos_weight_boost: float | None = None,
+    dev_only: bool | None = None,
+    score_test: bool | None = None,
+    select_dev: str | None = None,
+    seed: int | None = None,
 ) -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--force", action="store_true",
-                        help="allow re-scoring TEST (overwrites metrics.json)")
+                        help="allow re-scoring TEST (overwrites metrics.json). "
+                             "Not for locked dirs under --dev-only.")
+    parser.add_argument(
+        "--dev-only",
+        "--no-test",
+        dest="dev_only",
+        action="store_true",
+        help="select on GOLD DEV only; do not score TEST or write "
+             "metrics.json. Writes dev_metrics.json. Refuses locked TEST dirs.",
+    )
+    parser.add_argument(
+        "--select-dev",
+        choices=("f1", "balanced_accuracy"),
+        default="f1",
+        help="DEV epoch/threshold criterion (use balanced_accuracy for "
+             "new shake search).",
+    )
+    parser.add_argument("--seed", type=int, default=SEED)
     parser.add_argument("--unfreeze-blocks", type=int, default=UNFREEZE_BLOCKS,
                         help="train the last N encoder blocks (+ head); "
                              "patch embeddings and earlier blocks stay frozen "
@@ -344,6 +370,14 @@ def main(
         balance_ratio = args.balance_ratio
     if pos_weight_boost is None:
         pos_weight_boost = args.pos_weight_boost
+    if score_test is not None:
+        dev_only = not bool(score_test)
+    elif dev_only is None:
+        dev_only = bool(args.dev_only)
+    if select_dev is None:
+        select_dev = str(args.select_dev)
+    if seed is None:
+        seed = int(args.seed)
     balance_train = str(balance_train).strip().lower()
 
     sys.path.insert(0, str(ROOT / "scripts"))
@@ -360,7 +394,24 @@ def main(
         f"pseudo={pseudo_labels_path}  out_dir={out_dir}"
     )
 
-    if (out_dir / "metrics.json").exists() and not force:
+    if dev_only:
+        import check_split_leakage
+        check_split_leakage.assert_unlocked_out_dir(out_dir)
+        if (out_dir / "metrics.json").exists():
+            raise SystemExit(
+                f"STOP: --dev-only refuses {out_dir / 'metrics.json'} "
+                "(TEST-style artefact). Use a new out-dir under "
+                "results/shake/dev_balanced/."
+            )
+        already = (out_dir / "dev_metrics.json").exists() or (
+            out_dir / "metrics_dev.json"
+        ).exists()
+        if already and not force:
+            raise SystemExit(
+                f"STOP: DEV-only metrics already exist under {out_dir}. "
+                "Pass --force only to invalidate this DEV-only run."
+            )
+    elif (out_dir / "metrics.json").exists() and not force:
         raise SystemExit(
             f"STOP: {out_dir / 'metrics.json'} already exists — TEST has "
             "already been scored once under this protocol. Pass --force only "
@@ -421,12 +472,18 @@ def main(
     dv_clips, y_dv, dev_ids, miss_dv = build_split(
         dev["sample_id"].tolist(), gold_y(dev, label_col, gold_csv_path), "DEV"
     )
-    te_clips, y_te, tes_ids, miss_te = build_split(
-        tes["sample_id"].tolist(), gold_y(tes, label_col, gold_csv_path), "TEST"
-    )
-
-    wanted = len(pseudo) + len(dev) + len(tes)
-    missing_all = miss_tr + miss_dv + miss_te
+    if dev_only:
+        print("NOTE: --dev-only: TEST rgb16 is not loaded and will not be "
+              "scored. Ignore any old TEST F1 from locked folders.")
+        te_clips, y_te, tes_ids, miss_te = [], np.asarray([], dtype=np.int64), [], []
+        wanted = len(pseudo) + len(dev)
+        missing_all = miss_tr + miss_dv
+    else:
+        te_clips, y_te, tes_ids, miss_te = build_split(
+            tes["sample_id"].tolist(), gold_y(tes, label_col, gold_csv_path), "TEST"
+        )
+        wanted = len(pseudo) + len(dev) + len(tes)
+        missing_all = miss_tr + miss_dv + miss_te
     if wanted and len(missing_all) / wanted > MAX_MISSING_FRAC:
         raise SystemExit(
             f"BLOCKED: {len(missing_all)}/{wanted} wanted clips "
@@ -441,10 +498,12 @@ def main(
             f"{MIN_TRAIN} with both classes). No metrics fabricated; paste "
             "this back."
         )
-    if len(y_dv) < MIN_EVAL or len(y_te) < MIN_EVAL:
+    if len(y_dv) < MIN_EVAL or (not dev_only and len(y_te) < MIN_EVAL):
         raise SystemExit(
-            f"BLOCKED: DEV/TEST usable clips {len(y_dv)}/{len(y_te)} (need "
-            f">= {MIN_EVAL} each). No metrics fabricated; paste this back."
+            f"BLOCKED: DEV/TEST usable clips {len(y_dv)}/"
+            f"{0 if dev_only else len(y_te)} (need >= {MIN_EVAL}"
+            f"{' DEV' if dev_only else ' each'}). "
+            "No metrics fabricated; paste this back."
         )
 
     try:
@@ -467,10 +526,10 @@ def main(
             "transformers must stay at the Step 4 version (5.15.1)."
         ) from exc
 
-    torch.manual_seed(SEED)
-    torch.cuda.manual_seed_all(SEED)  # no-op without CUDA
-    np.random.seed(SEED)
-    random.seed(SEED)
+    torch.manual_seed(int(seed))
+    torch.cuda.manual_seed_all(int(seed))  # no-op without CUDA
+    np.random.seed(int(seed))
+    random.seed(int(seed))
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     if device.type == "cuda":
@@ -612,10 +671,11 @@ def main(
     )
     print(f"TRAIN {len(y_tr)} clips ({pos} pos / {neg} neg), "
           f"pos_weight={pos_w:.3f} (boost={float(pos_weight_boost):.3f}); "
-          f"DEV {len(y_dv)}, TEST {len(y_te)}")
+          f"DEV {len(y_dv)}"
+          + ("" if dev_only else f", TEST {len(y_te)}"))
 
     ds = ClipDataset(tr_clips, y_tr, mean_t, std_t, flip=flip)
-    gen = torch.Generator().manual_seed(SEED)
+    gen = torch.Generator().manual_seed(int(seed))
     loader = DataLoader(ds, batch_size=batch_size, shuffle=True,
                         generator=gen)
     use_amp = device.type == "cuda"
@@ -647,17 +707,35 @@ def main(
             losses.append(float(loss.item()))
 
         prob_dv = predict_probs(model, dv_clips, batch_size)
-        thr_best, f1_best, bal_best = best_threshold(y_dv, prob_dv)
+        thr_best, mm_best = choose_dev_threshold(y_dv, prob_dv, criterion=select_dev)
         row = {
             "epoch": epoch,
             "train_loss": float(np.mean(losses) if losses else 0.0),
-            "dev_f1": f1_best,
-            "dev_balanced_accuracy": bal_best,
-            "dev_probability_threshold": thr_best,
+            "dev_f1": float(mm_best["f1"]),
+            "dev_precision": float(mm_best["precision"]),
+            "dev_balanced_accuracy": float(mm_best["balanced_accuracy"]),
+            "dev_probability_threshold": float(thr_best),
         }
         history.append(row)
-        print(f"epoch {epoch} loss={row['train_loss']:.4f} DEV F1={f1_best:.3f}")
-        if best is None or f1_best > best["dev_f1"]:
+        print(
+            f"epoch {epoch} loss={row['train_loss']:.4f} "
+            f"DEV F1={row['dev_f1']:.3f} bAcc={row['dev_balanced_accuracy']:.3f}"
+        )
+        if best is None:
+            better = True
+        elif select_dev in ("balanced_accuracy", "bacc", "bal"):
+            better = (
+                row["dev_balanced_accuracy"],
+                row["dev_precision"],
+                row["dev_f1"],
+            ) > (
+                best["dev_balanced_accuracy"],
+                best.get("dev_precision", 0.0),
+                best["dev_f1"],
+            )
+        else:
+            better = row["dev_f1"] > best["dev_f1"]
+        if better:
             best = {**row}
             best_state = {k_: v.detach().cpu().clone()
                           for k_, v in model.state_dict().items()}
@@ -673,18 +751,123 @@ def main(
     if best_state is None:
         raise SystemExit("BLOCKED: training produced no epochs; nothing saved.")
 
-    # ---- single TEST scoring with best-on-DEV weights + DEV threshold ----
     model.load_state_dict(best_state)
     thr = best["dev_probability_threshold"]
     prob_dv = predict_probs(model, dv_clips, batch_size)
-    prob_tr = predict_probs(model, tr_clips, batch_size)
-    prob_te = predict_probs(model, te_clips, batch_size)
-    dev_metrics = binary_metrics(y_dv, (prob_dv >= thr).astype(int))
-    test_metrics = binary_metrics(y_te, (prob_te >= thr).astype(int))
+    dv_pred = (prob_dv >= thr).astype(int)
+    dev_metrics = binary_metrics(y_dv, dv_pred)
+    collapse = collapse_diagnostics(dv_pred, dev_metrics["tn"])
 
     check_disk("write")
     out_dir.mkdir(parents=True, exist_ok=True)
     pd.DataFrame(history).to_csv(out_dir / "training_history.csv", index=False)
+    common = {
+        "task": task,
+        "model": f"VideoMAE fine-tuned (last {k} blocks + head)",
+        "script": Path(__file__).name,
+        "gold_csv": str(gold_csv_path),
+        "label_col": label_col,
+        "pseudo_labels": str(pseudo_labels_path),
+        "out_dir": str(out_dir),
+        "checkpoint": CHECKPOINT,
+        "processor": proc_name,
+        "transformers_version": transformers.__version__,
+        "torch_version": torch.__version__,
+        "device": device.type,
+        "seed": int(seed),
+        "unfreeze_blocks": k,
+        "lr_backbone": LR_BACKBONE,
+        "lr_head": LR_HEAD,
+        "batch_size": batch_size,
+        "max_epochs": epochs,
+        "patience": patience,
+        "flip_augmentation": bool(flip),
+        "train_ids": train_ids,
+        "train_n": int(len(y_tr)),
+        "train_pos": int((y_tr == 1).sum()),
+        "train_neg": int((y_tr == 0).sum()),
+        "dev_n": int(len(y_dv)),
+        "skipped_missing_rgb16": {
+            "TRAIN": miss_tr, "DEV": miss_dv, "TEST": miss_te,
+        },
+        "pos_weight": float(pos_w),
+        "pos_weight_boost": float(pos_weight_boost),
+        "balance_train": balance_train,
+        "balance_ratio": float(balance_ratio),
+        "train_n_before_balance": int(len(y_tr_before)),
+        "train_pos_before_balance": int((y_tr_before == 1).sum()),
+        "train_neg_before_balance": int((y_tr_before == 0).sum()),
+        "train_ids_before_balance": train_ids_before_balance,
+        "best_epoch": int(best["epoch"]),
+        "dev_f1": float(dev_metrics["f1"]),
+        "dev_precision": float(dev_metrics["precision"]),
+        "dev_recall": float(dev_metrics["recall"]),
+        "dev_balanced_accuracy": float(dev_metrics["balanced_accuracy"]),
+        "dev_probability_threshold": float(thr),
+        "dev_metrics": dev_metrics,
+        "select_dev": select_dev,
+        **collapse,
+    }
+    (out_dir / "config.json").write_text(json.dumps({
+        "dev_only": bool(dev_only),
+        "select_dev": select_dev,
+        "seed": int(seed),
+        "unfreeze_blocks": k,
+        "pseudo_labels": str(pseudo_labels_path),
+        "out_dir": str(out_dir),
+        "label_col": label_col,
+    }, indent=2, default=str) + "\n")
+
+    if dev_only:
+        pd.DataFrame(
+            {
+                "sample_id": dev_ids,
+                "label": y_dv,
+                "prob": prob_dv,
+                "pred": dv_pred,
+                "split": "DEV",
+            }
+        ).to_csv(out_dir / "predictions.csv", index=False)
+        pd.DataFrame(
+            {
+                "sample_id": dev_ids,
+                "label": y_dv,
+                "prob": prob_dv,
+                "pred": dv_pred,
+                "split": "DEV",
+            }
+        ).to_csv(out_dir / "predictions_dev.csv", index=False)
+        payload = {
+            **common,
+            "selection_rule": (
+                f"epoch + threshold by DEV {select_dev}; TEST not scored "
+                "(--dev-only / --no-test). Ignore any locked TEST F1."
+            ),
+            "test_scored": False,
+        }
+        (out_dir / "dev_metrics.json").write_text(
+            json.dumps(payload, indent=2, default=str) + "\n"
+        )
+        (out_dir / "metrics_dev.json").write_text(
+            json.dumps(payload, indent=2, default=str) + "\n"
+        )
+        flag = "COLLAPSE" if collapse["collapse"] else "ok"
+        print(
+            f"\nbest epoch {best['epoch']}  DEV F1={dev_metrics['f1']:.3f}  "
+            f"threshold={thr:.2f}  [{flag}]\n"
+            f"wrote {out_dir}/metrics_dev.json, predictions_dev.csv (DEV), "
+            f"training_history.csv (+ best_model.pt, gitignored)\n"
+            f"DEV P={dev_metrics['precision']:.3f} R={dev_metrics['recall']:.3f} "
+            f"TP{dev_metrics['tp']} FP{dev_metrics['fp']} "
+            f"TN{dev_metrics['tn']} FN{dev_metrics['fn']}\n"
+            "TEST was not scored. Do not use locked TEST numbers for selection."
+        )
+        return
+
+    # ---- single TEST scoring with best-on-DEV weights + DEV threshold ----
+    prob_tr = predict_probs(model, tr_clips, batch_size)
+    prob_te = predict_probs(model, te_clips, batch_size)
+    test_metrics = binary_metrics(y_te, (prob_te >= thr).astype(int))
     pd.DataFrame(
         {
             "clip_id": train_ids + dev_ids + tes_ids,
@@ -698,52 +881,12 @@ def main(
         }
     ).to_csv(out_dir / "predictions.csv", index=False)
     metrics = {
-        "task": task,
-        "model": f"VideoMAE fine-tuned (last {k} blocks + head)",
-        "script": Path(__file__).name,
-        "gold_csv": str(gold_csv_path),
-        "label_col": label_col,
-        "pseudo_labels": str(pseudo_labels_path),
-        "out_dir": str(out_dir),
-        "checkpoint": CHECKPOINT,
-        "processor": proc_name,
-        "transformers_version": transformers.__version__,
-        "torch_version": torch.__version__,
-        "device": device.type,
-        "seed": SEED,
-        "unfreeze_blocks": k,
-        "lr_backbone": LR_BACKBONE,
-        "lr_head": LR_HEAD,
-        "batch_size": batch_size,
-        "max_epochs": epochs,
-        "patience": patience,
-        "flip_augmentation": bool(flip),
-        "train_ids": train_ids,
-        "train_n": int(len(y_tr)),
-        "train_pos": int((y_tr == 1).sum()),
-        "train_neg": int((y_tr == 0).sum()),
-        "dev_n": int(len(y_dv)),
+        **common,
         "test_n": int(len(y_te)),
-        "skipped_missing_rgb16": {
-            "TRAIN": miss_tr, "DEV": miss_dv, "TEST": miss_te,
-        },
-        "pos_weight": pos_w,
-        "pos_weight_boost": float(pos_weight_boost),
-        "balance_train": balance_train,
-        "balance_ratio": float(balance_ratio),
-        "train_n_before_balance": int(len(y_tr_before)),
-        "train_pos_before_balance": int((y_tr_before == 1).sum()),
-        "train_neg_before_balance": int((y_tr_before == 0).sum()),
-        "train_ids_before_balance": train_ids_before_balance,
-        "best_epoch": int(best["epoch"]),
-        "dev_f1": float(best["dev_f1"]),
-        "dev_balanced_accuracy": float(best["dev_balanced_accuracy"]),
-        "dev_probability_threshold": float(thr),
-        "dev_metrics": dev_metrics,
         "selection_rule": "epoch + threshold by DEV F1 only; TEST scored once",
         "test_metrics": test_metrics,
     }
-    (out_dir / "metrics.json").write_text(json.dumps(metrics, indent=2) + "\n")
+    (out_dir / "metrics.json").write_text(json.dumps(metrics, indent=2, default=str) + "\n")
     print(
         f"\nbest epoch {best['epoch']}  DEV F1={best['dev_f1']:.3f}  "
         f"threshold={thr:.2f}\n"

@@ -1,0 +1,166 @@
+# Figure captions (paste-ready)
+
+Numbers below are copied from locked json/csv. None of these figures is a new GOLD TEST score. Pose Euler and RGB face crops are two **visual representations** of the same listener window, not two sensory modalities. All classifiers predict a **window-level 0/1 label**, not a future event (not forecasting).
+
+Print width ~12–14 cm. Files are PNG (300 dpi) and PDF under `dissertation-behaviour-recognition/figures/paper/`.
+
+---
+
+## Fig. A — Nod TEST F1
+
+**Files:** `nod_test_f1.png` / `nod_test_f1.pdf`
+
+**Caption.** Held-out GOLD TEST performance for binary head-nod recognition (n = 15 windows, scored once). Bars are F1; whiskers are 95% bootstrap CIs (1000 resamples, seed 42) from `results/tables/bootstrap_ci.csv`. Precision and recall are printed to the right of each bar. Pose rule F1 = 0.67 (P 0.64, R 0.70); pose CNN F1 = 0.70 (P 0.70, R 0.70); frozen VideoMAE F1 = 0.57 (P 0.55, R 0.60); fine-tuned VideoMAE n=80 F1 = 0.82 (P 0.75, R 0.90); fine-tuned VideoMAE n=200 F1 = 0.63 (P 0.67, R 0.60). Inputs are visual representations of the same clip (EMOCA Euler vs RGB 16×224×224 face crops), not two sensory modalities.
+
+**Source.** `results/tables/main_results.csv` (and `results/tables/main_results.md`).
+
+---
+
+## Fig. B — Nod TEST confusion counts
+
+**Files:** `nod_test_confusion.png` / `nod_test_confusion.pdf`
+
+**Caption.** Confusion counts on the same GOLD TEST nod split (n = 15, scored once). TN/FP/FN/TP are taken from the locked metric json for each system. The n=200 VideoMAE run is a scaling ablation, not the RGB headline.
+
+**Source.** `results/rule_test_metrics.json`; `results/classifier_test_metrics.json`; `results/videomae_frozen_head/metrics.json` (`test_metrics`); `results/videomae_finetuned/metrics.json` (`test_metrics`); `results/videomae_finetuned_n200/metrics.json` (`test_metrics`).
+
+---
+
+## Fig. C — Shake TEST F1
+
+**Files:** `shake_test_f1.png` / `shake_test_f1.pdf`
+
+**Caption.** Held-out GOLD TEST performance for binary head-shake recognition (n = 15 windows, scored once). The locked pose rule used Euler **axis z** (roll), τ = 11.15°, not geometric yaw. Always-shake (predict 1 on every TEST clip) has F1 = 0.64 and is drawn as a dashed reference line. Pose rule (z) F1 = 0.70; pose CNN trained 75 pos / 5 neg F1 = 0.64 (TN = 0); frozen VideoMAE 75/5 F1 = 0.60; fine-tuned VideoMAE 75/5 F1 = 0.60. This figure does not re-score TEST.
+
+**Source.** `results/shake/rule_test_metrics.json`; `results/shake/majority_baseline/metrics.json` (`always_positive`); `results/shake/cnn/metrics.json` (`test_metrics`); `results/shake/videomae_frozen_head/metrics.json` (`test_metrics`); `results/shake/videomae_finetuned/metrics.json` (`test_metrics`). Axis: `results/shake/rule_selected_config.json` (`axis_name` = z).
+
+---
+
+## Fig. D — Shake TEST confusion counts
+
+**Files:** `shake_test_confusion.png` / `shake_test_confusion.pdf`
+
+**Caption.** Confusion counts on GOLD TEST head-shake (n = 15, scored once). Always-shake and the 75/5 pose CNN both have TN = 0 (all TEST clips predicted shake). Frozen and fine-tuned VideoMAE 75/5 share the same 2×2 counts (TP 6, FP 7, TN 1, FN 1) but are not identical clip-by-clip decisions.
+
+**Source.** Same json files as Fig. C. Clip-level note: `results/shake/majority_baseline/metrics.json` (`videomae_locked_test_compare`).
+
+---
+
+## Fig. E — Shake DEV-only F1 (TEST not scored)
+
+**Files:** `shake_dev_only_f1.png` / `shake_dev_only_f1.pdf`
+
+**Caption.** Head-shake **DEV-only** comparison on GOLD DEV (n = 15; 10 shake+ / 5 shake−). GOLD TEST was **not** scored for the search runs. The dashed line is the always-shake baseline on this split (F1 = 0.80; TP 10, FP 5, TN 0, FN 0). Hatched bars collapsed on DEV (predicted-positive rate > 0.85 or TN = 0). Among non-collapsed search runs, pose CNN 40/40 was selected on DEV (F1 = 0.818, P = 0.75, R = 0.90). Locked 75/5 CNN DEV F1 = 0.870 is collapsed (recall = 1). This panel must not be reported as a TEST result.
+
+**Source.** `results/shake/dev_search/summary.csv` and `results/shake/dev_search/comparison_dev.md`. CNN 40/40: `results/shake/dev_search/cnn_40_40/metrics_dev.json`.
+
+---
+
+## Fig. F — Euler power spectrum (illustration of the signal)
+
+**Files:** `euler_signal_spectrum.png` / `euler_signal_spectrum.pdf`
+
+**Caption.** Mean power spectrum of EMOCA Euler traces on the 30 gold windows (DEV+TEST). **Illustration of the signal, not a detector:** scored systems in this dissertation are amplitude rules, a 1D CNN, and VideoMAE, not an FFT classifier. Axis mapping: **x = pitch (nod-like)**, **y = yaw (shake-like)**, **z = roll (tilt-like)**. The locked shake TEST rule used **z**; geometric left–right shake on GOLD DEV is **y**. Nod grouping uses gold nod labels on axis x; shake grouping uses gold shake labels on axes y and z. Not a TEST metric.
+
+**Source.** `features/gold/gold_*.npz` (`rotation_xyz`) and `data/gold/shake_annotation_sheet.csv`. Mapping: `results/shake/dev_search/axis_audit_conclusion.json` (`literature_mapping`, `locked_rule_axis`, `geometric_shake_axis`).
+
+The older two-panel file `euler_power_spectrum.png` had a cramped title/footer; prefer this three-axis figure.
+
+---
+
+## Fig. G — Nod-only vs shake-only Euler traces
+
+**Files:** `euler_nod_vs_shake_traces.png` / `euler_nod_vs_shake_traces.pdf`
+
+**Caption.** EMOCA Euler x/y/z over the 60 s gold window for one **nod-only** DEV clip (`gold_009`, nod=1, shake=0) and one **shake-only** DEV clip (`gold_004`, nod=0, shake=1). **Illustration of the signal, not the classifier.** x = pitch (nod-like), y = yaw (shake-like), z = roll (tilt-like). The locked TEST shake rule used z; geometric shake is y.
+
+**Source.** `features/gold/gold_009.npz`, `features/gold/gold_004.npz`; labels from `data/gold/shake_annotation_sheet.csv`.
+
+---
+
+## Fig. H — DEV axis audit (mean rule amplitude)
+
+**Files:** `euler_axis_audit_dev.png` / `euler_axis_audit_dev.pdf`
+
+**Caption.** Mean oscillatory rule amplitude (°) on GOLD DEV (n = 15), by Euler axis. Left: shake− (n = 5) vs shake+ (n = 10). Right: exclusive labels, shake-only (n = 4) vs nod-only (n = 3). **Illustration of the signal, not the detector.** On exclusive DEV clips, nod-only energy is highest on x (pitch); geometric shake is y (yaw). The locked TEST rule nevertheless used z. Not a TEST F1.
+
+**Source.** `results/shake/dev_search/axis_audit_conclusion.json` (`axis_summary`).
+
+---
+
+## Fig. I — DEV per-clip rule amplitude
+
+**Files:** `euler_axis_strips_dev.png` / `euler_axis_strips_dev.pdf`
+
+**Caption.** Per-clip rule amplitude on GOLD DEV (n = 15). Points are individual windows; the horizontal bar is the group mean. Panel titles mark geometric yaw (y) versus the locked TEST rule axis (z). Not a TEST metric.
+
+**Source.** `results/shake/v2/axis_audit/dev_axis_stats.csv`.
+
+---
+
+## Fig. J — Two visual representations of the same window
+
+**Files:** `visual_representations.png` / `visual_representations.pdf`
+
+**Caption.** The study compares two **visual representations** of the same Columbia RealTalk listener window (~60 s, 25 fps): EMOCA Euler rotation (x, y, z) and RGB face crops (16×224×224). These are not two sensory modalities (there is no audio in this figure). Each stream produces a clip-level 0/1 window label (nod or shake, depending on the experiment), not a forecast of a future backchannel.
+
+---
+
+## Fig. K — Nod qualitative TEST cases
+
+**Files:** `nod_qualitative_cases.png` / `nod_qualitative_cases.pdf`
+
+**Caption.** Pitch (Euler x) on four GOLD TEST windows, with locked 0/1 predictions from the pose rule, pose CNN, frozen VideoMAE, and fine-tuned VideoMAE n=80. Predictions are read from existing TEST CSVs (scored once); this figure does not re-evaluate TEST.
+
+**Source.** `features/gold/gold_{016,017,018,024}.npz`; `results/rule_test_predictions.csv`; `results/classifier_test_predictions.csv`; `results/videomae_frozen_head/predictions.csv`; `results/videomae_finetuned/predictions_test.csv`.
+
+---
+
+## Fig. L — Nod vs unclear pitch traces
+
+**Files:** `nod_vs_unclear_pitch.png` / `nod_vs_unclear_pitch.pdf`
+
+**Caption.** What a nod looks like in this study: EMOCA axis x (pitch) on a gold nod TEST window (`gold_016`, peak-to-peak ≈ 64.5°) versus a gold unclear TEST window (`gold_024`, peak-to-peak ≈ 13.5°). The dashed line is the frozen nod-rule threshold τ = 16.35°. Illustration of the pose signal, not a new score.
+
+**Source.** `features/gold/gold_016.npz`, `features/gold/gold_024.npz`. Threshold τ = 16.35° from `results/rule_selected_config.json` (`selected_amplitude_threshold` = 16.3538°).
+
+---
+
+## Fig. M — Frozen VideoMAE training (DEV F1)
+
+**Files:** `nod_videomae_frozen_head_training.png` / `nod_videomae_frozen_head_training.pdf`
+
+**Caption.** Training loss and **DEV** F1 by epoch for the frozen VideoMAE head (nod). The star marks early stopping (best epoch 10, DEV F1 = 0.90 from `metrics.json`). This is not a TEST curve.
+
+**Source.** `results/videomae_frozen_head/training_history.csv`; `results/videomae_frozen_head/metrics.json`.
+
+---
+
+## Fig. N — Fine-tuned VideoMAE training (DEV F1)
+
+**Files:** `nod_videomae_finetuned_training.png` / `nod_videomae_finetuned_training.pdf`
+
+**Caption.** Training loss and **DEV** F1 by epoch for VideoMAE fine-tuned on the last four blocks (nod). Early stop from `metrics.json`. Not a TEST curve.
+
+**Source.** `results/videomae_finetuned/training_history.csv`; `results/videomae_finetuned/metrics.json`.
+
+---
+
+## Figures that were messy (do not paste those copies)
+
+| Old file | Problem |
+| --- | --- |
+| `figures/paper/euler_power_spectrum.png` | Long suptitle + footer overlapping the axes; only x and z shown |
+| `figures/paper/error_cases.png` | Top-row x labels overlapping bottom-row titles |
+| `figures/paper/nod_vs_unclear.png` | Suptitle overlapping panel titles |
+| `figures/paper/test_clip_grid.png` | Footer overlapping column labels |
+| `figures/model_comparison_f1.png` | F1 numbers struck through by CI whiskers |
+| `figures/videomae_training_curve.png` | Legend covering the DEV F1 line |
+| `figures/videomae_finetuned_training_curve.png` | Legend covering the DEV F1 line |
+| `figures/shake_v2/dev_axis_class_bars.png` | Panel y-labels colliding; red–blue legend inside axes |
+| `figures/shake_v2/dev_traces_shake_pos.png` | Clip IDs overlapping traces; cramped 10×3 grid |
+| `figures/gold_visuals/pose_traces_extracted.png` | Subplot titles colliding with x labels of the row above |
+| `figures/classifier_confusion_matrix.jpg` | Numeric ticks −0.5…1.5 instead of class names |
+| `figures/shake_axis_audit/gold_*_xyz.png` | Cramped y labels (`x (°) pitch (nod-like)` against ticks) |
+
+Use the new `figures/paper/` stems above instead.

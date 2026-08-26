@@ -14,16 +14,20 @@ Always-shake on this DEV split has F1 **0.80** (TP10 FP5 TN0 FN0) and is not a t
 | locked 75/5 pose CNN | 0.769 | 1.000 | 0.870 | 0.700 | 10 3 2 0 | True | 75/5 | `results/shake/cnn/metrics.json` |
 | locked 75/5 frozen VideoMAE | nan | nan | 0.833 | 0.600 | confusion not stored | False | 75/5 | `results/shake/videomae_frozen_head/metrics.json` |
 | locked 75/5 fine-tuned VideoMAE | 0.714 | 1.000 | 0.833 | 0.600 | 10 4 1 0 | True | 75/5 | `results/shake/videomae_finetuned/metrics.json` |
-| best balanced pose CNN (DEV) | — | — | — | — | — | — | — | not run yet |
-| best balanced frozen VideoMAE (DEV) | — | — | — | — | — | — | — | not run yet |
-| best balanced fine-tuned VideoMAE (DEV) | — | — | — | — | — | — | — | not run yet |
-| best high-confidence balanced VideoMAE (DEV) | — | — | — | — | — | — | — | not run yet |
+| search:cnn_40_40 | 0.750 | 0.900 | 0.818 | 0.650 | 9 3 2 1 | False | 40/40 | `results/shake/dev_search/cnn_40_40/dev_metrics.json` |
+| search:vmae_frozen_40_40 | 1.000 | 0.300 | 0.462 | 0.650 | 3 0 5 7 | False | 40/40 | `results/shake/dev_search/vmae_frozen_40_40/dev_metrics.json` |
+| search:vmae_ft4_40_40 | 0.857 | 0.600 | 0.706 | 0.700 | 6 1 4 4 | False | 40/40 | `results/shake/dev_search/vmae_ft4_40_40/dev_metrics.json` |
+| search:vmae_frozen_20_20_highconf | 0.750 | 0.900 | 0.818 | 0.650 | 9 3 2 1 | False | 20/20 | `results/shake/dev_search/vmae_frozen_20_20_highconf/dev_metrics.json` |
 
 ## All DEV-search runs
 
 | system | P | R | F1 | collapse | pred+ rate | path |
 | --- | ---: | ---: | ---: | --- | ---: | --- |
-| *(no `dev_search/*/dev_metrics.json` yet)* | | | | | | |
+| search:cnn_20_20_highconf | 0.769 | 1.000 | 0.870 | True | 0.867 | `results/shake/dev_search/cnn_20_20_highconf/dev_metrics.json` |
+| search:cnn_40_40 | 0.750 | 0.900 | 0.818 | False | 0.800 | `results/shake/dev_search/cnn_40_40/dev_metrics.json` |
+| search:vmae_frozen_20_20_highconf | 0.750 | 0.900 | 0.818 | False | 0.800 | `results/shake/dev_search/vmae_frozen_20_20_highconf/dev_metrics.json` |
+| search:vmae_frozen_40_40 | 1.000 | 0.300 | 0.462 | False | 0.200 | `results/shake/dev_search/vmae_frozen_40_40/dev_metrics.json` |
+| search:vmae_ft4_40_40 | 0.857 | 0.600 | 0.706 | False | 0.467 | `results/shake/dev_search/vmae_ft4_40_40/dev_metrics.json` |
 
 ## Window length
 
@@ -31,7 +35,8 @@ Pose CNN default is 128 resampled steps; one cheap variant uses `--seq-len 64` (
 
 ## One best config (DEV only — not scored on TEST)
 
-No new `dev_search/*/dev_metrics.json` yet. Run otter jobs.
+**search:cnn_40_40**  F1=0.818  P=0.750  R=0.900  bAcc=0.650  collapse=False  (highest DEV F1 among non-collapsed search runs)
+Path: `results/shake/dev_search/cnn_40_40/dev_metrics.json`
 
 ## Do not report a winner TEST F1
 

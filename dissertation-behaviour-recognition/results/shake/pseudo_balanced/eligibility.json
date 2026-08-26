@@ -1,0 +1,123 @@
+{
+  "pseudo_not_gold": true,
+  "ranking_axis": "y",
+  "nod_axis_for_hard_neg": "x",
+  "locked_test_rule_axis": "z",
+  "locked_test_rule_threshold_deg": 11.150367799838971,
+  "locked_z_not_used_as_01_cut": true,
+  "geometric_shake_axis_from_audit": "y",
+  "current_z_rule_geometrically_supported": false,
+  "n_npz_on_disk": 80,
+  "n_eligible_after_gold_exclusion": 80,
+  "locked_z_pos_if_used": 75,
+  "locked_z_neg_if_used": 5,
+  "pseudo_00081_to_00200_present": false,
+  "locked_75_5_untouched": "/Users/divyabisht/Downloads/Msc Dissertation Divya/dissertation-behaviour-recognition/results/shake/pseudo_labels.csv",
+  "seed": 42,
+  "static_ptp_deg": 8.0,
+  "highconf_percentiles": {
+    "pos": 0.75,
+    "neg": 0.25
+  },
+  "note": "Labels are rank-based on the DEV geometric axis, not gold and not the locked z \u03c4 cut. Locked TEST still used z and is not scored.",
+  "manifests": [
+    {
+      "file": "manifest_40_40.csv",
+      "requested_n_each": 40,
+      "high_confidence": false,
+      "alias": "A_40_40.csv",
+      "status": "wrote",
+      "actual_pos": 40,
+      "actual_neg": 40,
+      "path": "results/shake/pseudo_balanced/manifest_40_40.csv",
+      "leakage": "PASS",
+      "n_static_neg": 0,
+      "n_hard_neg_nod": 14,
+      "n_hard_neg_turn": 4
+    },
+    {
+      "file": "manifest_40_40_highconf.csv",
+      "requested_n_each": 40,
+      "high_confidence": true,
+      "status": "skipped_insufficient_data",
+      "actual_pos": 0,
+      "actual_neg": 0,
+      "path": "",
+      "leakage": ""
+    },
+    {
+      "file": "manifest_80_80.csv",
+      "requested_n_each": 80,
+      "high_confidence": false,
+      "status": "skipped_insufficient_data",
+      "actual_pos": 0,
+      "actual_neg": 0,
+      "path": "",
+      "leakage": ""
+    },
+    {
+      "file": "manifest_80_80_highconf.csv",
+      "requested_n_each": 80,
+      "high_confidence": true,
+      "status": "skipped_insufficient_data",
+      "actual_pos": 0,
+      "actual_neg": 0,
+      "path": "",
+      "leakage": ""
+    },
+    {
+      "file": "manifest_100_100.csv",
+      "requested_n_each": 100,
+      "high_confidence": false,
+      "status": "skipped_insufficient_data",
+      "actual_pos": 0,
+      "actual_neg": 0,
+      "path": "",
+      "leakage": ""
+    },
+    {
+      "file": "manifest_100_100_highconf.csv",
+      "requested_n_each": 100,
+      "high_confidence": true,
+      "status": "skipped_insufficient_data",
+      "actual_pos": 0,
+      "actual_neg": 0,
+      "path": "",
+      "leakage": ""
+    },
+    {
+      "file": "manifest_200_200.csv",
+      "requested_n_each": 200,
+      "high_confidence": false,
+      "status": "skipped_insufficient_data",
+      "actual_pos": 0,
+      "actual_neg": 0,
+      "path": "",
+      "leakage": ""
+    },
+    {
+      "file": "manifest_200_200_highconf.csv",
+      "requested_n_each": 200,
+      "high_confidence": true,
+      "status": "skipped_insufficient_data",
+      "actual_pos": 0,
+      "actual_neg": 0,
+      "path": "",
+      "leakage": ""
+    },
+    {
+      "file": "manifest_20_20_highconf.csv",
+      "requested_n_each": 20,
+      "high_confidence": true,
+      "alias": "A_20_20_hi.csv",
+      "status": "wrote",
+      "actual_pos": 20,
+      "actual_neg": 20,
+      "path": "results/shake/pseudo_balanced/manifest_20_20_highconf.csv",
+      "leakage": "PASS",
+      "n_static_neg": 0,
+      "n_hard_neg_nod": 4,
+      "n_hard_neg_turn": 2
+    }
+  ]
+}

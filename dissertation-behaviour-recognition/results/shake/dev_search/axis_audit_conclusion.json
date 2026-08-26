@@ -1,0 +1,180 @@
+{
+  "split": "DEV",
+  "n_dev": 15,
+  "n_shake_pos": 10,
+  "n_shake_neg": 5,
+  "n_nod_pos": 9,
+  "n_nod_neg": 6,
+  "n_shake_only": 4,
+  "n_nod_only": 3,
+  "plotted_shake_pos": [
+    "gold_004",
+    "gold_010",
+    "gold_011",
+    "gold_012",
+    "gold_001"
+  ],
+  "plotted_shake_neg": [
+    "gold_003",
+    "gold_005",
+    "gold_006",
+    "gold_009",
+    "gold_014"
+  ],
+  "rotation_key": "rotation_xyz",
+  "video_comparison": "No `features/rgb16/*.npz` on this Mac for the plotted gold ids. YouTube URLs are in `data/gold/shake_annotation_sheet.csv` but were not fetched. Anatomical left-right vs nod was **not** watched. On otter, rgb16 crops exist for the locked VideoMAE runs; they were not re-scored here. Video compare needs otter or Mac playback.",
+  "literature_mapping": {
+    "x": "pitch (up-down / nod)",
+    "y": "yaw (left-right / shake)",
+    "z": "roll (tilt)"
+  },
+  "locked_rule_axis": "z",
+  "locked_rule_threshold_deg": 11.150367799838971,
+  "geometric_shake_axis": "y",
+  "geometric_nod_axis": "x",
+  "geometric_shake_axis_from_rule_sep": "y",
+  "geometric_shake_axis_from_1_5hz_band": "y",
+  "current_z_rule_geometrically_supported": false,
+  "pseudo_label_axis": "y",
+  "report_also_axis": "y",
+  "axis_summary": {
+    "x": {
+      "literature": "pitch (nod-like)",
+      "mean_rule_shake_pos": 23.567795756237004,
+      "mean_rule_shake_neg": 31.89418174014512,
+      "mean_rule_nod_pos": 31.418413134636793,
+      "mean_rule_nod_neg": 18.730524675227418,
+      "mean_rule_shake_only": 16.963616511830132,
+      "mean_rule_nod_only": 38.31407556556055,
+      "mean_ptp_shake_pos": 33.721637916564944,
+      "mean_ptp_shake_neg": 39.4768767118454,
+      "mean_band_1_5hz_shake_pos": 1022045.8547731504,
+      "mean_band_1_5hz_shake_neg": 1570548.4573913175,
+      "rule_sep_shake": -8.326385983908118,
+      "band_sep_shake": -548502.6026181671
+    },
+    "y": {
+      "literature": "yaw (shake-like)",
+      "mean_rule_shake_pos": 32.95717429740664,
+      "mean_rule_shake_neg": 25.209844107991962,
+      "mean_rule_nod_pos": 36.13051950270058,
+      "mean_rule_nod_neg": 21.74104799828683,
+      "mean_rule_shake_only": 25.324206792625798,
+      "mean_rule_nod_only": 32.299919906914006,
+      "mean_ptp_shake_pos": 44.55840060710907,
+      "mean_ptp_shake_neg": 33.00177977085114,
+      "mean_band_1_5hz_shake_pos": 1819613.6172659781,
+      "mean_band_1_5hz_shake_neg": 1375977.4825372682,
+      "rule_sep_shake": 7.747330189414676,
+      "band_sep_shake": 443636.13472870993
+    },
+    "z": {
+      "literature": "roll (tilt-like)",
+      "mean_rule_shake_pos": 24.41968675377354,
+      "mean_rule_shake_neg": 17.385324835499453,
+      "mean_rule_nod_pos": 25.660033217777293,
+      "mean_rule_nod_neg": 16.697198792539513,
+      "mean_rule_shake_only": 15.651022720934396,
+      "mean_rule_nod_only": 16.44917410199927,
+      "mean_ptp_shake_pos": 30.87710268497467,
+      "mean_ptp_shake_neg": 24.502879090234636,
+      "mean_band_1_5hz_shake_pos": 605389.6434124503,
+      "mean_band_1_5hz_shake_neg": 428396.50931775884,
+      "rule_sep_shake": 7.034361918274087,
+      "band_sep_shake": 176993.1340946915
+    }
+  },
+  "eyeball_clips": {
+    "gold_001": {
+      "video_id": "IH6KWbTogT0",
+      "youtube_url": "https://www.youtube.com/watch?v=IH6KWbTogT0&t=55",
+      "who_to_watch": "LEFT",
+      "watch_from": "0:55",
+      "watch_until": "1:55",
+      "shake_label": 1,
+      "nod_label": 1
+    },
+    "gold_003": {
+      "video_id": "xkHwlcDSOjc",
+      "youtube_url": "https://www.youtube.com/watch?v=xkHwlcDSOjc&t=150",
+      "who_to_watch": "LEFT",
+      "watch_from": "2:31",
+      "watch_until": "3:31",
+      "shake_label": 0,
+      "nod_label": 0
+    },
+    "gold_004": {
+      "video_id": "RzIxWA-ll8g",
+      "youtube_url": "https://www.youtube.com/watch?v=RzIxWA-ll8g&t=701",
+      "who_to_watch": "LEFT",
+      "watch_from": "11:41",
+      "watch_until": "12:41",
+      "shake_label": 1,
+      "nod_label": 0
+    },
+    "gold_005": {
+      "video_id": "D8K1AAxkg0g",
+      "youtube_url": "https://www.youtube.com/watch?v=D8K1AAxkg0g&t=47",
+      "who_to_watch": "LEFT",
+      "watch_from": "0:48",
+      "watch_until": "1:48",
+      "shake_label": 0,
+      "nod_label": 0
+    },
+    "gold_006": {
+      "video_id": "niEsUBm1l98",
+      "youtube_url": "https://www.youtube.com/watch?v=niEsUBm1l98&t=1622",
+      "who_to_watch": "RIGHT",
+      "watch_from": "27:02",
+      "watch_until": "28:02",
+      "shake_label": 0,
+      "nod_label": 1
+    },
+    "gold_009": {
+      "video_id": "GJtqigeWHV8",
+      "youtube_url": "https://www.youtube.com/watch?v=GJtqigeWHV8&t=123",
+      "who_to_watch": "RIGHT",
+      "watch_from": "2:04",
+      "watch_until": "3:04",
+      "shake_label": 0,
+      "nod_label": 1
+    },
+    "gold_010": {
+      "video_id": "jg6y3LABwTs",
+      "youtube_url": "https://www.youtube.com/watch?v=jg6y3LABwTs&t=88",
+      "who_to_watch": "RIGHT",
+      "watch_from": "1:28",
+      "watch_until": "2:28",
+      "shake_label": 1,
+      "nod_label": 0
+    },
+    "gold_011": {
+      "video_id": "FzCjvLU7u7Q",
+      "youtube_url": "https://www.youtube.com/watch?v=FzCjvLU7u7Q&t=81",
+      "who_to_watch": "LEFT",
+      "watch_from": "1:22",
+      "watch_until": "2:22",
+      "shake_label": 1,
+      "nod_label": 0
+    },
+    "gold_012": {
+      "video_id": "6RDkdbgzeAI",
+      "youtube_url": "https://www.youtube.com/watch?v=6RDkdbgzeAI&t=368",
+      "who_to_watch": "LEFT",
+      "watch_from": "6:08",
+      "watch_until": "7:08",
+      "shake_label": 1,
+      "nod_label": 0
+    },
+    "gold_014": {
+      "video_id": "f6aNo5Mod9I",
+      "youtube_url": "https://www.youtube.com/watch?v=f6aNo5Mod9I&t=52",
+      "who_to_watch": "LEFT",
+      "watch_from": "0:53",
+      "watch_until": "1:53",
+      "shake_label": 0,
+      "nod_label": 1
+    }
+  },
+  "note": "Geometric yaw on GOLD DEV is Euler y. Locked TEST still used z and is not rewritten. New TRAIN 0/1 (results/shake/v2/pseudo_*.csv) is ranked on y, not the frozen z \u03c4."
+}

@@ -1,0 +1,10 @@
+file,requested_n_each,high_confidence,alias,status,actual_pos,actual_neg,path,leakage,n_static_neg,n_hard_neg_nod,n_hard_neg_turn
+manifest_40_40.csv,40,False,A_40_40.csv,wrote,40,40,results/shake/pseudo_balanced/manifest_40_40.csv,PASS,0.0,14.0,4.0
+manifest_40_40_highconf.csv,40,True,,skipped_insufficient_data,0,0,,,,,
+manifest_80_80.csv,80,False,,skipped_insufficient_data,0,0,,,,,
+manifest_80_80_highconf.csv,80,True,,skipped_insufficient_data,0,0,,,,,
+manifest_100_100.csv,100,False,,skipped_insufficient_data,0,0,,,,,
+manifest_100_100_highconf.csv,100,True,,skipped_insufficient_data,0,0,,,,,
+manifest_200_200.csv,200,False,,skipped_insufficient_data,0,0,,,,,
+manifest_200_200_highconf.csv,200,True,,skipped_insufficient_data,0,0,,,,,
+manifest_20_20_highconf.csv,20,True,A_20_20_hi.csv,wrote,20,20,results/shake/pseudo_balanced/manifest_20_20_highconf.csv,PASS,0.0,4.0,2.0

@@ -66,6 +66,13 @@ LOCKED_OUT_DIRS = (
     ROOT / "results" / "shake" / "videomae_finetuned",
     ROOT / "results" / "shake" / "videomae_frozen_head",
     ROOT / "results" / "shake" / "cnn",
+    ROOT / "results" / "shake" / "videomae_finetuned_balanced",
+    ROOT / "results" / "shake" / "videomae_frozen_head_balanced",
+    ROOT / "results" / "shake" / "videomae_finetuned_dev_threshold",
+    ROOT / "results" / "shake" / "fusion_pose_rgb",
+    ROOT / "results" / "shake" / "majority_baseline",
+    ROOT / "results" / "joint" / "videomae_frozen_head",
+    ROOT / "results" / "joint" / "videomae_finetuned",
 )
 LOCKED_SHAKE_RULE_FILES = (
     ROOT / "results" / "shake" / "rule_test_metrics.json",

@@ -53,8 +53,15 @@ def resample_seq(x: np.ndarray, t: int = SEQ_LEN) -> np.ndarray:
     return np.stack(cols, axis=1).astype(np.float32)
 
 
-def build_matrix(paths: list[Path], mode: str, mean: np.ndarray | None = None, std: np.ndarray | None = None):
+def build_matrix(
+    paths: list[Path],
+    mode: str,
+    mean: np.ndarray | None = None,
+    std: np.ndarray | None = None,
+    seq_len: int = SEQ_LEN,
+):
     xs = []
+    t = int(seq_len) if seq_len else SEQ_LEN
     for p in paths:
         z = load_npz(p)
         rot = np.asarray(z["rotation_xyz"], dtype=float)
@@ -68,7 +75,7 @@ def build_matrix(paths: list[Path], mode: str, mean: np.ndarray | None = None, s
             feat = np.concatenate([rot, drot], axis=1)
         else:
             feat = np.concatenate([rot, drot, expr], axis=1)
-        feat = resample_seq(feat)
+        feat = resample_seq(feat, t=t)
         xs.append(feat)
     X = np.stack(xs).astype(np.float32)
     if mean is None:

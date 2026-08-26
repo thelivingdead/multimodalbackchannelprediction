@@ -216,6 +216,75 @@ def test_majority_always_positive_from_gold() -> None:
     assert abs(mn["f1"] - 0.8) < 1e-9
 
 
+def test_shake_collapse_diagnostics() -> None:
+    import numpy as np
+
+    from src.clip_metrics import collapse_diagnostics
+
+    always1 = collapse_diagnostics(np.ones(15, dtype=int), tn=0)
+    assert always1["collapse"] is True
+    assert always1["predicted_positive_rate"] == 1.0
+    mixed = collapse_diagnostics(np.array([1] * 10 + [0] * 5), tn=2)
+    assert mixed["predicted_positive_rate"] == 10 / 15
+    # 10/15 ≈ 0.667, not collapse by rate; TN=2 so not collapse
+    assert mixed["collapse"] is False
+    high_rate = collapse_diagnostics(np.array([1] * 13 + [0] * 2), tn=2)
+    assert high_rate["predicted_positive_rate"] > 0.85
+    assert high_rate["collapse"] is True
+
+
+def test_choose_dev_threshold_dev_only() -> None:
+    import ast
+    import inspect
+
+    import numpy as np
+
+    from src.clip_metrics import choose_dev_threshold
+
+    sig = inspect.signature(choose_dev_threshold)
+    assert list(sig.parameters) == ["y_true", "prob", "criterion"]
+
+    y = np.array([0, 0, 1, 1])
+    thr, m = choose_dev_threshold(y, np.array([0.1, 0.1, 0.9, 0.9]), criterion="f1")
+    assert m["f1"] == 1.0
+    assert m["tn"] == 2
+    assert 0.2 <= thr <= 0.8
+
+    _, m_all = choose_dev_threshold(y, np.full(4, 0.9), criterion="f1")
+    assert m_all["tn"] == 0
+    assert m_all["recall"] == 1.0
+
+    pose_src = Path(__file__).resolve().parents[1] / "src" / "pose_cnn.py"
+    tree = ast.parse(pose_src.read_text())
+    fn = next(
+        n
+        for n in tree.body
+        if isinstance(n, ast.FunctionDef) and n.name == "build_matrix"
+    )
+    assert "seq_len" in {a.arg for a in fn.args.args}
+
+
+def test_dev_search_dir_is_unlocked() -> None:
+    root = Path(__file__).resolve().parents[1]
+    sys.path.insert(0, str(root / "scripts"))
+    import check_split_leakage as gate
+
+    gate.assert_unlocked_out_dir(
+        root / "results" / "shake" / "dev_balanced" / "cnn_A_40_40"
+    )
+    gate.assert_unlocked_out_dir(
+        root / "results" / "shake" / "dev_search" / "cnn_MAX_all"
+    )
+    try:
+        gate.assert_unlocked_out_dir(
+            root / "results" / "shake" / "videomae_frozen_head_balanced"
+        )
+    except SystemExit:
+        pass
+    else:
+        raise AssertionError("TEST-scored balanced frozen dir must stay locked")
+
+
 def test_shake_videomae_leakage_gate() -> None:
     root = Path(__file__).resolve().parents[1]
     sys.path.insert(0, str(root / "scripts"))
@@ -226,6 +295,62 @@ def test_shake_videomae_leakage_gate() -> None:
         pseudo_labels=root / "results" / "shake" / "pseudo_labels.csv",
         labelled_train_only=True,
     )
+
+
+def _ast_main_arg_names(path: Path) -> set[str]:
+    import ast
+
+    tree = ast.parse(path.read_text())
+    mains = [
+        node
+        for node in tree.body
+        if isinstance(node, ast.FunctionDef) and node.name == "main"
+    ]
+    assert mains, f"no main() in {path}"
+    fn = mains[0]
+    names = {arg.arg for arg in fn.args.args}
+    names.update(arg.arg for arg in fn.args.kwonlyargs)
+    return names
+
+
+def test_shake_dev_wrappers_use_cli_not_kwargs() -> None:
+    """DEV wrappers must not pass kwargs the nod trainer may reject."""
+    root = Path(__file__).resolve().parents[1]
+    scripts = root / "scripts"
+    head = (scripts / "train_videomae_shake_head_dev.py").read_text()
+    ft = (scripts / "finetune_videomae_shake_dev.py").read_text()
+    cnn = (scripts / "train_shake_cnn_dev.py").read_text()
+    sh = (scripts / "run_shake_dev_search.sh").read_text()
+    assert "score_test=" not in head
+    assert "score_test=" not in ft
+    assert "select_dev=" not in head.split("train_head")[-1]
+    assert "--dev-only" in head
+    assert "--dev-only" in ft
+    assert "--dev-only" in cnn
+    assert "scripts/run_shake_dev_search.py" not in sh
+    assert "train_shake_cnn_dev.py" in sh
+    assert "train_videomae_shake_head_dev.py" in sh
+    assert "finetune_videomae_shake_dev.py" in sh
+    assert "compare_shake_dev_search.py" in sh
+
+
+def test_videomae_and_cnn_main_accept_dev_only() -> None:
+    root = Path(__file__).resolve().parents[1]
+    scripts = root / "scripts"
+    for rel, needed in (
+        (
+            "train_videomae_head.py",
+            {"argv", "gold_csv", "dev_only", "score_test", "select_dev", "seed"},
+        ),
+        (
+            "finetune_videomae.py",
+            {"argv", "gold_csv", "dev_only", "score_test", "select_dev", "seed"},
+        ),
+        ("train_shake_cnn.py", {"argv"}),
+    ):
+        names = _ast_main_arg_names(scripts / rel)
+        missing = needed - names
+        assert not missing, f"{rel} main() missing {sorted(missing)}"
 
 
 def test_save_publication_figure_writes_png_and_jpg(tmp_path: Path) -> None:

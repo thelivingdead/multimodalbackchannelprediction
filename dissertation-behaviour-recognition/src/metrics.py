@@ -15,6 +15,12 @@ from sklearn.metrics import (
 )
 
 from .events import Event, greedy_match
+from .clip_metrics import (  # noqa: F401
+    COLLAPSE_POS_RATE,
+    always_predict,
+    choose_dev_threshold,
+    collapse_diagnostics,
+)
 
 
 def binary_metrics(y_true: np.ndarray, y_pred: np.ndarray) -> dict:

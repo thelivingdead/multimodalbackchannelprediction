@@ -8,8 +8,8 @@ Never scores GOLD TEST. Gold labels: ``shake_annotation_sheet.csv`` /
 ::
 
     OMP_NUM_THREADS=1 python scripts/train_shake_cnn_dev.py \\
-        --pseudo-labels results/shake/pseudo_balanced/manifest_40_40.csv \\
-        --out-dir results/shake/dev_search/cnn_40_40 \\
+        --pseudo-labels results/shake/pseudo_balanced/A_40_40.csv \\
+        --out-dir results/shake/dev_balanced/cnn_A_40_40 \\
         --select-dev balanced_accuracy
 """
 from __future__ import annotations

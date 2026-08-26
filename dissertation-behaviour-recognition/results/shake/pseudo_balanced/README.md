@@ -42,6 +42,6 @@ Ranked among the non-positive remainder:
 Leakage: `python scripts/check_split_leakage.py --gold-csv data/gold/shake_annotation_sheet.csv --pseudo-labels <manifest>`.
 No dyad column exists on gold/pseudo; disjointness is by `video_id`.
 
-Train with `--dev-only` / `--no-test` into `results/shake/dev_search/...`.
+Train with `--dev-only` / `--no-test` into `results/shake/dev_balanced/<config>/`.
 Do not score GOLD TEST. Student git-pushes themselves.
 

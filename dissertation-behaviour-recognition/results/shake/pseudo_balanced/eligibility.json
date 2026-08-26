@@ -119,5 +119,105 @@
       "n_hard_neg_nod": 4,
       "n_hard_neg_turn": 2
     }
-  ]
+  ],
+  "sizes": {
+    "A_40_40.csv": {
+      "file": "manifest_40_40.csv",
+      "requested_n_each": 40,
+      "high_confidence": false,
+      "alias": "A_40_40.csv",
+      "status": "wrote",
+      "actual_pos": 40,
+      "actual_neg": 40,
+      "path": "results/shake/pseudo_balanced/manifest_40_40.csv",
+      "leakage": "PASS",
+      "n_static_neg": 0,
+      "n_hard_neg_nod": 14,
+      "n_hard_neg_turn": 4
+    },
+    "manifest_40_40_highconf.csv": {
+      "file": "manifest_40_40_highconf.csv",
+      "requested_n_each": 40,
+      "high_confidence": true,
+      "status": "skipped_insufficient_data",
+      "actual_pos": 0,
+      "actual_neg": 0,
+      "path": "",
+      "leakage": ""
+    },
+    "manifest_80_80.csv": {
+      "file": "manifest_80_80.csv",
+      "requested_n_each": 80,
+      "high_confidence": false,
+      "status": "skipped_insufficient_data",
+      "actual_pos": 0,
+      "actual_neg": 0,
+      "path": "",
+      "leakage": ""
+    },
+    "manifest_80_80_highconf.csv": {
+      "file": "manifest_80_80_highconf.csv",
+      "requested_n_each": 80,
+      "high_confidence": true,
+      "status": "skipped_insufficient_data",
+      "actual_pos": 0,
+      "actual_neg": 0,
+      "path": "",
+      "leakage": ""
+    },
+    "manifest_100_100.csv": {
+      "file": "manifest_100_100.csv",
+      "requested_n_each": 100,
+      "high_confidence": false,
+      "status": "skipped_insufficient_data",
+      "actual_pos": 0,
+      "actual_neg": 0,
+      "path": "",
+      "leakage": ""
+    },
+    "manifest_100_100_highconf.csv": {
+      "file": "manifest_100_100_highconf.csv",
+      "requested_n_each": 100,
+      "high_confidence": true,
+      "status": "skipped_insufficient_data",
+      "actual_pos": 0,
+      "actual_neg": 0,
+      "path": "",
+      "leakage": ""
+    },
+    "manifest_200_200.csv": {
+      "file": "manifest_200_200.csv",
+      "requested_n_each": 200,
+      "high_confidence": false,
+      "status": "skipped_insufficient_data",
+      "actual_pos": 0,
+      "actual_neg": 0,
+      "path": "",
+      "leakage": ""
+    },
+    "manifest_200_200_highconf.csv": {
+      "file": "manifest_200_200_highconf.csv",
+      "requested_n_each": 200,
+      "high_confidence": true,
+      "status": "skipped_insufficient_data",
+      "actual_pos": 0,
+      "actual_neg": 0,
+      "path": "",
+      "leakage": ""
+    },
+    "A_20_20_hi.csv": {
+      "file": "manifest_20_20_highconf.csv",
+      "requested_n_each": 20,
+      "high_confidence": true,
+      "alias": "A_20_20_hi.csv",
+      "status": "wrote",
+      "actual_pos": 20,
+      "actual_neg": 20,
+      "path": "results/shake/pseudo_balanced/manifest_20_20_highconf.csv",
+      "leakage": "PASS",
+      "n_static_neg": 0,
+      "n_hard_neg_nod": 4,
+      "n_hard_neg_turn": 2
+    }
+  }
 }

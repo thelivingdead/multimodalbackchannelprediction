@@ -114,7 +114,6 @@ def chosen_axes() -> tuple[str, str, dict]:
     if shake_ax not in AXIS_NAMES or nod_ax not in AXIS_NAMES:
         raise SystemExit(f"STOP: bad audit axes shake={shake_ax} nod={nod_ax}")
     return shake_ax, nod_ax, audit
-    return shake_ax, nod_ax, audit
 
 
 def score_pool() -> pd.DataFrame:
@@ -309,10 +308,10 @@ def main() -> None:
         f"locked TEST rule: axis {locked_ax} τ={locked_tau:.3f}° (not rewritten)\n"
         f"new TRAIN ranking axis: {shake_ax} (hard-neg nod axis {nod_ax})"
     )
-    if not AUDIT.exists():
+    if not any(p.exists() for p in AUDIT_CANDIDATES):
         print(
-            f"NOTE: {AUDIT} missing; defaulting ranking axis to {shake_ax}. "
-            "Run scripts/audit_shake_axis_dev.py first on otter/Mac."
+            "NOTE: axis_audit_conclusion.json missing; defaulting ranking axis "
+            f"to {shake_ax}. Run scripts/audit_shake_axis_dev.py first."
         )
     if shake_ax == "z":
         print(
@@ -430,6 +429,7 @@ def main() -> None:
             "not the locked z τ cut. Locked TEST still used z and is not scored."
         ),
         "manifests": written,
+        "sizes": {str(r.get("alias") or r.get("file")): r for r in written},
     }
     payload = json.dumps(labelling, indent=2) + "\n"
     (OUT / "labelling.json").write_text(payload)
@@ -484,7 +484,7 @@ def main() -> None:
         "data/gold/shake_annotation_sheet.csv --pseudo-labels <manifest>`.",
         "No dyad column exists on gold/pseudo; disjointness is by `video_id`.",
         "",
-        "Train with `--dev-only` / `--no-test` into `results/shake/dev_search/...`.",
+        "Train with `--dev-only` / `--no-test` into `results/shake/dev_balanced/<config>/`.",
         "Do not score GOLD TEST. Student git-pushes themselves.",
         "",
     ]

@@ -2,8 +2,22 @@
   "dev_n_pos": 10,
   "dev_n_neg": 5,
   "always_shake_dev_f1": 0.8,
-  "best_eligible": null,
-  "best_reported": null,
-  "note": "no search runs",
+  "best_eligible": "search:cnn_40_40",
+  "best_reported": {
+    "system": "search:cnn_40_40",
+    "f1": 0.818,
+    "precision": 0.75,
+    "recall": 0.9,
+    "balanced_accuracy": 0.65,
+    "tp": 9,
+    "fp": 3,
+    "tn": 2,
+    "fn": 1,
+    "collapse": false,
+    "train_pos": 40,
+    "train_neg": 40,
+    "path": "results/shake/dev_search/cnn_40_40/metrics_dev.json"
+  },
+  "note": "Highest DEV F1 among non-collapsed search runs (comparison_dev.md). GOLD TEST was not scored.",
   "test_scored": false
 }

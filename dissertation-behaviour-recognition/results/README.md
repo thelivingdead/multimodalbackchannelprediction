@@ -62,6 +62,10 @@ Figures live in the top-level `figures/` directory (see its own README), produce
 
 `best_model.pt` is gitignored (~345 MB). Fusion was not run.
 
+## Head-shake DEV-only search
+
+DEV comparison (GOLD TEST not scored): `shake/dev_search/` (`comparison_dev.md`; best non-collapsed run `cnn_40_40`, DEV F1 0.818). Locked shake TEST remains pose rule F1 0.70 under `shake/`.
+
 ## Reproducing vs. re-scoring
 
 The saved TEST artifacts above are canonical. Re-running

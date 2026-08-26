@@ -56,6 +56,21 @@ Late fusion F1 **0.70** equals the pose rule. Joint two-head TEST: shake F1 **0.
 
 Locked json: `results/shake/` and `results/joint/`.
 
+## Shake DEV-only search (TEST not scored)
+
+GOLD TEST was scored **once** and is **locked**. This search used GOLD DEV only (`test_scored: false`). It is **not** a replacement TEST number. Published shake TEST headline remains **pose rule F1 0.70**. DEV CNN 40/40 is a new protocol result (balanced pseudo-labels).
+
+Source: `results/shake/dev_search/comparison_dev.md`. Best config: pose 1D CNN, 40/40, `results/shake/dev_search/cnn_40_40`. DEV n=15 (10 shake+ / 5 shake−). Always-shake on DEV is F1 **0.80**. Frozen VideoMAE 40/40 was conservative (F1 0.462). Fine-tune last-4 40/40 (F1 0.706) did not beat the CNN on DEV.
+
+| method | TRAIN | P | R | F1 | confusion | collapse |
+| --- | --- | --- | --- | --- | --- | --- |
+| Pose 1D CNN (best DEV) | 40/40 | 0.75 | 0.90 | **0.818** | TP 9, FP 3, TN 2, FN 1 | false |
+| Always-predict-shake | — | 0.67 | 1.00 | **0.80** | TP 10, FP 5, TN 0, FN 0 | true |
+| Frozen VideoMAE head | 40/40 | 1.00 | 0.30 | **0.462** | TP 3, FP 0, TN 5, FN 7 | false |
+| Fine-tuned VideoMAE (last 4 blocks) | 40/40 | 0.86 | 0.60 | **0.706** | TP 6, FP 1, TN 4, FN 4 | false |
+
+After `as_euler('xyz')`: **x** = pitch/nod, **y** = yaw/shake, **z** = roll. Locked TEST rule used **z** (τ≈11.15°); new TRAIN ranks on **y**. Do not retune or rescore locked GOLD TEST. Do not `--force` existing `dev_search/` dirs. Axis audit: `results/shake/dev_search/axis_audit.md` and `figures/shake_axis_audit/`.
+
 ## Layout
 
 ```

@@ -42,39 +42,36 @@ New ranking axis **y** (not frozen-z 0/1). Frozen-z on this pool would still be 
 
 ## Best DEV F1 of *new* models
 
-**Not trained yet.** Mac has numpy/pandas/matplotlib only (no torch, no VideoMAE embeddings, no rgb16). No `dev_search/*/dev_metrics.json`.
+Quoted from `comparison_dev.md` / `cnn_40_40/metrics_dev.json`. GOLD TEST was **not** scored (`test_scored: false`).
 
-Class collapse is **not yet shown to be fixed** in a trained model. The 40/40 y-ranking + hard negatives is the intended fix; otter must train to measure it.
+| system | P | R | F1 | bAcc | TP FP TN FN | collapse |
+| --- | ---: | ---: | ---: | ---: | --- | --- |
+| search:cnn_40_40 | 0.750 | 0.900 | **0.818** | 0.650 | 9 3 2 1 | False |
+| always-shake baseline (DEV) | 0.667 | 1.000 | 0.800 | 0.500 | 10 5 0 0 | True |
+| search:vmae_frozen_40_40 | 1.000 | 0.300 | 0.462 | 0.650 | 3 0 5 7 | False |
+| search:vmae_ft4_40_40 | 0.857 | 0.600 | 0.706 | 0.700 | 6 1 4 4 | False |
+
+**search:cnn_40_40** is the best non-collapsed search run. Frozen VideoMAE 40/40 is conservative (R 0.30). Fine-tune last-4 40/40 (F1 0.706) did not beat the CNN on DEV. `cnn_20_20_highconf` DEV F1 0.870 is collapsed (pred+ 0.867) and is not eligible.
 
 ## Best configuration
 
-**Not picked** (no new DEV metrics). Intended protocol when otter finishes:
+**search:cnn_40_40** — pose 1D CNN, 40/40 balanced pseudo, seed 42.
 
-- out-dir under `results/shake/dev_search/`
-- train size 40/40 (or 80/80 if extra npz)
-- highconf vs all chosen on DEV balanced accuracy (not F1)
-- frozen MLP vs last-4-block FT
-- ranking axis **y**
-- seed **42**
-- threshold: DEV `balanced_accuracy` sweep
-- **do not score TEST**
+- path: `results/shake/dev_search/cnn_40_40/metrics_dev.json`
+- DEV F1 **0.818** (P 0.750, R 0.900, bAcc 0.650; TP9 FP3 TN2 FN1)
+- collapse **false**; `test_scored` **false**
+- ranking axis **y** (new TRAIN); locked TEST rule stays **z**
+- **do not score TEST**; do not `--force` this out-dir
 
-Reject if DEV pred+ ≥ 13/15 or TN=0 (always-1 F1 0.80 is not a win).
+Always-shake on this DEV split is F1 **0.80** (10 pos / 5 neg) and is not a trained win.
 
 ## Recommend fresh holdout
 
 **Yes — annotate 10–15 new untouched clips** (new `video_id`s, not in the gold 30). DEV n=15 is noisy; GOLD TEST has already been seen; 75/5 collapse is the failure mode.
 
-## Next command (otter95)
+## Next command
 
-```bash
-cd ~/multimodalbackchannelprediction/dissertation-behaviour-recognition
-export OMP_NUM_THREADS=1
-PY=/scratch/db01550/venv/bin/python
-bash scripts/run_shake_dev_search.sh
-```
-
-Or the commands in `results/shake/dev_search/OTTER_COMMANDS.md`. If `features/pseudo/pseudo_00081.npz`… exist, the builder will add 80/80 (and 100/100 if 200 clips). Then `scripts/compare_shake_dev_search.py`. **Do not score TEST.**
+DEV search already wrote `results/shake/dev_search/` (`comparison_dev.md`). Do **not** `--force` existing metrics dirs. Do **not** rescore GOLD TEST.
 
 ## Files created / updated (scripts)
 
@@ -92,7 +89,7 @@ Or the commands in `results/shake/dev_search/OTTER_COMMANDS.md`. If `features/ps
 ## Artefacts
 
 - `figures/shake_axis_audit/`
-- `results/shake/dev_search/axis_audit.md`, `axis_audit_conclusion.json`, `comparison_dev.md`, `summary.csv`, `OTTER_COMMANDS.md`
+- `results/shake/dev_search/axis_audit.md`, `axis_audit_conclusion.json`, `comparison_dev.md`, `summary.csv`, `best_config.json`, `cnn_40_40/metrics_dev.json`
 - `results/shake/pseudo_balanced/manifest_40_40.csv`, `manifest_20_20_highconf.csv`
 
 Locked nod and locked shake TEST dirs were not written.

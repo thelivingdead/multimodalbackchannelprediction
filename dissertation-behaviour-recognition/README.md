@@ -1,10 +1,20 @@
-# Weakly supervised head-nod recognition
+# Predicting Backchannel Events from Multimodal Conversational Signals
 
-MSc dissertation package for **head-nod recognition** on Columbia RealTalk (Geng et al., 2023), plus a locked **head-shake** experiment on the same gold clips.
+MSc dissertation package — Divya Bisht, Institute for People-Centred AI, University of Surrey, 2026.
 
-**Head nod** = the behaviour (gold label 1/0). **Head shake** = `shake_label` on the same 30 windows. **Pose** = EMOCA head rotation used by the rule and 1D CNN. **RGB** = 16×224×224 face crops used by VideoMAE. EMOCA/FLAME were **used, not trained**.
+Listener **head-nod** and **head-shake** recognition on Columbia RealTalk (Geng et al., 2023). The GitHub front page is the repository root [`README.md`](../README.md).
 
-Synthetic `pilot_*` clips are not RealTalk results. Seven-class backchannels were **not** run. Shake late fusion is in the table below.
+The task is **supervised prediction of the backchannel label associated with a conversational window**, not anticipatory forecasting from pre-event context. **Pose and RGB are visual representation experiments** (two encodings of the same camera), not two sensory modalities. Audio/fusion is **GOLD DEV only**. Text/transcript models are future work.
+
+**Nod** = gold 1/0. **Shake** = `shake_label` on the same 30 windows. **Pose** = EMOCA Euler (used, not trained). **RGB** = 16×224×224 face crops → VideoMAE.
+
+![Nod TEST F1](figures/paper/nod_test_f1.png)
+
+**Nod headline (TEST n = 15, once):** fine-tuned VideoMAE last 4 blocks, 80 TRAIN, **F1 0.82**.
+
+![Shake TEST F1](figures/paper/shake_test_f1.png)
+
+**Shake headline (TEST n = 15, once):** pose rule axis **z**, **F1 0.70** (always-shake **0.64**).
 
 ## Labels and protocol
 
@@ -32,13 +42,13 @@ Master file: `results/tables/main_results.md` (with bootstrap CIs).
 | Fine-tuned VideoMAE (last 4/12 blocks) | 80 | 0.75 | 0.90 | **0.82** | [0.60, 0.96] |
 | Fine-tuned VideoMAE (scaling) | 200 | 0.67 | 0.60 | **0.63** | [0.31, 0.84] |
 
-Canonical RGB result: **80-clip fine-tune, F1 0.82**. Do not headline DEV F1. Do not claim statistical significance (CIs overlap). **Nod headline: RGB fine-tune F1 0.82.**
+Canonical RGB result: **80-clip fine-tune, F1 0.82**. Pose and RGB in this table are **visual representations of the same video**, not an audio+vision multimodal result. Do not headline DEV F1. Do not claim statistical significance (CIs overlap). **Nod headline: RGB fine-tune F1 0.82.**
 
 ## Head-shake TEST (n = 15, scored once)
 
 Same 30 gold videos; `shake_label`; TEST scored **once**; DEV tuning only. TRAIN = frozen-rule **pseudo-labels** (**75/5**), not gold. No shake CIs.
 
-**Shake headline: pose rule F1 0.70.** RGB did not beat pose. VideoMAE F1 **0.60** is below always-predict-shake **0.64**.
+**Shake headline: pose rule F1 0.70.** RGB did not beat pose. VideoMAE F1 **0.60** is below the trivial **always-predict-shake** baseline **0.64**. **AXIS ISSUE:** after `as_euler('xyz')`, **x** = pitch/nod, **y** = yaw/shake, **z** = roll; locked TEST used **z**; new TRAIN ranks **y**. Do not rescore TEST. Table: `results/tables/shake_results.md`.
 
 | method | TRAIN | P | R | F1 |
 | --- | --- | --- | --- | --- |
@@ -58,7 +68,7 @@ Locked json: `results/shake/` and `results/joint/`.
 
 ## Shake DEV-only search (TEST not scored)
 
-GOLD TEST was scored **once** and is **locked**. This search used GOLD DEV only (`test_scored: false`). It is **not** a replacement TEST number. Published shake TEST headline remains **pose rule F1 0.70**. DEV CNN 40/40 is a new protocol result (balanced pseudo-labels).
+GOLD TEST was scored **once** and is **locked**. This search used GOLD DEV only (`test_scored: false`). It is **not** a replacement TEST number. Published shake TEST headline remains **pose rule F1 0.70**. DEV CNN 40/40 is a new protocol result (balanced pseudo-labels), reported next to the trivial **always-shake DEV** baseline (F1 **0.80**).
 
 Source: `results/shake/dev_search/comparison_dev.md`. Best config: pose 1D CNN, 40/40, `results/shake/dev_search/cnn_40_40`. DEV n=15 (10 shake+ / 5 shake−). Always-shake on DEV is F1 **0.80**. Frozen VideoMAE 40/40 was conservative (F1 0.462). Fine-tune last-4 40/40 (F1 0.706) did not beat the CNN on DEV.
 
@@ -99,8 +109,11 @@ tests/       split/label invariants
 | `scripts/scale_pseudo_pool_200.py` | 80 → 200 pseudo pool (does not overwrite n=80) |
 | `scripts/bootstrap_f1.py` | TEST-only 95% CIs (never full `predictions.csv`) |
 | `scripts/make_main_results.py` | Writes `results/tables/main_results.md` |
+| `scripts/audio_alignment_check.py` | Step A: 3–5 nod windows, source A/V check (DEV; refuses TEST) |
+| `scripts/train_audio_baseline_dev.py` | Step B: audio LR on TRAIN + GOLD DEV (refuses TEST) |
+| `scripts/train_av_fusion_dev.py` | Step C: frozen VideoMAE + audio concat, GOLD DEV only |
 
-Numbered `scripts/15_*.py` / `16_*.py` / `17_*.py` are **planning stubs**, not the executed VideoMAE runs.
+Otter audio commands: `AUDIO_DEV.md`. Numbered `scripts/15_*.py` / `16_*.py` / `17_*.py` are **planning stubs**, not the executed VideoMAE runs.
 
 Large binaries stay off git: videos, `.pkl`, `best_model.pt`, RGB `.npz`, `.venv`.
 
@@ -115,7 +128,7 @@ Large binaries stay off git: videos, `.pkl`, `best_model.pt`, RGB `.npz`, `.venv
 7. Fine-tune last 4 encoder blocks (otter95, `/scratch` CUDA) — TEST F1 **0.82** (canonical RGB)
 8. Same recipe, TRAIN = 200 — TEST F1 **0.63** (ablation; n=80 artefacts not overwritten)
 
-Do not train or retune on GOLD TEST. Do not pass `--force` on a finished VideoMAE run.
+Do not train or retune on GOLD TEST. Do not pass `--force` on a finished VideoMAE run. Audio/fusion scripts default to DEV-only and refuse TEST scoring.
 
 ## Audits
 

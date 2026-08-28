@@ -1,84 +1,110 @@
-# Multimodal Backchannel Prediction
-## Head-nod recognition on RealTalk (plus locked head-shake)
+# Predicting Backchannel Events from Multimodal Conversational Signals
 
-MSc dissertation code and gold annotations for **weakly supervised head-nod recognition** on Columbia RealTalk (Geng et al., 2023), with a second locked experiment on **head shake**.
+MSc dissertation — Divya Bisht  
+Institute for People-Centred AI, University of Surrey, 2026
 
-The primary **task** is detecting a listener **head nod**. Head **shake** uses the **same 30 gold videos** and a separate `shake_label`. The main pose input is official **EMOCA** 3D head rotation **x, y, z** (FLAME face parameters shipped with RealTalk). EMOCA and FLAME were **not trained** in this project: the published tracks were streamed and used as features. **RGB** is the other input (16-frame face crops → VideoMAE). TRAIN uses automatic labels from a frozen pose rule (**not gold**); DEV/TEST are 30 human labels. TEST is scored once per model; DEV is tuning only.
+Code, gold labels, locked metrics, and figures for **listener head-nod and head-shake recognition** on Columbia RealTalk (Geng et al., 2023).
 
-## Headline TEST results (n = 15, scored once)
+The package that contains the study is [`dissertation-behaviour-recognition/`](dissertation-behaviour-recognition/).
 
-Citable table: `dissertation-behaviour-recognition/results/tables/main_results.md`.
+## Overview
 
-| method | input | TRAIN | P | R | F1 | 95% CI |
-| --- | --- | --- | --- | --- | --- | --- |
-| Pose rule (frozen amplitude) | EMOCA/FLAME rotation x, y, z (rule uses x) | — | 0.64 | 0.70 | **0.67** | [0.35, 0.87] |
-| Pose 1D CNN (xyz + derivatives) | EMOCA/FLAME rotation x, y, z + derivatives | 80 pseudo | 0.70 | 0.70 | **0.70** | [0.40, 0.89] |
-| Frozen VideoMAE head | RGB 16-frame face crops | 80 pseudo | 0.55 | 0.60 | **0.57** | [0.24, 0.75] |
-| Fine-tuned VideoMAE (last 4 blocks) | RGB 16-frame face crops | 80 pseudo | 0.75 | 0.90 | **0.82** | [0.60, 0.96] |
-| Fine-tuned VideoMAE (scaling) | RGB 16-frame face crops | 200 pseudo | 0.67 | 0.60 | **0.63** | [0.31, 0.84] |
+This repository is a systematic study of **visual representations** (3D head pose and RGB video) for binary listener backchannel recognition, with an exploratory **audio-visual** extension on development data only.
 
-Canonical RGB result is **n = 80, F1 0.82**. n = 200 is a scaling ablation (point estimate fell). All CIs overlap at n = 15 — no significance claims. The EMOCA/FLAME results are the pose rule (**F1 0.67**) and the pose 1D CNN (**F1 0.70**). **Nod headline: RGB fine-tune F1 0.82.**
+- **Task.** Supervised prediction of the backchannel label associated with a conversational window (~60 s). This is **not** anticipatory forecasting from pre-event context.
+- **Behaviours.** Head **nod** (primary) and head **shake** (same 30 gold windows, separate `shake_label`).
+- **Visual representations.** EMOCA/FLAME Euler pose (used, not trained) and 16-frame RGB face crops → VideoMAE. These are two encodings of the **same camera**, not two sensory modalities.
+- **Protocol.** TRAIN = frozen-rule pseudo-labels. DEV = 15 gold windows (tuning). TEST = 15 gold windows, scored **once**. Metric: clip-level precision, recall, F1.
+- **Audio.** Mixed conversation soundtrack, GOLD DEV only. Text/transcript models are future work.
 
-## Head-shake TEST (n = 15, scored once)
+## Results
 
-Same 30 videos / 15–15 splits; gold is `shake_label` in `dissertation-behaviour-recognition/data/gold/shake_annotation_sheet.csv`. No shake CIs (none computed).
+### Head-nod TEST (n = 15, scored once)
 
-**Shake headline: pose rule F1 0.70.** RGB did not beat pose. Shake TRAIN is **75/5** frozen-rule pseudo-labels. Fine-tuned VideoMAE **F1 0.60** is below always-predict-shake **F1 0.64**.
+Canonical result: **fine-tuned VideoMAE, last 4 blocks, 80 pseudo TRAIN, F1 = 0.82**.
 
-| method | input | TRAIN | P | R | F1 |
-| --- | --- | --- | --- | --- | --- |
-| Pose rule (axis z, τ≈11.15°) | EMOCA/FLAME rotation x, y, z (rule uses z) | — | 0.54 | 1.00 | **0.70** |
-| Pose 1D CNN (xyz + derivatives) | EMOCA/FLAME rotation x, y, z + derivatives | 80 (75/5) | 0.47 | 1.00 | **0.64** |
-| Always-predict-shake | — | — | 0.47 | 1.00 | **0.64** |
-| Frozen VideoMAE head | RGB 16-frame face crops | 80 (75/5) | 0.46 | 0.86 | **0.60** |
-| Frozen VideoMAE head (balanced TRAIN) | RGB 16-frame face crops | 10 | 0.47 | 1.00 | **0.64** |
-| Fine-tuned VideoMAE (last 4 blocks) | RGB 16-frame face crops | 80 (75/5) | 0.46 | 0.86 | **0.60** |
-| Fine-tuned VideoMAE (balanced TRAIN) | RGB 16-frame face crops | 10 | 0.50 | 0.86 | **0.63** |
-| Fine-tuned VideoMAE (DEV-threshold protocol) | RGB 16-frame face crops | 80 (75/5) | 0.60 | 0.43 | **0.50** |
-| Late fusion pose + RGB | pose-rule scores + VideoMAE probs | — | 0.54 | 1.00 | **0.70** |
+![Nod GOLD TEST F1](dissertation-behaviour-recognition/figures/paper/nod_test_f1.png)
 
-Late fusion matches the pose rule (F1 **0.70**). Joint two-head VideoMAE (TEST once per head): shake F1 **0.64** (always-shake, TP 7 FP 8); nod F1 **0.70** (does not beat dedicated nod **0.82**). Joint frozen-head: nod F1 **0.53** (P 0.56 R 0.50), shake F1 **0.67** (P 0.50 R 1.00).
+| Method | Input | TRAIN | P | R | F1 |
+| --- | --- | --- | ---: | ---: | ---: |
+| Pose rule (axis **x**, τ = 16.35°) | EMOCA Euler | — | 0.64 | 0.70 | **0.67** |
+| Pose 1D CNN | Euler + derivatives | 80 | 0.70 | 0.70 | **0.70** |
+| Frozen VideoMAE head | RGB 16-frame crops | 80 | 0.55 | 0.60 | **0.57** |
+| Fine-tuned VideoMAE (last 4 blocks) | RGB 16-frame crops | 80 | 0.75 | 0.90 | **0.82** |
+| Fine-tuned VideoMAE (scaling) | RGB 16-frame crops | 200 | 0.67 | 0.60 | **0.63** |
 
-## Shake DEV-only search (TEST not scored)
+95% bootstrap CIs overlap at n = 15 (see `dissertation-behaviour-recognition/results/tables/main_results.md`). No significance claims.
 
-GOLD TEST was scored **once** and is **locked**. This search used GOLD DEV only (`test_scored: false`). It is **not** a replacement TEST number. Published shake TEST headline remains **pose rule F1 0.70**. DEV CNN 40/40 is a new protocol result (balanced pseudo-labels).
+### Head-shake TEST (n = 15, scored once)
 
-Source: `dissertation-behaviour-recognition/results/shake/dev_search/comparison_dev.md`. Best config: pose 1D CNN, 40/40, `results/shake/dev_search/cnn_40_40`. DEV n=15 (10 shake+ / 5 shake−). Always-shake on DEV is F1 **0.80**. Frozen VideoMAE 40/40 was conservative (F1 0.462). Fine-tune last-4 40/40 (F1 0.706) did not beat the CNN on DEV.
+Canonical result: **pose rule F1 = 0.70**. RGB did not beat pose. Always-predict-shake is **F1 = 0.64**.
 
-| method | TRAIN | P | R | F1 | confusion | collapse |
-| --- | --- | --- | --- | --- | --- | --- |
-| Pose 1D CNN (best DEV) | 40/40 | 0.75 | 0.90 | **0.818** | TP 9, FP 3, TN 2, FN 1 | false |
-| Always-predict-shake | — | 0.67 | 1.00 | **0.80** | TP 10, FP 5, TN 0, FN 0 | true |
-| Frozen VideoMAE head | 40/40 | 1.00 | 0.30 | **0.462** | TP 3, FP 0, TN 5, FN 7 | false |
-| Fine-tuned VideoMAE (last 4 blocks) | 40/40 | 0.86 | 0.60 | **0.706** | TP 6, FP 1, TN 4, FN 4 | false |
+![Shake GOLD TEST F1](dissertation-behaviour-recognition/figures/paper/shake_test_f1.png)
 
-After `as_euler('xyz')`: **x** = pitch/nod, **y** = yaw/shake, **z** = roll. Locked TEST rule used **z** (τ≈11.15°); new TRAIN ranks on **y**. Do not retune or rescore locked GOLD TEST. Do not `--force` existing `dev_search/` dirs. Axis audit: `dissertation-behaviour-recognition/results/shake/dev_search/axis_audit.md` and `figures/shake_axis_audit/`.
+| Method | TRAIN | P | R | F1 |
+| --- | --- | ---: | ---: | ---: |
+| Pose rule (axis **z**, τ ≈ 11.15°) | — | 0.54 | 1.00 | **0.70** |
+| Always-predict-shake | — | 0.47 | 1.00 | **0.64** |
+| Pose 1D CNN (75 pos / 5 neg) | 80 | 0.47 | 1.00 | **0.64** |
+| Frozen / fine-tuned VideoMAE | 80 | 0.46 | 0.86 | **0.60** |
+
+Locked TEST used Euler **z** (roll). After `as_euler('xyz')`, geometric shake is **y** (yaw) and nod is **x** (pitch). TEST was not rescored after that audit.
+
+### Pose signal (illustration, not a detector)
+
+![Euler power spectrum](dissertation-behaviour-recognition/figures/paper/euler_signal_spectrum.png)
+
+### Shake further development (GOLD DEV only)
+
+A later balanced-pseudo search (**40 pos / 40 neg**) was tuned on DEV only (`test_scored: false`). Best DEV pose CNN **F1 = 0.818** vs always-shake DEV **F1 = 0.80**. This does **not** replace the locked TEST headline of **0.70**.
+
+![Shake DEV-only F1](dissertation-behaviour-recognition/figures/paper/shake_dev_only_f1.png)
+
+## Key findings
+
+- For **nods**, adapting the last four VideoMAE blocks on 80 pseudo-labelled windows is the strongest locked TEST system (**F1 0.82**). Adding more rule-based pseudo-labels (n = 200) did not help (**F1 0.63**).
+- Pose alone is already usable for nods (rule **0.67**, 1D CNN **0.70**). Frozen VideoMAE without fine-tuning is weaker (**0.57**).
+- For **shakes**, the locked TEST winner is a simple pose amplitude rule (**0.70**). VideoMAE is below the **always-shake** baseline (**0.64**). Class imbalance in TRAIN (75/5) is part of that story.
+- Euler axis identity matters: nod ≈ pitch **x**, shake ≈ yaw **y**, roll **z**. The locked shake rule used **z**.
+- Pose and RGB are **visual representation experiments**. Audio is the genuine second sensory stream; it is evaluated on DEV only and is not used to choose TEST systems.
+
+## Setup
+
+```bash
+cd dissertation-behaviour-recognition
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+pytest -q
+```
+
+GPU VideoMAE training used a lab CUDA environment on otter95 (`/scratch`). Videos, EMOCA `.pkl`, RGB `.npz`, and `best_model.pt` are not in git.
+
+## Repository structure
+
+```
+dissertation-behaviour-recognition/
+├── data/gold/          # 30 human-labelled nod and shake windows
+├── data/splits/        # DEV / TEST ids
+├── scripts/            # rule, pose CNN, VideoMAE, audio (DEV-only)
+├── src/                # metrics, pose CNN, audio I/O
+├── results/            # locked json/csv and tables
+├── figures/paper/      # dissertation figures (PNG + PDF)
+├── reports/            # audits and chapter drafts
+├── tests/              # split and label invariants
+└── AUDIO_DEV.md        # otter commands for audio alignment / fusion
+```
+
+Canonical scripts are listed in [`dissertation-behaviour-recognition/README.md`](dissertation-behaviour-recognition/README.md). Figure captions: [`dissertation-behaviour-recognition/figures/paper/CAPTIONS.md`](dissertation-behaviour-recognition/figures/paper/CAPTIONS.md).
 
 ## Labels
 
 | Value | Meaning |
 | --- | --- |
-| `1` | Clear nod (the only gold positive) |
-| `0` | Unclear / not a nod |
-| `shake_label` `1` / `0` | Clear shake / unclear or not a shake (same 30 clips) |
+| nod `1` / `0` | Clear nod / unclear or not a nod |
+| `shake_label` `1` / `0` | Clear shake / unclear or not a shake |
 
-Metric: **clip-level** precision, recall, and F1 (not event IoU 0.30). RealTalk: **p0 = left listener**, **p1 = right listener**, 25 fps.
-
-## Where to look
-
-The submitted package is **`dissertation-behaviour-recognition/`** (README there has the pipeline, scripts, and figure list).
-
-- Gold: `dissertation-behaviour-recognition/data/gold/`
-- Locked metrics: `dissertation-behaviour-recognition/results/`
-- Tests: `dissertation-behaviour-recognition/tests/`
-
-## Not in this repository
-
-Videos, EMOCA `.pkl` files, RGB `.npz` windows, VideoMAE `best_model.pt` (~345 MB), and virtual environments.
-
-## Other folders (not the submitted experiment)
-
-`api/` and `web/` are a leftover **7-class heuristic demo** (BERT/HuBERT were never used). `scripts/nod_pipeline/` and `notebooks/` are early lab sketches. The submitted study lives only in **`dissertation-behaviour-recognition/`**.
+RealTalk: **p0 = left listener**, **p1 = right listener**, 25 fps.
 
 ## Citation
 

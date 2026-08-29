@@ -1,0 +1,20 @@
+{
+  "experiment": "Frozen HuBERT representations extracted from approximately sixty second mixed conversation audio windows, trained using the existing pose derived pseudo labelled training set and evaluated exploratorily on fifteen gold development clips.",
+  "audio_source": "mixed conversation audio (RealTalk container soundtrack)",
+  "hubert_model": "facebook/hubert-base-ls960",
+  "hubert_dim": 768,
+  "chunk_seconds": 10.0,
+  "sample_rate_hz": 16000,
+  "fine_tuned_hubert": false,
+  "pseudo_labels_regenerated": false,
+  "gold_test_scored": false,
+  "test_n": 0,
+  "out_dir": "/user/HS400/db01550/multimodalbackchannelprediction/dissertation-behaviour-recognition/results/hubert_dev",
+  "locked_results_modified": false,
+  "stage": "full",
+  "SMOKE_TEST": "PASS",
+  "train_n": 80,
+  "dev_n": 15,
+  "seconds": 1721.4162936210632,
+  "device": "cuda"
+}

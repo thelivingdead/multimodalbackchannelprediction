@@ -1,0 +1,16 @@
+sample_id,gold_label,rgb_probability,source_file
+gold_001,1,0.9995621,results/audio_visual_fusion_dev/dev_predictions.csv
+gold_002,1,0.5829125,results/audio_visual_fusion_dev/dev_predictions.csv
+gold_003,0,0.63183516,results/audio_visual_fusion_dev/dev_predictions.csv
+gold_004,0,0.5478422,results/audio_visual_fusion_dev/dev_predictions.csv
+gold_005,0,0.0077919015,results/audio_visual_fusion_dev/dev_predictions.csv
+gold_006,1,0.9999536,results/audio_visual_fusion_dev/dev_predictions.csv
+gold_007,1,0.99972063,results/audio_visual_fusion_dev/dev_predictions.csv
+gold_008,1,0.6892393,results/audio_visual_fusion_dev/dev_predictions.csv
+gold_009,1,0.9737337,results/audio_visual_fusion_dev/dev_predictions.csv
+gold_010,0,0.43742347,results/audio_visual_fusion_dev/dev_predictions.csv
+gold_011,0,0.8559391,results/audio_visual_fusion_dev/dev_predictions.csv
+gold_012,0,0.9249471,results/audio_visual_fusion_dev/dev_predictions.csv
+gold_013,1,0.9996043,results/audio_visual_fusion_dev/dev_predictions.csv
+gold_014,1,0.90582764,results/audio_visual_fusion_dev/dev_predictions.csv
+gold_015,1,0.99769646,results/audio_visual_fusion_dev/dev_predictions.csv

@@ -1,0 +1,22 @@
+{
+  "RGB_PROBABILITIES_AVAILABLE": true,
+  "source": "/user/HS400/db01550/multimodalbackchannelprediction/dissertation-behaviour-recognition/results/hubert_dev/rgb_probabilities.csv",
+  "ids": [
+    "gold_001",
+    "gold_002",
+    "gold_003",
+    "gold_004",
+    "gold_005",
+    "gold_006",
+    "gold_007",
+    "gold_008",
+    "gold_009",
+    "gold_010",
+    "gold_011",
+    "gold_012",
+    "gold_013",
+    "gold_014",
+    "gold_015"
+  ],
+  "n": 15
+}

@@ -1,0 +1,4 @@
+split,protocol,gold_test_scored,model,n,precision,recall,f1,balanced_accuracy,tp,fp,tn,fn,note
+DEV,DEV_ONLY,False,always_nod,15,0.6,1.0,0.7499999999999999,0.5,9,6,0,0,trivial DEV baseline
+DEV,DEV_ONLY,False,audio_lr_thr0.5,15,0.5833333333333334,0.7777777777777778,0.6666666666666666,0.4722222222222222,7,5,1,2,LR default 0.5; DEV ONLY
+DEV,DEV_ONLY,False,audio_lr_dev_threshold,15,0.6153846153846154,0.8888888888888888,0.7272727272727273,0.5277777777777778,8,5,1,1,LR threshold 0.300 chosen on DEV; DEV ONLY not TEST

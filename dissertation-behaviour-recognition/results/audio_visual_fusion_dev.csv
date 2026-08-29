@@ -1,0 +1,5 @@
+split,protocol,gold_test_scored,model,input,n,precision,recall,f1,balanced_accuracy,tp,fp,tn,fn,note
+DEV,DEV_ONLY,False,always_nod,none,15,0.6,1.0,0.7499999999999999,0.5,9,6,0,0,trivial DEV baseline
+DEV,DEV_ONLY,False,rgb_lr_dev_threshold,frozen VideoMAE 768-D,15,0.75,1.0,0.8571428571428571,0.75,9,3,3,0,"DEV ONLY; frozen embeddings, no VideoMAE retrain"
+DEV,DEV_ONLY,False,audio_lr_dev_threshold,MFCC/RMS/centroid 30-D,15,0.6153846153846154,0.8888888888888888,0.7272727272727273,0.5277777777777778,8,5,1,1,DEV ONLY
+DEV,DEV_ONLY,False,rgb_audio_lr_dev_threshold,concat 768-D + 30-D,15,0.6428571428571429,1.0,0.782608695652174,0.5833333333333334,9,5,1,0,DEV ONLY early fusion; TEST not scored

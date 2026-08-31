@@ -1,6 +1,6 @@
 # Predicting Backchannel Events from Multimodal Conversational Signals
 
-MSc dissertation package — Divya Bisht, Institute for People-Centred AI, University of Surrey, 2026.
+MSc dissertation package — Divya Bisht, Centre for Vision, Speech and Signal Processing (CVSSP), University of Surrey, 2026.
 
 Listener **head-nod** and **head-shake** recognition on Columbia RealTalk (Geng et al., 2023). The GitHub front page is the repository root [`README.md`](../README.md).
 
@@ -112,10 +112,9 @@ tests/       split/label invariants
 | `scripts/audio_alignment_check.py` | Step A: 3–5 nod windows, source A/V check (DEV; refuses TEST) |
 | `scripts/train_audio_baseline_dev.py` | Step B: audio LR on TRAIN + GOLD DEV (refuses TEST) |
 | `scripts/train_av_fusion_dev.py` | Step C: frozen VideoMAE + audio concat, GOLD DEV only |
+| `scripts/run_hubert_dev.py` | Frozen HuBERT + 50/50 RGB probability fusion, GOLD DEV only |
 
 Otter audio commands: `AUDIO_DEV.md`. Numbered `scripts/15_*.py` / `16_*.py` / `17_*.py` are **planning stubs**, not the executed VideoMAE runs.
-
-Large binaries stay off git: videos, `.pkl`, `best_model.pt`, RGB `.npz`, `.venv`.
 
 ## Pipeline (executed)
 

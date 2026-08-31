@@ -1,7 +1,7 @@
 # Predicting Backchannel Events from Multimodal Conversational Signals
 
 MSc dissertation — Divya Bisht  
-Institute for People-Centred AI, University of Surrey, 2026
+Centre for Vision, Speech and Signal Processing (CVSSP), University of Surrey, 2026
 
 Code, gold labels, locked metrics, and figures for **listener head-nod and head-shake recognition** on Columbia RealTalk (Geng et al., 2023).
 
@@ -15,7 +15,7 @@ This repository is a systematic study of **visual representations** (3D head pos
 - **Behaviours.** Head **nod** (primary) and head **shake** (same 30 gold windows, separate `shake_label`).
 - **Visual representations.** EMOCA/FLAME Euler pose (used, not trained) and 16-frame RGB face crops → VideoMAE. These are two encodings of the **same camera**, not two sensory modalities.
 - **Protocol.** TRAIN = frozen-rule pseudo-labels. DEV = 15 gold windows (tuning). TEST = 15 gold windows, scored **once**. Metric: clip-level precision, recall, F1.
-- **Audio.** Mixed conversation soundtrack, GOLD DEV only. Text/transcript models are future work.
+- **Audio.** Mixed conversation soundtrack, GOLD DEV only (`gold_001`–`gold_015`). Includes MFCC LR, concat fusion, and frozen HuBERT. GOLD TEST not scored. Text/transcript models are future work.
 
 ## Results
 
@@ -60,13 +60,30 @@ A later balanced-pseudo search (**40 pos / 40 neg**) was tuned on DEV only (`tes
 
 ![Shake DEV-only F1](dissertation-behaviour-recognition/figures/paper/shake_dev_only_f1.png)
 
+### Audio-visual fusion (GOLD DEV only)
+
+Exploratory nod experiment on the **same 15 DEV windows**. Mixed conversation audio. Frozen VideoMAE embeddings (no retrain). GOLD TEST was not scored. Do not compare these F1s to locked TEST **0.82**.
+
+| Method | Modality | F1 |
+| --- | --- | ---: |
+| Always-nod | baseline | **0.75** |
+| Audio LR | audio | **0.73** |
+| Frozen VideoMAE + LR | RGB | **0.86** |
+| RGB + audio concat + LR | audio + RGB | **0.78** |
+
+The acoustic representation did not provide measurable complementary information beyond the visual representation under this fusion strategy and evaluation setting.
+
+Table: `dissertation-behaviour-recognition/results/tables/multimodal_ablation.md`.
+
+Frozen HuBERT (`facebook/hubert-base-ls960`, 768-D, 10 s chunks, mean pool; TRAIN = existing 80 pseudo-labels; threshold 0.5): files in `dissertation-behaviour-recognition/results/hubert_dev/`. GOLD TEST not scored.
+
 ## Key findings
 
 - For **nods**, adapting the last four VideoMAE blocks on 80 pseudo-labelled windows is the strongest locked TEST system (**F1 0.82**). Adding more rule-based pseudo-labels (n = 200) did not help (**F1 0.63**).
 - Pose alone is already usable for nods (rule **0.67**, 1D CNN **0.70**). Frozen VideoMAE without fine-tuning is weaker (**0.57**).
 - For **shakes**, the locked TEST winner is a simple pose amplitude rule (**0.70**). VideoMAE is below the **always-shake** baseline (**0.64**). Class imbalance in TRAIN (75/5) is part of that story.
 - Euler axis identity matters: nod ≈ pitch **x**, shake ≈ yaw **y**, roll **z**. The locked shake rule used **z**.
-- Pose and RGB are **visual representation experiments**. Audio is the genuine second sensory stream; it is evaluated on DEV only and is not used to choose TEST systems.
+- Pose and RGB are **visual representation experiments**. On GOLD DEV, mixed-conversation audio plus frozen VideoMAE did not beat RGB-only (**fusion F1 0.78** vs **RGB F1 0.86**). Audio is not used to choose TEST systems.
 
 ## Setup
 
@@ -78,7 +95,7 @@ pip install -r requirements.txt
 pytest -q
 ```
 
-GPU VideoMAE training used a lab CUDA environment on otter95 (`/scratch`). Videos, EMOCA `.pkl`, RGB `.npz`, and `best_model.pt` are not in git.
+GPU VideoMAE training used a lab CUDA environment on otter95 (`/scratch`).
 
 ## Repository structure
 

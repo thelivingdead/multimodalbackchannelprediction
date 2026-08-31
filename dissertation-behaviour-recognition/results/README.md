@@ -60,11 +60,23 @@ Figures live in the top-level `figures/` directory (see its own README), produce
 | `tables/bootstrap_ci.csv` | `scripts/bootstrap_f1.py` | 1000 resamples, seed 42, **TEST rows only** |
 | `tables/main_results.md` | `scripts/make_main_results.py` | six-row master table |
 
-`best_model.pt` is gitignored (~345 MB). Fusion was not run.
+`best_model.pt` is gitignored (~345 MB). Audio/RGB-audio fusion is a **DEV-only** follow-up (`AUDIO_DEV.md`); it does not rescore this TEST table.
+
+## Audio / HuBERT (GOLD DEV only)
+
+GOLD TEST was **not** scored (`AUDIO_TEST_SCORED = NO`, `FUSION_TEST_SCORED = NO`).
+
+| file | contains |
+| --- | --- |
+| `tables/multimodal_ablation.md` | MFCC / frozen RGB / concat (DEV-selected thresholds) |
+| `hubert_dev/` | frozen HuBERT + 50/50 RGB at threshold 0.5 |
+| `../figures/paper/audio_dev_mfcc_f1.{png,pdf}` | Fig. O |
+| `../figures/paper/audio_dev_hubert_f1.{png,pdf}` | Fig. P |
+| `../figures/paper/audio_dev_confusion.{png,pdf}` | Fig. Q |
 
 ## Head-shake DEV-only search
 
-DEV comparison (GOLD TEST not scored): `shake/dev_search/` (`comparison_dev.md`; best non-collapsed run `cnn_40_40`, DEV F1 0.818). Locked shake TEST remains pose rule F1 0.70 under `shake/`.
+DEV comparison (GOLD TEST not scored): `shake/dev_search/` (`comparison_dev.md`; best non-collapsed run `cnn_40_40`, DEV F1 0.818, next to always-shake DEV F1 0.80). Locked shake TEST remains pose rule F1 0.70 under `shake/` (trivial always-shake TEST ~0.64). Axis issue labelled in `tables/shake_results.md` and `tables/task_framing.md`.
 
 ## Reproducing vs. re-scoring
 

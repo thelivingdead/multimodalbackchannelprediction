@@ -164,3 +164,51 @@ The older two-panel file `euler_power_spectrum.png` had a cramped title/footer; 
 | `figures/shake_axis_audit/gold_*_xyz.png` | Cramped y labels (`x (°) pitch (nod-like)` against ticks) |
 
 Use the new `figures/paper/` stems above instead.
+
+---
+
+## Fig. O — MFCC / concat fusion F1 (GOLD DEV)
+
+**Files:** `audio_dev_mfcc_f1.png` / `audio_dev_mfcc_f1.pdf`
+
+**Caption.** Exploratory GOLD DEV nod results (n = 15 windows). GOLD TEST was not scored. Thresholds were selected on this same DEV split. Always-nod F1 = 0.75 (P 0.60, R 1.00); MFCC audio LR F1 = 0.73 (P 0.62, R 0.89); frozen RGB + LR F1 = 0.86 (P 0.75, R 1.00); RGB+audio concat LR F1 = 0.78 (P 0.64, R 1.00). Mixed conversation audio. These DEV F1 values are not locked TEST scores.
+
+**Source.** `results/tables/multimodal_ablation.md`; `results/audio_visual_fusion_dev.csv`.
+
+---
+
+## Fig. P — Frozen HuBERT F1 (GOLD DEV)
+
+**Files:** `audio_dev_hubert_f1.png` / `audio_dev_hubert_f1.pdf`
+
+**Caption.** Exploratory GOLD DEV nod results (n = 15) at a fixed probability threshold of 0.5. GOLD TEST was not scored. Always-nod F1 = 0.75 (P 0.60, R 1.00); frozen HuBERT + LR F1 = 0.89 (P 0.89, R 0.89); frozen RGB + LR F1 = 0.82 (P 0.69, R 1.00); 50/50 HuBERT+RGB probability fusion F1 = 0.80 (P 0.73, R 0.89). Encoder: frozen `facebook/hubert-base-ls960` (768-D, 10 s chunks, mean pool). Mixed conversation audio. TRAIN = existing 80 pose-derived pseudo-labels. RGB here uses threshold 0.5, not the DEV-selected threshold in Fig. O.
+
+**Source.** `results/hubert_dev/hubert_dev_metrics.json`; `results/hubert_dev/hubert_rgb_fusion_metrics.json`; `results/hubert_dev/multimodal_dev_comparison.csv`.
+
+---
+
+## Fig. Q — Audio DEV confusion counts
+
+**Files:** `audio_dev_confusion.png` / `audio_dev_confusion.pdf`
+
+**Caption.** Confusion counts for the GOLD DEV audio experiments in Figs O–P (n = 15). GOLD TEST was not scored. MFCC and concat rows use DEV-selected thresholds; HuBERT rows use threshold 0.5.
+
+**Source.** Same files as Figs O–P.
+
+---
+
+## GOLD TEST figures already in this folder (do not re-score)
+
+These files exist under `figures/paper/`. They are locked TEST plots (or TEST-window illustrations). None of the new audio figures above is a GOLD TEST score.
+
+| Stem | Files present | Role in thesis |
+| --- | --- | --- |
+| `nod_test_f1` | `.png` `.pdf` | Fig. A — nod GOLD TEST F1 (n = 15, scored once) |
+| `nod_test_confusion` | `.png` `.pdf` | Fig. B — nod GOLD TEST confusion counts |
+| `shake_test_f1` | `.png` `.pdf` | Fig. C — shake GOLD TEST F1 (n = 15, scored once) |
+| `shake_test_confusion` | `.png` `.pdf` | Fig. D — shake GOLD TEST confusion counts |
+| `nod_qualitative_cases` | `.png` `.pdf` | Fig. K — pitch traces on four GOLD TEST windows; predictions from existing TEST CSVs |
+| `nod_vs_unclear_pitch` | `.png` `.pdf` | Fig. L — TEST-window illustration (`gold_016` vs `gold_024`); not a new score |
+
+Older TEST-related files in the same folder (do not paste; listed as messy above): `test_metrics.png` / `.jpg`, `test_clip_grid.png` / `.jpg`, `error_cases.png` / `.jpg`, `nod_vs_unclear.png` / `.jpg`.
+

@@ -81,6 +81,32 @@ Source: `results/shake/dev_search/comparison_dev.md`. Best config: pose 1D CNN, 
 
 After `as_euler('xyz')`: **x** = pitch/nod, **y** = yaw/shake, **z** = roll. Locked TEST rule used **z** (τ≈11.15°); new TRAIN ranks on **y**. Do not retune or rescore locked GOLD TEST. Do not `--force` existing `dev_search/` dirs. Axis audit: `results/shake/dev_search/axis_audit.md` and `figures/shake_axis_audit/`.
 
+## Audio / HuBERT (GOLD DEV only, TEST not scored)
+
+Nod, `gold_001`–`gold_015` (n = 15). Mixed conversation soundtrack. Frozen VideoMAE (no retrain). Scripts refuse `--score-test`. Do not compare these F1s to locked nod TEST **0.82**.
+
+![MFCC / concat DEV F1](figures/paper/audio_dev_mfcc_f1.png)
+
+| method | threshold | P | R | F1 |
+| --- | --- | ---: | ---: | ---: |
+| Always-nod | always 1 | 0.60 | 1.00 | **0.75** |
+| MFCC + LR | DEV 0.30 | 0.62 | 0.89 | **0.73** |
+| Frozen VideoMAE RGB + LR | DEV 0.55 | 0.75 | 1.00 | **0.86** |
+| Concat 768-D + 30-D LR | DEV 0.20 | 0.64 | 1.00 | **0.78** |
+
+![HuBERT DEV F1](figures/paper/audio_dev_hubert_f1.png)
+
+Frozen `facebook/hubert-base-ls960` (768-D, 10 s chunks, mean pool). TRAIN = existing 80 pose-derived pseudo-labels. Threshold **0.5**. RGB in this table also uses 0.5, not the DEV-selected 0.55 above.
+
+| method | threshold | P | R | F1 |
+| --- | --- | ---: | ---: | ---: |
+| Always-nod | always 1 | 0.60 | 1.00 | **0.75** |
+| Frozen HuBERT + LR | 0.5 | 0.89 | 0.89 | **0.89** |
+| Frozen RGB + LR | 0.5 | 0.69 | 1.00 | **0.82** |
+| 50/50 HuBERT+RGB | 0.5 | 0.73 | 0.89 | **0.80** |
+
+Tables: `results/tables/multimodal_ablation.md`, `results/hubert_dev/`. Figures: `figures/paper/audio_dev_*.png` (captions O–Q in `figures/paper/CAPTIONS.md`).
+
 ## Layout
 
 ```
@@ -126,8 +152,10 @@ Otter audio commands: `AUDIO_DEV.md`. Numbered `scripts/15_*.py` / `16_*.py` / `
 6. Frozen VideoMAE head — TEST F1 **0.57**
 7. Fine-tune last 4 encoder blocks (otter95, `/scratch` CUDA) — TEST F1 **0.82** (canonical RGB)
 8. Same recipe, TRAIN = 200 — TEST F1 **0.63** (ablation; n=80 artefacts not overwritten)
+9. MFCC + concat fusion — GOLD DEV only (TEST not scored)
+10. Frozen HuBERT + 50/50 RGB — GOLD DEV only (TEST not scored)
 
-Do not train or retune on GOLD TEST. Do not pass `--force` on a finished VideoMAE run. Audio/fusion scripts default to DEV-only and refuse TEST scoring.
+Do not train or retune on GOLD TEST. Do not pass `--force` on a finished VideoMAE run. Audio/fusion scripts default to DEV-only and refuse TEST scoring. The agreed experiment list above is complete.
 
 ## Audits
 

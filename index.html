@@ -39,7 +39,7 @@
         <div>
           <p class="meta">multimodalbackchannelprediction</p>
           <h1>Multimodal<br>Backchannel<br>Recognition</h1>
-          <p class="standfirst">Learning visual and temporal representations of listener head nods and head shakes in natural conversation.</p>
+          <p class="standfirst">Recognising listener head nods and head shakes from head pose and video in natural conversation.</p>
           <p class="meta" style="margin-top:2rem">MSc Artificial Intelligence · University of Surrey · CVSSP · 2026<br>Columbia RealTalk · 25 fps · locked TEST n = 15</p>
         </div>
         <aside class="living" id="living" aria-label="Interactive listener pose from a locked TEST window">
@@ -81,8 +81,8 @@
     <section class="chapter" id="question">
       <div class="wrap">
         <div class="kicker">01 / The question</div>
-        <h2>When does a listener nod?</h2>
-        <p>The study is clip-level listener behaviour recognition on Columbia RealTalk. A nod may last about one second. The analysed conversational window lasts about sixty. Pose and RGB are two encodings of the same camera.</p>
+        <h2>Did this listener nod?</h2>
+        <p>The study is clip level listener behaviour recognition on Columbia RealTalk. A nod may last about one second. The analysed conversational window lasts about sixty. Pose and RGB are two encodings of the same camera.</p>
         <figure class="film">
           <img src="assets/teaser_backchannel.jpg" alt="Two locked TEST windows from Columbia RealTalk. Top, gold_020, a clear nod while the partner holds the floor. Bottom, gold_024, unclear. Listener face crops, Euler pitch, and who speaks." loading="lazy">
           <figcaption>Locked TEST windows gold_020 (clear nod) and gold_024 (unclear). Blue marks the labelled listener, orange the partner. Pose is EMOCA rotation x, threshold 16.35°. Speaker lanes are official RealTalk TalkNet. Public reuse of identifiable frames requires RealTalk’s terms.</figcaption>
@@ -105,7 +105,7 @@
       <div class="wrap">
         <div class="kicker">02 / The signal</div>
         <h2>pitch(t)</h2>
-        <p>EMOCA Euler rotation on locked TEST window gold_016. The marked band is the human-labelled nod interval, 9:15–9:16 in the watch clock, one second inside a sixty-second window. Scored systems in this dissertation are an amplitude rule, a 1D CNN, and VideoMAE; they are not an FFT classifier.</p>
+        <p>EMOCA Euler rotation on locked TEST window gold_016. The marked band is the human-labelled nod interval, in the watch clock, one second inside a sixty-second window. Scored systems in this dissertation are an amplitude rule, a 1D CNN, and VideoMAE they are not an FFT classifier.</p>
         <div class="drawn">
           <svg id="scroll-trace" viewBox="0 0 1000 180" preserveAspectRatio="none" aria-label="Pitch against time">
             <path id="scroll-path" fill="none" stroke="currentColor" stroke-width="1.2"/>
@@ -203,7 +203,7 @@
           <div class="step">Rule detector, frozen on DEV</div>
           <div class="step">Pseudo-labels on TRAIN</div>
           <div class="step">Temporal pose model / VideoMAE</div>
-          <div class="step">Locked TEST evaluation, once</div>
+          <div class="step">Locked TEST evaluation</div>
         </div>
         <figure class="film">
           <img src="assets/architecture.png" alt="Executed system for binary head-nod recognition. Columbia RealTalk window splits into EMOCA pose, feeding a frozen rule and a 1D CNN, and RGB face crops, feeding VideoMAE. Gold DEV tunes; Gold TEST is scored once." loading="lazy">
@@ -232,7 +232,7 @@
           <div class="row"><span>Always-positive baseline</span><em>.80</em></div>
           <div class="row"><span>Fine-tuned VideoMAE, 200 pseudo-labels</span><em>.63</em></div>
         </div>
-        <p class="ci" style="margin-top:1rem">Bootstrap 95% interval on the 0.82 run: 0.60–0.96. Intervals overlap. No significance claims.</p>
+        <p class="ci" style="margin-top:1rem">Bootstrap 95% interval on the 0.82 run: 0.60–0.96.</p>
         <figure class="film">
           <img src="assets/nod_test_confusion.png" alt="Confusion matrices for locked nod TEST systems." loading="lazy">
           <figcaption>Locked nod TEST confusion. Fine-tuned VideoMAE: TP 9, FP 3, TN 2, FN 1. Pose rule: TP 7, FP 4, TN 1, FN 3.</figcaption>
@@ -336,14 +336,14 @@
       <div class="wrap">
         <div class="kicker">14 / Future work</div>
         <h2>From prediction to presence.</h2>
-        <p>Future work will explore generative AI avatars that turn predicted backchannel events into natural, socially responsive listener behaviour. Predicted nods and head motion would condition a listener that is visible while it listens. That system is not in this dissertation.</p>
+        <p>The next step is to drive a generative listener avatar from predicted backchannel events. Predicted nods and head motion would condition a listener that is visible while it listens. That system is not in this dissertation.</p>
         <ol class="path" id="future-chain">
           <li><span>01</span>Speaker</li>
           <li><span>02</span>Predicted backchannel</li>
           <li><span>03</span>Generative avatar</li>
           <li><span>04</span>Responsive listener</li>
         </ol>
-        <p class="path-note">A sketch of a later step, not a result of this study.</p>
+        <p class="path-note"></p>
       </div>
     </section>
 

@@ -27,7 +27,7 @@ Pass rule: at least 3 clips must pass, each with a video stream, an audio stream
 - youtube: https://www.youtube.com/watch?v=6RDkdbgzeAI&t=368
 - source: huggingface_range
 - probe fps=25.0 sr=48000 duration=1333.76 has_video=True has_audio=True
-- WAV: `/user/HS400/db01550/multimodalbackchannelprediction/dissertation-behaviour-recognition/data/audio_alignment_check/gold_012_6RDkdbgzeAI.wav` duration=60.0 sr=48000 peak=0.41029083728790283 rms=0.03762396052479744
+- WAV: `data/audio_alignment_check/gold_012_6RDkdbgzeAI.wav` duration=60.0 sr=48000 peak=0.41029083728790283 rms=0.03762396052479744
 - checks: **PASS** []
 
 ## gold_013 (`WrWFSBLjWZU`)
@@ -39,7 +39,7 @@ Pass rule: at least 3 clips must pass, each with a video stream, an audio stream
 - youtube: https://www.youtube.com/watch?v=WrWFSBLjWZU&t=41
 - source: huggingface_range
 - probe fps=25.0 sr=48000 duration=1286.76 has_video=True has_audio=True
-- WAV: `/user/HS400/db01550/multimodalbackchannelprediction/dissertation-behaviour-recognition/data/audio_alignment_check/gold_013_WrWFSBLjWZU.wav` duration=60.0 sr=48000 peak=0.9933469891548157 rms=0.0366768017411232
+- WAV: `data/audio_alignment_check/gold_013_WrWFSBLjWZU.wav` duration=60.0 sr=48000 peak=0.9933469891548157 rms=0.0366768017411232
 - checks: **PASS** []
 
 ## gold_010 (`jg6y3LABwTs`)
@@ -51,7 +51,7 @@ Pass rule: at least 3 clips must pass, each with a video stream, an audio stream
 - youtube: https://www.youtube.com/watch?v=jg6y3LABwTs&t=88
 - source: huggingface_range
 - probe fps=25.0 sr=48000 duration=1405.92 has_video=True has_audio=True
-- WAV: `/user/HS400/db01550/multimodalbackchannelprediction/dissertation-behaviour-recognition/data/audio_alignment_check/gold_010_jg6y3LABwTs.wav` duration=60.0 sr=48000 peak=1.000030517578125 rms=0.10801517963409424
+- WAV: `data/audio_alignment_check/gold_010_jg6y3LABwTs.wav` duration=60.0 sr=48000 peak=1.000030517578125 rms=0.10801517963409424
 - checks: **PASS** []
 
 ## gold_014 (`f6aNo5Mod9I`)
@@ -63,7 +63,7 @@ Pass rule: at least 3 clips must pass, each with a video stream, an audio stream
 - youtube: https://www.youtube.com/watch?v=f6aNo5Mod9I&t=52
 - source: huggingface_range
 - probe fps=25.0 sr=48000 duration=1257.41 has_video=True has_audio=True
-- WAV: `/user/HS400/db01550/multimodalbackchannelprediction/dissertation-behaviour-recognition/data/audio_alignment_check/gold_014_f6aNo5Mod9I.wav` duration=60.0 sr=48000 peak=0.8323923349380493 rms=0.05014578625559807
+- WAV: `data/audio_alignment_check/gold_014_f6aNo5Mod9I.wav` duration=60.0 sr=48000 peak=0.8323923349380493 rms=0.05014578625559807
 - checks: **PASS** []
 
 ## gold_009 (`GJtqigeWHV8`)
@@ -75,7 +75,7 @@ Pass rule: at least 3 clips must pass, each with a video stream, an audio stream
 - youtube: https://www.youtube.com/watch?v=GJtqigeWHV8&t=123
 - source: huggingface_range
 - probe fps=25.0 sr=48000 duration=2769.67 has_video=True has_audio=True
-- WAV: `/user/HS400/db01550/multimodalbackchannelprediction/dissertation-behaviour-recognition/data/audio_alignment_check/gold_009_GJtqigeWHV8.wav` duration=60.0 sr=48000 peak=0.9692373275756836 rms=0.05112987011671066
+- WAV: `data/audio_alignment_check/gold_009_GJtqigeWHV8.wav` duration=60.0 sr=48000 peak=0.9692373275756836 rms=0.05112987011671066
 - checks: **PASS** []
 
 ## Next step

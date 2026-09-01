@@ -23,7 +23,7 @@
     "gold_014",
     "gold_015"
   ],
-  "rgb_source": "/user/HS400/db01550/multimodalbackchannelprediction/dissertation-behaviour-recognition/results/hubert_dev/rgb_probabilities.csv",
+  "rgb_source": "results/hubert_dev/rgb_probabilities.csv",
   "metrics": {
     "accuracy": 0.7333333333333333,
     "balanced_accuracy": 0.6944444444444444,

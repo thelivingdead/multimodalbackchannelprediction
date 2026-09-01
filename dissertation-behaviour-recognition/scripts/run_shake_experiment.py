@@ -31,15 +31,11 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 from run_full_experiment import load_npz, rule_score  # noqa: E402
 from src.metrics import binary_metrics  # noqa: E402
+from src.utils import dump_json  # noqa: E402
 
 SHEET = ROOT / "data" / "gold" / "shake_annotation_sheet.csv"
 GOLD_NPZ = ROOT / "features" / "gold"
 OUT = ROOT / "results" / "shake"
-
-
-def dump_json(path: Path, obj: dict) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(obj, indent=2) + "\n")
 
 
 def load_shake_gold() -> pd.DataFrame:

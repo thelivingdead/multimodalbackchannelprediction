@@ -48,6 +48,7 @@ from src.audio_io import (  # noqa: E402
 )
 from src.clip_metrics import always_predict, choose_dev_threshold, clip_binary_metrics  # noqa: E402
 from src.utils import dump_json, set_seed  # noqa: E402
+from src.paths import sanitise_artefact  # noqa: E402
 
 OUT_DIR = ROOT / "results" / "hubert_dev"
 HUBERT_MODEL = "facebook/hubert-base-ls960"
@@ -720,7 +721,7 @@ def write_embedding_manifest(rows: list[dict]) -> None:
     with path.open("w", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=keys)
         writer.writeheader()
-        writer.writerows(rows)
+        writer.writerows(sanitise_artefact(rows))
 
 
 def main(argv: list[str] | None = None) -> None:

@@ -8,6 +8,8 @@ from typing import Any
 
 import numpy as np
 
+from src.paths import json_default, sanitise_artefact
+
 
 def load_yaml(path: Path) -> dict[str, Any]:
     import yaml
@@ -17,9 +19,11 @@ def load_yaml(path: Path) -> dict[str, Any]:
     return dict(data or {})
 
 
-def dump_json(path: Path, obj: Any) -> None:
+def dump_json(path: Path, obj: Any) -> Any:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(obj, indent=2, default=str) + "\n")
+    clean = sanitise_artefact(obj)
+    path.write_text(json.dumps(clean, indent=2, default=json_default) + "\n")
+    return clean
 
 
 def load_json(path: Path) -> Any:

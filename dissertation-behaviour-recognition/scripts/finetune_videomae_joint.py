@@ -43,6 +43,7 @@ os.environ.setdefault("HF_HOME", str(ROOT / ".hf_cache"))
 os.environ.setdefault("TRANSFORMERS_OFFLINE", "0")
 
 from src.metrics import binary_metrics  # noqa: E402
+from src.utils import dump_json  # noqa: E402
 
 SHAKE_GOLD = ROOT / "data" / "gold" / "shake_annotation_sheet.csv"
 NOD_GOLD = ROOT / "data" / "gold_annotations.csv"
@@ -495,7 +496,7 @@ def main() -> None:
             "TRAIN": miss_tr, "DEV": miss_dv, "TEST": miss_te,
         },
     }
-    (out_dir / "metrics.json").write_text(json.dumps(metrics, indent=2) + "\n")
+    dump_json(out_dir / "metrics.json", metrics)
     print(
         f"\nbest epoch {best['epoch']}  mean DEV F1={best['dev_f1_mean']:.3f}\n"
         f"TEST nod:    {nod_te}\n"

@@ -73,6 +73,7 @@ from src.metrics import (  # noqa: E402
     choose_dev_threshold,
     collapse_diagnostics,
 )
+from src.utils import dump_json  # noqa: E402
 
 GOLD_CSV = ROOT / "data" / "gold_annotations.csv"
 PSEUDO_LABELS = ROOT / "results" / "pseudo_labels.csv"
@@ -536,14 +537,17 @@ def main(
         "select_dev": select_dev,
         **collapse,
     }
-    (out_dir / "config.json").write_text(json.dumps({
-        "dev_only": bool(dev_only),
-        "seed": int(seed),
-        "pseudo_labels": str(pseudo_labels_path),
-        "out_dir": str(out_dir),
-        "label_col": label_col,
-        "balance_train": balance_train,
-    }, indent=2, default=str) + "\n")
+    dump_json(
+        out_dir / "config.json",
+        {
+            "dev_only": bool(dev_only),
+            "seed": int(seed),
+            "pseudo_labels": str(pseudo_labels_path),
+            "out_dir": str(out_dir),
+            "label_col": label_col,
+            "balance_train": balance_train,
+        },
+    )
 
     if dev_only:
         pd.DataFrame(
@@ -572,12 +576,8 @@ def main(
             ),
             "test_scored": False,
         }
-        (out_dir / "dev_metrics.json").write_text(
-            json.dumps(payload, indent=2, default=str) + "\n"
-        )
-        (out_dir / "metrics_dev.json").write_text(
-            json.dumps(payload, indent=2, default=str) + "\n"
-        )
+        dump_json(out_dir / "dev_metrics.json", payload)
+        dump_json(out_dir / "metrics_dev.json", payload)
         flag = "COLLAPSE" if collapse["collapse"] else "ok"
         print(
             f"\nwrote {out_dir}/metrics_dev.json, predictions_dev.csv (DEV), "
@@ -610,7 +610,7 @@ def main(
         "selection_rule": "epoch + threshold by DEV F1 only; TEST scored once",
         "test_metrics": test_metrics,
     }
-    (out_dir / "metrics.json").write_text(json.dumps(metrics, indent=2, default=str) + "\n")
+    dump_json(out_dir / "metrics.json", metrics)
     print(
         f"\nwrote {out_dir}/metrics.json, predictions.csv, "
         f"training_history.csv\nTEST (scored once): {test_metrics}"

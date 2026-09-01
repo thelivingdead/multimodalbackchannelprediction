@@ -20,7 +20,7 @@
     "gold_end": 115.0,
     "window_duration": 60.0,
     "duration_ok": true,
-    "wav_path": "/user/HS400/db01550/multimodalbackchannelprediction/dissertation-behaviour-recognition/data/audio_alignment_check/gold_001_IH6KWbTogT0.wav"
+    "wav_path": "data/audio_alignment_check/gold_001_IH6KWbTogT0.wav"
   },
   "embedding": {
     "n_chunks": 6,
@@ -30,7 +30,7 @@
     "has_inf": false,
     "l2": 3.840144395828247
   },
-  "wrote": "/user/HS400/db01550/multimodalbackchannelprediction/dissertation-behaviour-recognition/results/hubert_dev/embeddings/smoke_gold_001.npz",
+  "wrote": "results/hubert_dev/embeddings/smoke_gold_001.npz",
   "seconds": 7.341634035110474,
   "gold_test_scored": false
 }

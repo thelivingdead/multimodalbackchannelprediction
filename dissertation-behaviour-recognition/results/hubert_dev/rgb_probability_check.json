@@ -1,6 +1,6 @@
 {
   "RGB_PROBABILITIES_AVAILABLE": true,
-  "source": "/user/HS400/db01550/multimodalbackchannelprediction/dissertation-behaviour-recognition/results/hubert_dev/rgb_probabilities.csv",
+  "source": "results/hubert_dev/rgb_probabilities.csv",
   "ids": [
     "gold_001",
     "gold_002",

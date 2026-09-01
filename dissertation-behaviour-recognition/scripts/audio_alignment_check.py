@@ -303,7 +303,7 @@ def main(argv: list[str] | None = None) -> None:
         "table_rows": table_rows,
         "free_gb_end": shutil.disk_usage(Path.home()).free / 1024**3,
     }
-    dump_json(OUT_JSON, payload)
+    payload = dump_json(OUT_JSON, payload)
     write_report(payload)
     print(f"\n{status}: wrote {OUT_MD} and {OUT_JSON}")
     if status != "PASS":

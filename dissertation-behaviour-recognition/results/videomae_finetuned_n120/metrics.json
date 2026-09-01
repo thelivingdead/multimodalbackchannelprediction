@@ -1,8 +1,8 @@
 {
   "model": "VideoMAE fine-tuned (last 4 blocks + head)",
   "script": "finetune_videomae.py",
-  "pseudo_labels": "/user/HS400/db01550/multimodalbackchannelprediction/dissertation-behaviour-recognition/results/pseudo_labels_120.csv",
-  "out_dir": "/user/HS400/db01550/multimodalbackchannelprediction/dissertation-behaviour-recognition/results/videomae_finetuned_n120",
+  "pseudo_labels": "results/pseudo_labels_120.csv",
+  "out_dir": "results/videomae_finetuned_n120",
   "checkpoint": "MCG-NJU/videomae-base",
   "processor": "VideoMAEImageProcessorPil",
   "transformers_version": "5.15.1",

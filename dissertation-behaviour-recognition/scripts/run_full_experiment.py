@@ -36,6 +36,7 @@ from src.emoca_loader import (  # noqa: E402
 )
 from src.metrics import binary_metrics  # noqa: E402
 from src.pose_cnn import train_pseudo_cnn  # noqa: E402
+from src.utils import dump_json  # noqa: E402
 
 FPS = 25.0
 EXPR_DIM = 20
@@ -55,11 +56,6 @@ def stop_if_low_disk(path: Path) -> None:
     free = disk_free_gb(path)
     if free < MIN_FREE_GB:
         raise SystemExit(f"STOP: free disk {free:.2f} GB < {MIN_FREE_GB} GB")
-
-
-def dump_json(path: Path, obj: object) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(obj, indent=2, default=str) + "\n")
 
 
 def save_jpg(fig: plt.Figure, path: Path) -> None:

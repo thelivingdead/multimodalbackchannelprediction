@@ -9,7 +9,7 @@
   "pseudo_labels_regenerated": false,
   "gold_test_scored": false,
   "test_n": 0,
-  "out_dir": "/user/HS400/db01550/multimodalbackchannelprediction/dissertation-behaviour-recognition/results/hubert_dev",
+  "out_dir": "results/hubert_dev",
   "locked_results_modified": false,
   "stage": "full",
   "SMOKE_TEST": "PASS",

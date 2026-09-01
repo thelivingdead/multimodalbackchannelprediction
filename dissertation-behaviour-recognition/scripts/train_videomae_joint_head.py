@@ -29,6 +29,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from src.metrics import binary_metrics  # noqa: E402
+from src.utils import dump_json  # noqa: E402
 
 SHAKE_GOLD = ROOT / "data" / "gold" / "shake_annotation_sheet.csv"
 NOD_GOLD = ROOT / "data" / "gold_annotations.csv"
@@ -316,7 +317,7 @@ def main() -> None:
             "epoch by mean DEV F1; independent DEV thresholds; TEST once"
         ),
     }
-    (out_dir / "metrics.json").write_text(json.dumps(metrics, indent=2) + "\n")
+    dump_json(out_dir / "metrics.json", metrics)
     print(f"TEST nod: {nod_te}\nTEST shake: {shk_te}\nwrote {out_dir}")
 
 

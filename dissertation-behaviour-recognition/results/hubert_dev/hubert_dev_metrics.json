@@ -111,7 +111,7 @@
   "pca_dim": 16,
   "classifier": "StandardScaler + PCA + LogisticRegression(class_weight=balanced, seed=42)",
   "scaler_pca_fitted_on": "TRAIN only",
-  "pseudo_labels_file": "/user/HS400/db01550/multimodalbackchannelprediction/dissertation-behaviour-recognition/results/pseudo_labels.csv",
+  "pseudo_labels_file": "results/pseudo_labels.csv",
   "pseudo_labels_regenerated": false,
   "threshold": 0.5,
   "threshold_policy": "fixed 0.5",

@@ -5,6 +5,10 @@ Centre for Vision, Speech and Signal Processing (CVSSP), University of Surrey, 2
 
 This repository recognises **listener head nods** (primary) and **head shakes** in ~60 s conversational windows from Columbia [RealTalk](https://realtalk.cs.columbia.edu/) (Geng et al., 2023). It is **clip-level behaviour recognition**, not anticipatory forecasting of a future backchannel.
 
+![Listener backchannel teaser](dissertation-behaviour-recognition/figures/paper/teaser_backchannel.jpg)
+
+Two locked TEST windows (listener in blue, partner in orange). Top: `gold_020`, labelled clear nod. Bottom: `gold_024`, labelled unclear. Pose trace is EMOCA rotation x with the frozen nod-rule threshold 16.35°.
+
 **Headline (locked GOLD TEST, n = 15, scored once):** fine-tuned VideoMAE, last 4 blocks, 80 pseudo-labelled TRAIN clips, **F1 = 0.82**.
 
 ![Nod GOLD TEST F1](dissertation-behaviour-recognition/figures/paper/nod_test_f1.png)

@@ -4,6 +4,8 @@ MSc dissertation package — Divya Bisht, Centre for Vision, Speech and Signal P
 
 The GitHub front page is the repository root [`README.md`](../README.md).
 
+![Listener backchannel teaser](figures/paper/teaser_backchannel.jpg)
+
 **Task:** clip-level **listener head-nod / head-shake recognition** on Columbia RealTalk, not anticipatory forecasting. Pose and RGB are two encodings of the **same camera**. Audio is **GOLD DEV only**.
 
 **Nod headline (TEST n = 15, once):** fine-tuned VideoMAE last 4 blocks, 80 TRAIN, **F1 0.82**.

@@ -1,6 +1,5 @@
-# Methods (paste-ready)
-
-Paste as the Methods chapter. Numbers here are protocol and implementation details, not TEST headlines. The locked TEST table lives in `results_chapter_draft.md`.
+# Methods 
+Numbers here are protocol and implementation details, not TEST headlines. The locked TEST table lives in `results_chapter_draft.md`.
 
 Suggested chapter number: **4** (if Data is a separate chapter) or **4–5** (if Data and Methods are combined). Figure files are under `dissertation-behaviour-recognition/figures/`.
 

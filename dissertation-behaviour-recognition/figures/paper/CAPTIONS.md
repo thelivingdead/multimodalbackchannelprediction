@@ -197,6 +197,26 @@ Use the new `figures/paper/` stems above instead.
 
 ---
 
+## Fig. R — HuBERT TRAIN-label permutation null (GOLD DEV)
+
+**Files:** `permutation_null.png` / `permutation_null.pdf`
+
+**Caption.** Null distribution from 1000 TRAIN-label permutations of the frozen HuBERT logistic head, evaluated on GOLD DEV (n = 15). GOLD TEST was not scored. Feature vectors and DEV labels were held fixed; only the 80 pseudo TRAIN labels were shuffled (counts preserved). Each panel is an independent histogram (25 bins) of the permutation metric; the dotted line is the permutation mean and the dashed line is the observed HuBERT value at threshold 0.5. Balanced accuracy p = 0.008 (7/1000); F1 p = 0.009 (8/1000). The two nulls are not centred at the same place (mean BA ≈ 0.518, mean F1 ≈ 0.673). This is a development-only figure.
+
+**Source.** `results/hubert_dev/permutation_metrics.csv`; `results/hubert_dev/permutation_summary.json`.
+
+---
+
+## Fig. S — Acoustic DEV comparison (F1 and balanced accuracy)
+
+**Files:** `acoustic_dev_comparison.png` / `acoustic_dev_comparison.pdf`
+
+**Caption.** GOLD DEV nod comparison (n = 15) at a fixed probability threshold of 0.5. GOLD TEST was not scored. Bars are F1 and balanced accuracy for the always-positive baseline, frozen RGB VideoMAE, equal-weight (50/50) HuBERT+RGB fusion, and frozen HuBERT on mixed conversation audio. The dashed line at 0.5 is chance balanced accuracy. These DEV scores are not locked TEST scores.
+
+**Source.** `results/hubert_dev/multimodal_dev_comparison.csv`.
+
+---
+
 ## GOLD TEST figures already in this folder (do not re-score)
 
 These files exist under `figures/paper/`. They are locked TEST plots (or TEST-window illustrations). None of the new audio figures above is a GOLD TEST score.

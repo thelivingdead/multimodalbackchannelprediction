@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+title: "Predicting Backchannel Events from Multimodal Conversational Signals"
+message: "If you use this software or the gold annotations, please cite this work."
+type: software
+authors:
+  - family-names: Bisht
+    given-names: Divya
+    affiliation: "University of Surrey"
+year: 2026
+license: MIT

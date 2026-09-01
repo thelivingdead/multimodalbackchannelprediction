@@ -1,0 +1,76 @@
+{
+  "experiment_name": "Temporal Correspondence of Rule Detections and Annotated Nod Onsets",
+  "n_usable_onsets": 8,
+  "hits_05s": 1,
+  "hits_10s": 1,
+  "hits_20s": 2,
+  "rate_05s": 0.125,
+  "rate_10s": 0.125,
+  "rate_20s": 0.25,
+  "mean_signed_offset_s": -2.515000000000007,
+  "median_signed_offset_s": -1.3399999999999963,
+  "mean_absolute_offset_s": 8.045000000000012,
+  "median_absolute_offset_s": 6.480000000000018,
+  "onset_inside_segment_count": 0,
+  "candidates_per_clip_mean": 45.86666666666667,
+  "candidates_per_clip_range": [
+    0,
+    229
+  ],
+  "candidate_coverage_fraction_mean": 0.09915555555555526,
+  "random_iterations": 1000,
+  "random_median_absolute_error_mean": 10.05159127625417,
+  "random_median_absolute_error_std": 4.092952058736005,
+  "empirical_p": 0.1968031968031968,
+  "control_exclusion_s": 2.0,
+  "control_exclusion_note": "Pseudo onsets are drawn uniformly from the analysed interval, excluding any region within 2.0 seconds of that clip's true annotated onset.",
+  "correspondence_tolerances_s": [
+    0.5,
+    1.0,
+    2.0
+  ],
+  "random_seed": 42,
+  "usable_onset_ids": [
+    "gold_001",
+    "gold_002",
+    "gold_006",
+    "gold_007",
+    "gold_008",
+    "gold_009",
+    "gold_013",
+    "gold_014"
+  ],
+  "excluded_onset_ids": [
+    "gold_015"
+  ],
+  "dev_clip_ids": [
+    "gold_001",
+    "gold_002",
+    "gold_003",
+    "gold_004",
+    "gold_005",
+    "gold_006",
+    "gold_007",
+    "gold_008",
+    "gold_009",
+    "gold_010",
+    "gold_011",
+    "gold_012",
+    "gold_013",
+    "gold_014",
+    "gold_015"
+  ],
+  "annotation_files": [
+    "data/gold_annotations.csv",
+    "data/gold/annotation_sheet.csv",
+    "data/gold/events.csv"
+  ],
+  "rule_config_path": "results/rule_selected_config.json",
+  "chosen_rotation_axis": 0,
+  "axis_name": "x",
+  "selected_amplitude_threshold": 16.3538328545911,
+  "min_movement_frames": 5,
+  "max_movement_frames": 50,
+  "fps": 25.0,
+  "n_matched_onsets": 8
+}

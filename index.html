@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>multimodalbackchannelprediction</title>
+  <meta name="description" content="Listener head-nod recognition from multimodal conversational signals. MSc Artificial Intelligence research, University of Surrey, 2026.">
+  <script>
+    try {
+      var t = localStorage.getItem("mbp-theme");
+      if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  </script>
+  <link rel="stylesheet" href="styles.css?v=13">
+</head>
+<body>
+  <header class="mast">
+    <a class="wordmark" href="#opening">multimodalbackchannelprediction</a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#question">Question</a>
+      <a href="#signal">Signal</a>
+      <a href="#method">Method</a>
+      <a href="#results">Nod</a>
+      <a href="#shake">Shake</a>
+      <a href="#inspect">Instrument</a>
+      <a href="#future">Future</a>
+      <a href="#artefacts">Research</a>
+    </nav>
+    <div class="theme" role="group" aria-label="Colour mode">
+      <button type="button" data-theme="light">Light</button>
+      <button type="button" data-theme="dark">Dark</button>
+      <button type="button" data-theme="system">System</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="opening" id="opening">
+      <div class="wrap opening-grid">
+        <div>
+          <p class="meta">multimodalbackchannelprediction</p>
+          <h1>Multimodal<br>Backchannel<br>Recognition</h1>
+          <p class="standfirst">Learning visual and temporal representations of listener head nods and head shakes in natural conversation.</p>
+          <p class="meta" style="margin-top:2rem">MSc Artificial Intelligence · University of Surrey · CVSSP · 2026<br>Columbia RealTalk · 25 fps · locked TEST n = 15</p>
+        </div>
+        <aside class="living" id="living" aria-label="Interactive listener pose from a locked TEST window">
+          <p class="meta">Interactive · stored TEST pose · drag the line</p>
+          <div class="axis-row">
+            <div class="meta">Pitch / x<b id="v-pitch">—</b></div>
+            <div class="meta">Yaw / y<b id="v-yaw">—</b></div>
+            <div class="meta">Roll / z<b id="v-roll">—</b></div>
+          </div>
+          <div class="head-stage" id="head-fallback">
+            <svg class="head-svg" viewBox="-40 -48 80 96" aria-hidden="true">
+              <g id="head-rot">
+                <ellipse class="skull" cx="0" cy="-6" rx="20" ry="26"/>
+                <path class="skull" d="M -14 10 Q 0 24 14 10"/>
+                <line class="skull" x1="-9" y1="-8" x2="-4" y2="-8"/>
+                <line class="skull" x1="4" y1="-8" x2="9" y2="-8"/>
+                <line class="skull" x1="0" y1="-2" x2="0" y2="7"/>
+              </g>
+            </svg>
+          </div>
+          <div class="trace-box">
+            <svg id="open-trace" viewBox="0 0 640 96" preserveAspectRatio="none">
+              <path fill="none" stroke="currentColor" stroke-width="1.4"/>
+            </svg>
+            <div class="playhead" id="open-playhead"></div>
+          </div>
+          <div class="event-tag" id="open-event"></div>
+          <p class="meta" id="open-cap">gold_016 · TEST · frame 0000 / 1500</p>
+          <div class="controls">
+            <button type="button" data-act="play" aria-pressed="false">Play</button>
+            <button type="button" data-act="pause" aria-pressed="true">Pause</button>
+            <button type="button" data-act="restart">Restart</button>
+          </div>
+          <p class="meta" style="margin-top:1rem"><a href="#inspect">Full TEST instrument ↓</a></p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="chapter" id="question">
+      <div class="wrap">
+        <div class="kicker">01 / The question</div>
+        <h2>When does a listener nod?</h2>
+        <p>The study is clip-level listener behaviour recognition on Columbia RealTalk. A nod may last about one second. The analysed conversational window lasts about sixty. Pose and RGB are two encodings of the same camera.</p>
+        <figure class="film">
+          <img src="assets/teaser_backchannel.jpg" alt="Two locked TEST windows from Columbia RealTalk. Top, gold_020, a clear nod while the partner holds the floor. Bottom, gold_024, unclear. Listener face crops, Euler pitch, and who speaks." loading="lazy">
+          <figcaption>Locked TEST windows gold_020 (clear nod) and gold_024 (unclear). Blue marks the labelled listener, orange the partner. Pose is EMOCA rotation x, threshold 16.35°. Speaker lanes are official RealTalk TalkNet. Public reuse of identifiable frames requires RealTalk’s terms.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="chapter" id="contributions">
+      <div class="wrap">
+        <div class="kicker">What this work produced</div>
+        <div class="contrib">
+          <p>A hand-annotated gold set of 30 conversational windows, split 15 DEV / 15 TEST, with TEST scored once under a frozen protocol.</p>
+          <p>A weak-supervision pipeline that trains temporal pose and VideoMAE systems from a DEV-frozen pose rule, without gold labels on TRAIN.</p>
+          <p>An evaluation harness that refuses writes to locked TEST directories, asserts that refusal in tests, and recomputes every reported metric from stored predictions.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="signal">
+      <div class="wrap">
+        <div class="kicker">02 / The signal</div>
+        <h2>pitch(t)</h2>
+        <p>EMOCA Euler rotation on locked TEST window gold_016. The marked band is the human-labelled nod interval, 9:15–9:16 in the watch clock, one second inside a sixty-second window. Scored systems in this dissertation are an amplitude rule, a 1D CNN, and VideoMAE; they are not an FFT classifier.</p>
+        <div class="drawn">
+          <svg id="scroll-trace" viewBox="0 0 1000 180" preserveAspectRatio="none" aria-label="Pitch against time">
+            <path id="scroll-path" fill="none" stroke="currentColor" stroke-width="1.2"/>
+          </svg>
+          <div class="gold-band" id="gold-band" title="Human-labelled nod interval"></div>
+        </div>
+        <p class="meta" style="margin-top:0.8rem">25 fps · ~60 s · human mark ~1 s · mean labelled interval 1.1 s</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="annotation">
+      <div class="wrap">
+        <div class="kicker">03 / Human ground truth</div>
+        <h2>Thirty windows, read by hand.</h2>
+        <p><span class="meta">Human label</span> is clip-level: clear nod or unclear. Unclear is the complement, not a second behaviour class. <span class="meta">Model signal</span> is whatever a system later assigns to that whole window.</p>
+        <p>30 gold windows · 15 DEV · 15 TEST · 19 clear nod · 11 unclear. TEST holds 10 positive and 5 negative windows. One annotator.</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="rule">
+      <div class="wrap">
+        <div class="kicker">04 / Rule baseline</div>
+        <h2>A frozen amplitude detector on Euler x.</h2>
+        <p>Savitzky–Golay smoothing, window 11, polynomial 2. Threshold selected on DEV only: 16.3538328545911°, shown as 16.35°.</p>
+        <div class="stat">
+          <b>0.67</b>
+          <span>TEST F1 · pose rule · n = 15</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="temporal">
+      <div class="wrap">
+        <div class="kicker">05 / Temporal learning</div>
+        <h2>A 1D CNN on pose sequences.</h2>
+        <p>The network sees Euler plus derivatives. Training labels are pseudo-labels from the frozen rule, not gold. DEV selects the checkpoint. TEST is scored once.</p>
+        <div class="stat">
+          <b>0.70</b>
+          <span>TEST F1 · pose CNN · train n = 80</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="vision">
+      <div class="wrap">
+        <div class="kicker">06 / Vision</div>
+        <h2>From a trajectory to sixteen frames.</h2>
+        <p>RGB 16 × 224 × 224 face crops from the same camera as the pose. Frozen VideoMAE uses a linear head on a frozen encoder. Fine-tuning adapts the last four blocks. These numbers are saved TEST predictions. VideoMAE does not run in the browser.</p>
+        <div class="pair">
+          <div class="stat">
+            <b>0.57</b>
+            <span>TEST F1 · frozen VideoMAE</span>
+          </div>
+          <div class="stat">
+            <b>0.82</b>
+            <span>Highest observed TEST F1 · fine-tuned VideoMAE, last four blocks</span>
+          </div>
+        </div>
+        <p class="tiny">The 0.82 point estimate sits 0.02 above the always-positive baseline (F1 0.80) on fifteen windows, inside the bootstrap interval 0.60–0.96. It is not a claim of statistical superiority.</p>
+        <figure class="film">
+          <img src="assets/test_clip_grid.jpg" alt="Grid of listener face crops from gold TEST windows used in the marked dissertation figures." loading="lazy">
+          <figcaption>RGB stills from the marked dissertation figures. Public reuse of identifiable frames requires RealTalk’s terms; they are not licensed from this repository.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="chapter fail" id="finding">
+      <div class="wrap">
+        <div class="kicker">07 / A finding about weak supervision</div>
+        <h2>More weak labels did not improve the locked score.</h2>
+        <div class="pair">
+          <div class="stat">
+            <b>80</b>
+            <span>pseudo-labels · TEST F1 0.82</span>
+          </div>
+          <div class="stat">
+            <b>200</b>
+            <span>pseudo-labels · TEST F1 0.63</span>
+          </div>
+        </div>
+        <p>Increasing the quantity of weak labels did not monotonically improve the locked TEST point estimate. One plausible explanation is greater exposure to systematic noise from the rule-based teacher. With n = 15, this is an observed trend, not a proven cause.</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="method">
+      <div class="wrap">
+        <div class="kicker">08 / How the system works</div>
+        <h2>TEST leaves the pipeline before development.</h2>
+        <p>The working disk was capped at 25 GB. That ceiling is why the pipeline used selective extraction, derived Euler features and weak supervision rather than retaining the full RealTalk video and EMOCA archive. The constraint shaped the method.</p>
+        <div class="pipe" id="pipe">
+          <div class="step">RealTalk</div>
+          <div class="step">Human gold annotations</div>
+          <div class="step">EMOCA / FLAME head pose</div>
+          <div class="step">Locked TEST held out</div>
+          <div class="step">Rule detector, frozen on DEV</div>
+          <div class="step">Pseudo-labels on TRAIN</div>
+          <div class="step">Temporal pose model / VideoMAE</div>
+          <div class="step">Locked TEST evaluation, once</div>
+        </div>
+        <figure class="film">
+          <img src="assets/architecture.png" alt="Executed system for binary head-nod recognition. Columbia RealTalk window splits into EMOCA pose, feeding a frozen rule and a 1D CNN, and RGB face crops, feeding VideoMAE. Gold DEV tunes; Gold TEST is scored once." loading="lazy">
+          <figcaption>Executed architecture, binary nod only. EMOCA pose feeds the frozen rule and the 1D CNN. RGB 16 × 224 × 224 crops feed VideoMAE. No BERT, HuBERT, or fusion. TRAIN is rule pseudo-labels. TEST is scored once.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="chapter" id="harness">
+      <div class="wrap">
+        <div class="kicker">09 / Test discipline</div>
+        <h2>The lock is part of the artefact.</h2>
+        <p>Locked TEST directories sit on a write-refusal list. The test suite asserts that those writes are refused. Every TEST F1 on this page can be recomputed from stored prediction CSVs. No TEST inference is required to validate the numbers.</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="results">
+      <div class="wrap">
+        <div class="kicker">10 / Locked nod TEST</div>
+        <h2>Point estimates on fifteen windows.</h2>
+        <div class="rows">
+          <div class="row"><span>Pose rule</span><em>.67</em></div>
+          <div class="row"><span>Pose CNN</span><em>.70</em></div>
+          <div class="row"><span>Frozen VideoMAE</span><em>.57</em></div>
+          <div class="row accent"><span>Fine-tuned VideoMAE, last four blocks</span><em>.82</em></div>
+          <div class="row"><span>Always-positive baseline</span><em>.80</em></div>
+          <div class="row"><span>Fine-tuned VideoMAE, 200 pseudo-labels</span><em>.63</em></div>
+        </div>
+        <p class="ci" style="margin-top:1rem">Bootstrap 95% interval on the 0.82 run: 0.60–0.96. Intervals overlap. No significance claims.</p>
+        <figure class="film">
+          <img src="assets/nod_test_confusion.png" alt="Confusion matrices for locked nod TEST systems." loading="lazy">
+          <figcaption>Locked nod TEST confusion. Fine-tuned VideoMAE: TP 9, FP 3, TN 2, FN 1. Pose rule: TP 7, FP 4, TN 1, FN 3.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="chapter" id="shake">
+      <div class="wrap">
+        <div class="kicker">11 / Locked head-shake TEST</div>
+        <h2>RGB lost to a simple pose rule.</h2>
+        <p>Same thirty gold windows, same frozen protocol, a different label: clear shake or not. TEST was scored once. The pose rule is the headline. Fine-tuned VideoMAE did not beat it.</p>
+        <div class="pair">
+          <div class="stat">
+            <b>0.70</b>
+            <span>TEST F1 · pose rule · axis z · τ ≈ 11.15°</span>
+          </div>
+          <div class="stat">
+            <b>0.64</b>
+            <span>Always-shake baseline on the same fifteen windows</span>
+          </div>
+        </div>
+        <div class="rows">
+          <div class="row accent"><span>Pose rule (z)</span><em>.70</em></div>
+          <div class="row"><span>Always-shake baseline</span><em>.64</em></div>
+          <div class="row"><span>Pose CNN</span><em>.64</em></div>
+          <div class="row"><span>Frozen VideoMAE</span><em>.60</em></div>
+          <div class="row"><span>Fine-tuned VideoMAE, last four blocks</span><em>.60</em></div>
+        </div>
+        <p>After scoring, a geometric audit placed shake on yaw (y), not roll (z). The locked TEST artefacts stay on z. They were not rewritten.</p>
+        <figure class="film">
+          <img src="assets/shake_test_f1.png" alt="Bar chart of locked head-shake TEST F1. Pose rule 0.70; always-shake 0.64; pose CNN 0.64; both VideoMAE systems 0.60." loading="lazy">
+          <figcaption>Locked shake TEST. RGB is two encodings of the same camera as pose, not a second sensory modality.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="chapter inspect" id="inspect">
+      <div class="wrap">
+        <div class="kicker">12 / Inspect a TEST window</div>
+        <h2>Head pitch on a locked TEST window.</h2>
+        <p class="note">The pose rule is recomputed interactively from stored pose data. Pose CNN and VideoMAE are saved predictions from the locked TEST evaluation. The original RealTalk video is not hosted. Drag the plot to move through the sequence. Play, Pause and Restart sit under the plot.</p>
+        <div class="win-list" id="win-list"></div>
+        <div class="spec-strip">
+          <div><span>Window</span><b id="ex-window">GOLD_016</b></div>
+          <div><span>Gold label</span><b id="ex-label">CLEAR NOD</b></div>
+          <div><span>Split</span><b id="ex-split">TEST</b></div>
+          <div><span>Fps</span><b id="ex-fps">25</b></div>
+          <div><span>Pose rule</span><b id="m-rule">—</b><em id="m-rule-src">Interactive</em></div>
+          <div><span>Pose CNN</span><b id="m-cnn">—</b><em>Saved</em></div>
+          <div><span>VideoMAE</span><b id="m-ft">—</b><em>Saved</em></div>
+        </div>
+        <div class="instrument">
+          <div class="plot-head">
+            <h3>Head pitch</h3>
+            <p class="meta">Euler X · degrees</p>
+          </div>
+          <div class="legend" role="group" aria-label="Plot layers">
+            <button type="button" data-layer="raw" class="on">Raw pitch</button>
+            <button type="button" data-layer="smoothed" class="on">Smoothed</button>
+            <button type="button" data-layer="threshold" class="on">Threshold</button>
+          </div>
+          <div class="wave" id="inspect-wave" aria-label="Head pitch against time">
+            <svg id="rule-svg" viewBox="0 0 1000 280" preserveAspectRatio="none">
+              <path class="raw" fill="none" stroke="currentColor" stroke-width="0.9" opacity="0.28"/>
+              <path class="smoothed" fill="none" stroke="currentColor" stroke-width="1.35"/>
+              <line class="thr" stroke="currentColor" stroke-dasharray="4 5" stroke-width="0.9"/>
+            </svg>
+            <div class="playhead" id="rule-playhead"></div>
+          </div>
+          <div class="readout">
+            <div>Amplitude<b id="r-amp">—</b></div>
+            <div>Rule threshold<b id="r-thr">16.35°</b></div>
+            <div>Decision<b id="r-dec">—</b></div>
+            <div>Frame<b id="r-frame">0000 / 1500</b></div>
+          </div>
+          <div class="controls">
+            <button type="button" data-act="play" aria-pressed="false">Play</button>
+            <button type="button" data-act="pause" aria-pressed="true">Pause</button>
+            <button type="button" data-act="restart">Restart</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter lim" id="limitations">
+      <div class="wrap">
+        <div class="kicker">13 / Limitations</div>
+        <h2>The constraints are part of the result.</h2>
+        <ol>
+          <li><span class="id">Gold set</span><span>Fifteen TEST windows. Too small for statistical superiority.</span></li>
+          <li><span class="id">Annotator</span><span>One person labelled the gold set. There is no second-reader agreement.</span></li>
+          <li><span class="id">Weak labels</span><span>TRAIN is rule pseudo-labels, not gold.</span></li>
+          <li><span class="id">Camera</span><span>Pose and RGB are two encodings of one camera, not two sensory modalities.</span></li>
+          <li><span class="id">Shake axis</span><span>Locked shake TEST used roll (z). A later audit placed shake on yaw (y). TEST was not rescored.</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="chapter future" id="future">
+      <div class="wrap">
+        <div class="kicker">14 / Future work</div>
+        <h2>From prediction to presence.</h2>
+        <p>Future work will explore generative AI avatars that turn predicted backchannel events into natural, socially responsive listener behaviour. Predicted nods and head motion would condition a listener that is visible while it listens. That system is not in this dissertation.</p>
+        <ol class="path" id="future-chain">
+          <li><span>01</span>Speaker</li>
+          <li><span>02</span>Predicted backchannel</li>
+          <li><span>03</span>Generative avatar</li>
+          <li><span>04</span>Responsive listener</li>
+        </ol>
+        <p class="path-note">A sketch of a later step, not a result of this study.</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="artefacts">
+      <div class="wrap">
+        <div class="kicker">15 / Paper, code, methods</div>
+        <h2>Read the work as it stands.</h2>
+        <div class="links">
+          <a href="https://github.com/thelivingdead/multimodalbackchannelprediction/blob/main/README.md">Read the research <span>↗</span></a>
+          <a href="https://github.com/thelivingdead/multimodalbackchannelprediction/blob/main/dissertation-behaviour-recognition/reports/methods_chapter_draft.md">View methods <span>↗</span></a>
+          <a href="https://github.com/thelivingdead/multimodalbackchannelprediction/blob/main/dissertation-behaviour-recognition/results/tables/main_results.md">Explore results <span>↗</span></a>
+          <a href="https://github.com/thelivingdead/multimodalbackchannelprediction">GitHub <span>↗</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <strong>multimodalbackchannelprediction</strong>
+    MSc Artificial Intelligence<br>
+    University of Surrey · CVSSP · 2026<br>
+    Divya Bisht
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
+  <script src="app.js?v=13"></script>
+</body>
+</html>

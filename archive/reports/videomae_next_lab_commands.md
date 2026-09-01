@@ -267,3 +267,48 @@ Defaults: fine-tune the last 4 of 12 encoder blocks + linear head (`--unfreeze-b
 ```
 
 **Gate:** `metrics.json` pasted back with real measured values.
+
+---
+
+## 12. Step 8 (optional, otter95): data-scaling 80 → 200 pseudo clips
+
+**Does not overwrite** `results/pseudo_labels.csv` or `results/videomae_finetuned/` (the 80-clip TEST F1 0.818 stays canonical). New labels: `results/pseudo_labels_200.csv` (original 80 rows byte-identical; script aborts if they would change). New run: `results/videomae_finetuned_n200/`.
+
+Need `matplotlib` + `scipy` in the scratch venv (imported by the EMOCA streamer). RGB windows should live on `/scratch` via the existing symlink so home quota stays clear.
+
+```bash
+/scratch/db01550/venv/bin/pip install --no-cache-dir matplotlib scipy requests opencv-python-headless imageio-ffmpeg
+cd ~/multimodalbackchannelprediction/dissertation-behaviour-recognition
+nohup /scratch/db01550/venv/bin/python -u scripts/scale_pseudo_pool_200.py \
+    > results/scaling_200.log 2>&1 &
+tail -f results/scaling_200.log
+```
+
+When the log prints `DONE. … Next (does NOT touch results/videomae_finetuned/)`:
+
+```bash
+/scratch/db01550/venv/bin/python scripts/finetune_videomae.py \
+    --pseudo-labels results/pseudo_labels_200.csv \
+    --out-dir results/videomae_finetuned_n200
+```
+
+Then TEST-only CI (predictions.csv has all splits — filter first, same as n=80):
+
+```bash
+/scratch/db01550/venv/bin/python - <<'EOF'
+import pandas as pd, sys
+sys.path.insert(0, ".")
+from src.metrics import binary_metrics
+df = pd.read_csv("results/videomae_finetuned_n200/predictions.csv")
+te = df[df["split"].astype(str).str.upper() == "TEST"]
+te.to_csv("results/videomae_finetuned_n200/predictions_test.csv", index=False)
+print("n200 TEST n=", len(te), binary_metrics(te["label"].to_numpy().astype(int), te["pred"].to_numpy().astype(int)))
+EOF
+/scratch/db01550/venv/bin/python scripts/bootstrap_f1.py \
+    --pred videomae_finetuned=results/videomae_finetuned/predictions_test.csv \
+    --pred videomae_finetuned_n200=results/videomae_finetuned_n200/predictions_test.csv
+/scratch/db01550/venv/bin/python scripts/make_main_results.py
+```
+
+**Report the n=200 TEST number regardless of outcome.** It is a scaling ablation against n=80 (F1 0.818, CI [0.60, 0.96], n=15 TEST). CIs will overlap; do not claim significance. `best_model.pt` is gitignored.
+

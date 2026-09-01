@@ -144,13 +144,34 @@ def test_videomae_shake_path_isolation() -> None:
     else:
         raise AssertionError("nod run must not write under results/shake/")
 
+    try:
+        gate.assert_joint_videomae_paths(
+            gold_csv=root / "data" / "gold" / "shake_annotation_sheet.csv",
+            nod_pseudo=root / "results" / "pseudo_labels.csv",
+            shake_pseudo=root / "results" / "shake" / "pseudo_labels.csv",
+            out_dir=root / "results" / "joint" / "videomae_finetuned",
+        )
+    except SystemExit as exc:
+        msg = str(exc).lower()
+        assert "locked" in msg or "joint" in msg
+    else:
+        raise AssertionError(
+            "locked results/joint/videomae_finetuned must be refused"
+        )
     joint = gate.assert_joint_videomae_paths(
         gold_csv=root / "data" / "gold" / "shake_annotation_sheet.csv",
         nod_pseudo=root / "results" / "pseudo_labels.csv",
         shake_pseudo=root / "results" / "shake" / "pseudo_labels.csv",
-        out_dir=root / "results" / "joint" / "videomae_finetuned",
+        out_dir=root / "results" / "joint" / "dev_unscored_run",
     )
     assert joint == "joint_nod_shake"
+    for blocked in gate.LOCKED_OUT_DIRS:
+        try:
+            gate.assert_unlocked_out_dir(blocked)
+        except SystemExit:
+            pass
+        else:
+            raise AssertionError(f"locked dir must be refused: {blocked}")
     try:
         gate.assert_joint_videomae_paths(
             gold_csv=root / "data" / "gold" / "shake_annotation_sheet.csv",

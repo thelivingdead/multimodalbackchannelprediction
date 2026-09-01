@@ -1,0 +1,18 @@
+# Additional packages for VideoMAE feature extraction and training.
+#
+# Versions recovered from saved metrics JSON (recommended, not a frozen lockfile):
+#   torch 2.13.0  — CPU for frozen head; CUDA cu126 on otter95 for fine-tune
+#   transformers 5.15.1
+#
+#   pip install -r requirements.txt
+#   pip install -r requirements-video.txt
+#
+# GPU fine-tune on otter95 used:
+#   pip install torch --index-url https://download.pytorch.org/whl/cu126
+#   pip install "transformers==5.15.1" safetensors pillow opencv-python-headless
+
+torch>=2.2,<2.14
+transformers>=4.40,<5.16
+safetensors>=0.4
+huggingface_hub>=0.20
+opencv-python-headless>=4.8

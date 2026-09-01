@@ -62,6 +62,8 @@ NOD_VMAE_OUT_DIRS = (
 JOINT_ROOT = ROOT / "results" / "joint"
 LOCKED_OUT_DIRS = (
     ROOT / "results" / "videomae_finetuned",
+    ROOT / "results" / "videomae_finetuned_n120",
+    ROOT / "results" / "videomae_finetuned_n200",
     ROOT / "results" / "videomae_frozen_head",
     ROOT / "results" / "shake" / "videomae_finetuned",
     ROOT / "results" / "shake" / "videomae_frozen_head",

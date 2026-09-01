@@ -16,15 +16,14 @@ TP 6, FP 5, TN 0, FN 4) — below the pose 1D CNN (0.70), so it is not a
 headline. The submitted dissertation results remain pose-only: frozen rule
 TEST F1 0.67 and 1D CNN TEST F1 0.70.
 
-Not run: VideoMAE **fine-tuning** (``configs/videomae_finetune.yaml``) — the
-lab quota cannot hold video shards plus a trainable backbone; see
-``reports/videomae_preflight_lab.md``.
+Fine-tuning was later executed by ``scripts/finetune_videomae.py``
+(TEST F1 0.82 at n=80). Preflight notes: ``archive/reports/videomae_preflight_lab.md``.
 
 This script intentionally performs no computation and downloads nothing.
 """
 from __future__ import annotations
 
-PREFLIGHT = "reports/videomae_preflight_lab.md"
+PREFLIGHT = "archive/reports/videomae_preflight_lab.md"
 
 
 def main() -> None:

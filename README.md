@@ -1,3 +1,5 @@
+Submitted study: [`dissertation-behaviour-recognition/`](dissertation-behaviour-recognition/).
+
 # Predicting Backchannel Events from Multimodal Conversational Signals
 
 MSc dissertation — Divya Bisht  
@@ -135,7 +137,7 @@ dissertation-behaviour-recognition/
 └── AUDIO_DEV.md        # otter commands for audio alignment / fusion
 ```
 
-Canonical scripts are listed in [`dissertation-behaviour-recognition/README.md`](dissertation-behaviour-recognition/README.md). Figure captions: [`dissertation-behaviour-recognition/figures/paper/CAPTIONS.md`](dissertation-behaviour-recognition/figures/paper/CAPTIONS.md).
+Canonical scripts are listed in [`dissertation-behaviour-recognition/README.md`](dissertation-behaviour-recognition/README.md). Figure captions: [`dissertation-behaviour-recognition/figures/paper/CAPTIONS.md`](dissertation-behaviour-recognition/figures/paper/CAPTIONS.md). Earlier seven-class demo folders live under [`archive/`](archive/).
 
 ## Labels
 
@@ -148,4 +150,6 @@ RealTalk: **p0 = left listener**, **p1 = right listener**, 25 fps.
 
 ## Citation
 
-Geng, S., et al. (2023). *RealTalk*. https://realtalk.cs.columbia.edu/
+Code and gold labels: see `CITATION.cff` (MIT licence in `LICENSE`).
+
+Columbia RealTalk video, audio, and EMOCA releases are **not redistributed** in this repository. Use of RealTalk follows its own licence: Geng, S., et al. (2023). *RealTalk*. https://realtalk.cs.columbia.edu/

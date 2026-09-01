@@ -14,7 +14,7 @@ export default function DocsPage() {
             Problem framing, Columbia RealTalk vs MM-F2F, 7-class taxonomy, EDA plan, label
             derivation, and risks.
           </p>
-          <p className="path">docs/01_data_analysis_report.md</p>
+          <p className="path">docs/archive/01_data_analysis_report.md</p>
         </article>
         <article>
           <h2>Methodology & roadmap</h2>
@@ -22,7 +22,7 @@ export default function DocsPage() {
             Research questions, labelling protocol, encoder/fusion plan, baselines, metrics, and a
             10-week execution roadmap.
           </p>
-          <p className="path">docs/02_research_methodology_and_roadmap.md</p>
+          <p className="path">docs/archive/02_research_methodology_and_roadmap.md</p>
         </article>
         <article>
           <h2>EDA notebook</h2>

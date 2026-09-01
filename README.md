@@ -43,15 +43,15 @@ Manual gold annotation          30 windows (DEV/TEST)
         ↓
 Pose extraction                 EMOCA Euler, used not trained
         ↓
-Rule-based pose baseline        DEV-tuned; TEST once
+Rule-based pose baseline        DEV-tuned, TEST once
         ↓
 Pseudo-labels on TRAIN          frozen rule on unlabelled clips
         ↓
-Temporal pose CNN               TRAIN=pseudo; DEV select; TEST once
+Temporal pose CNN               TRAIN=pseudo, DEV select; TEST once
         ↓
 Frozen VideoMAE baseline        RGB crops, frozen encoder
         ↓
-Fine-tuned VideoMAE             last 4 blocks; n=80 headline
+Fine-tuned VideoMAE             last 4 blocks, n=80 headline
         ↓
 Audio / multimodal DEV          MFCC, HuBERT, fusion (DEV only)
         ↓

@@ -1,5 +1,8 @@
 # Predicting Backchannel Events from Multimodal Conversational Signals
 
+[![Tests](https://github.com/thelivingdead/multimodalbackchannelprediction/actions/workflows/tests.yml/badge.svg)](https://github.com/thelivingdead/multimodalbackchannelprediction/actions/workflows/tests.yml)
+
+
 MSc dissertation, Divya Bisht  
 Centre for Vision, Speech and Signal Processing (CVSSP), University of Surrey, 2026
 

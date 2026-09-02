@@ -1,0 +1,121 @@
+{
+  "protocol": "windowed_nod_3s_baselines",
+  "task": "nod_only",
+  "window_sec": 3.0,
+  "stride_sec": 2.0,
+  "axis": 0,
+  "axis_name": "x",
+  "axis_meaning": "pitch (up-down / nod-like)",
+  "frozen_60s_threshold": 16.3538328545911,
+  "dev_selected_window_threshold": 2.6839854403253556,
+  "selection": "Pitch axis fixed for nod; amplitude threshold selected on human DEV window F1 only; TEST applied once.",
+  "n_dev": 435,
+  "n_dev_positive": 52,
+  "n_test": 435,
+  "n_test_positive": 69,
+  "dev_selected_metrics_check": {
+    "accuracy": 0.4206896551724138,
+    "balanced_accuracy": 0.5796093593090982,
+    "precision": 0.1453900709219858,
+    "recall": 0.7884615384615384,
+    "f1": 0.2455089820359281,
+    "tp": 41,
+    "fp": 241,
+    "tn": 142,
+    "fn": 11
+  },
+  "metrics": {
+    "DEV": {
+      "always_no": {
+        "accuracy": 0.8804597701149425,
+        "balanced_accuracy": 0.5,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "tp": 0,
+        "fp": 0,
+        "tn": 383,
+        "fn": 52
+      },
+      "always_yes": {
+        "accuracy": 0.11954022988505747,
+        "balanced_accuracy": 0.5,
+        "precision": 0.11954022988505747,
+        "recall": 1.0,
+        "f1": 0.2135523613963039,
+        "tp": 52,
+        "fp": 383,
+        "tn": 0,
+        "fn": 0
+      },
+      "frozen_60s_threshold_transfer": {
+        "accuracy": 0.8114942528735632,
+        "balanced_accuracy": 0.4857652138983732,
+        "precision": 0.08333333333333333,
+        "recall": 0.057692307692307696,
+        "f1": 0.06818181818181819,
+        "tp": 3,
+        "fp": 33,
+        "tn": 350,
+        "fn": 49
+      },
+      "dev_selected_window_rule": {
+        "accuracy": 0.4206896551724138,
+        "balanced_accuracy": 0.5796093593090982,
+        "precision": 0.1453900709219858,
+        "recall": 0.7884615384615384,
+        "f1": 0.2455089820359281,
+        "tp": 41,
+        "fp": 241,
+        "tn": 142,
+        "fn": 11
+      }
+    },
+    "TEST": {
+      "always_no": {
+        "accuracy": 0.8413793103448276,
+        "balanced_accuracy": 0.5,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "tp": 0,
+        "fp": 0,
+        "tn": 366,
+        "fn": 69
+      },
+      "always_yes": {
+        "accuracy": 0.15862068965517243,
+        "balanced_accuracy": 0.5,
+        "precision": 0.15862068965517243,
+        "recall": 1.0,
+        "f1": 0.2738095238095238,
+        "tp": 69,
+        "fp": 366,
+        "tn": 0,
+        "fn": 0
+      },
+      "frozen_60s_threshold_transfer": {
+        "accuracy": 0.7425287356321839,
+        "balanced_accuracy": 0.4941791399382276,
+        "precision": 0.14754098360655737,
+        "recall": 0.13043478260869565,
+        "f1": 0.13846153846153847,
+        "tp": 9,
+        "fp": 52,
+        "tn": 314,
+        "fn": 60
+      },
+      "dev_selected_window_rule": {
+        "accuracy": 0.43908045977011495,
+        "balanced_accuracy": 0.5490615348063673,
+        "precision": 0.1794871794871795,
+        "recall": 0.7101449275362319,
+        "f1": 0.28654970760233917,
+        "tp": 49,
+        "fp": 224,
+        "tn": 142,
+        "fn": 20
+      }
+    }
+  }
+}

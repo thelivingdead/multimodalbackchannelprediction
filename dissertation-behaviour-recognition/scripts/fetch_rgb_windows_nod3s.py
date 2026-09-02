@@ -60,7 +60,21 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--ids", type=str, default=None, help="gold_001,gold_016")
     ap.add_argument("--limit-clips", type=int, default=None)
+    ap.add_argument(
+        "--min-free-gb",
+        type=float,
+        default=3.0,
+        help="abort if ~ has less free space than this (default 3.0)",
+    )
     args = ap.parse_args()
+
+    def check_disk(where: str = "") -> None:
+        free = fr.free_gb()
+        if free < args.min_free_gb:
+            raise SystemExit(
+                f"STOP: free disk on ~ is {free:.2f} GB < {args.min_free_gb} GB"
+                f"{' at ' + where if where else ''}."
+            )
 
     if not fr.INDEX_JSON.exists():
         raise SystemExit(f"STOP: missing {fr.INDEX_JSON}")
@@ -78,7 +92,7 @@ def main() -> None:
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     SUMMARY_JSON.parent.mkdir(parents=True, exist_ok=True)
-    fr.check_disk("start")
+    check_disk("start")
     records: dict[str, dict] = {}
     if SUMMARY_JSON.exists():
         records = json.loads(SUMMARY_JSON.read_text()).get("windows", {})
@@ -110,7 +124,7 @@ def main() -> None:
         )
         if not needed:
             continue
-        fr.check_disk(sid)
+        check_disk(sid)
         blob = fr.fetch_member(url, int(entry["offset"]), int(entry["size"]))
         sample = {"sample_id": sid, "video_id": video_id, "person": person}
         for r in needed:

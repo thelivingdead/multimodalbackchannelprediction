@@ -146,6 +146,12 @@ def main() -> None:
     parser.add_argument("--patience", type=int, default=6)
     parser.add_argument("--batch-size", type=int, default=8)
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument(
+        "--criterion",
+        choices=("balanced_accuracy", "f1"),
+        default="balanced_accuracy",
+        help="DEV selection criterion for epoch and probability threshold",
+    )
     args = parser.parse_args()
 
     out_dir = assert_unlocked_out_dir(args.out_dir)
@@ -255,7 +261,9 @@ def main() -> None:
         with torch.no_grad():
             logits = model.window_logits(dev_tensor).cpu().numpy()
         probabilities = 1.0 / (1.0 + np.exp(-logits))
-        threshold, dev_metrics = choose_dev_threshold(y_dev, probabilities)
+        threshold, dev_metrics = choose_dev_threshold(
+            y_dev, probabilities, criterion=args.criterion
+        )
         row = {
             "epoch": epoch,
             "train_bag_loss": float(np.mean(losses)),
@@ -269,7 +277,10 @@ def main() -> None:
             f"DEV F1={row['dev_window_f1']:.3f} "
             f"bacc={row['dev_balanced_accuracy']:.3f}"
         )
-        key = (row["dev_window_f1"], row["dev_balanced_accuracy"])
+        if args.criterion == "balanced_accuracy":
+            key = (row["dev_balanced_accuracy"], row["dev_window_f1"])
+        else:
+            key = (row["dev_window_f1"], row["dev_balanced_accuracy"])
         if best is None or key > best["key"]:
             best = {"key": key, **row}
             torch.save(model.state_dict(), checkpoint)
@@ -311,7 +322,18 @@ def main() -> None:
                 "80 weakly labelled 60 s TRAIN bags; 29 windows per bag; "
                 "top-2 multiple-instance pooling"
             ),
-            "selection": "human DEV window F1 and threshold only",
+            "selection": (
+                "human DEV windows only, for epoch and probability threshold"
+            ),
+            "headline_metric": "balanced_accuracy",
+            "headline_metric_floor": 0.5,
+            "selection_criterion": args.criterion,
+            "criterion_rationale": (
+                "F1 is unsuitable as a selection criterion at roughly 12 percent "
+                "window prevalence: it barely penalises false positives, so an F1 "
+                "sweep drifts towards always-yes. Balanced accuracy weights the "
+                "negative class equally. Criterion fixed before any TEST scoring."
+            ),
             "feature_set": "rotation_xyz_plus_first_difference",
             "window_sec": 3.0,
             "stride_sec": 2.0,
@@ -337,8 +359,10 @@ def main() -> None:
         f"{len(train_ids) * len(WINDOW_STARTS)} window instances"
     )
     print(
-        f"best epoch {best['epoch']}  DEV P {dev_metrics['precision']:.3f} "
-        f"R {dev_metrics['recall']:.3f} F1 {dev_metrics['f1']:.3f}"
+        f"best epoch {best['epoch']} (selected on {args.criterion})  "
+        f"DEV balanced accuracy {dev_metrics['balanced_accuracy']:.3f}  "
+        f"P {dev_metrics['precision']:.3f} R {dev_metrics['recall']:.3f} "
+        f"F1 {dev_metrics['f1']:.3f}"
     )
     print("TEST was not loaded or scored.")
     print(f"artifacts: {out_dir}")

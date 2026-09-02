@@ -127,7 +127,26 @@ The same partial fine-tune recipe was repeated with **200** frozen-rule pseudo-l
 
 TEST counts at n=200: TP 6, FP 3, TN 2, FN 4. The point estimate **fell** relative to n=80. The 95% intervals overlap ([0.60, 0.96] vs [0.31, 0.84]), so the drop is **not statistically significant** at \(n=15\). The defensible reading is that extra automatic labels from the same noisy teacher did not help, and the canonical RGB result remains the 80-clip run. Do not treat n=200 as a second headline, and do not rerun it.
 
-### 5.9 What is not in this chapter
+### 5.9 Three-second sliding-window protocol: nod baselines
+
+Under the finer protocol of Section 4.11 the pitch amplitude rule does not separate nod windows from non-nod windows. The DEV sweep was run with balanced accuracy as the objective, as declared in Section 4.11, and TEST was then scored once at the selected threshold of 2.68 degrees. Balanced accuracy is the headline metric; the floor for any constant predictor is 0.500.
+
+| Method | DEV balanced accuracy | TEST balanced accuracy | TEST P | TEST R | TEST F1 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Always no | 0.500 | 0.500 | 0.000 | 0.000 | 0.000 |
+| Always yes | 0.500 | 0.500 | 0.159 | 1.000 | 0.274 |
+| Frozen 60 s threshold, transferred | 0.486 | 0.494 | 0.148 | 0.130 | 0.138 |
+| DEV-selected pitch rule | 0.580 | **0.549** | 0.179 | 0.710 | 0.287 |
+
+The 95 percent clip-bootstrap interval for the selected rule is [0.520, 0.647] on DEV and **[0.480, 0.619] on TEST**. The TEST interval contains 0.500, so on 15 clips this rule is not distinguishable from chance.
+
+Two observations matter for the interpretation. First, balanced accuracy and F1 select the *same* DEV threshold, 2.68 degrees, so the near-always-yes behaviour of the rule is not an artefact of the selection criterion: at that threshold the rule fires on 64.8 percent of DEV windows to reach recall 0.788 at precision 0.145. Across the whole 434-point DEV sweep balanced accuracy never exceeds 0.580 and its median is 0.536, so no threshold on this score yields a useful operating point. Second, the ranking itself is close to uninformative on DEV: PR AUC is 0.131 against a prevalence of 0.120. On TEST, PR AUC is 0.207 against a prevalence of 0.159, a slightly wider but still small margin. The criterion change was worth making because it makes the comparison against the trivial baseline meaningful, but it does not rescue the feature.
+
+The reason is a property of the feature rather than of the fitting procedure. Peak-to-peak pitch amplitude over 3 s cannot distinguish an oscillation from a single downward glance or a postural drift of the same magnitude, and at 3 s many non-nod windows contain exactly such movements; at 60 s these were diluted by the rest of the window. A rule that also counted direction reversals or zero crossings of the smoothed pitch velocity would address this directly and is the natural next step, but it is not part of the present results.
+
+The transferred 60 s threshold is reported unchanged: TEST F1 0.138 at balanced accuracy 0.494. This is the cleanest negative result in the chapter. A threshold frozen for a 60 s any-nod decision does not transfer to a 3 s window decision, which is what one would expect given that the two protocols have different positive rates and different signal durations, and it is stated here without refitting of any kind.
+
+### 5.10 What is not in this chapter
 
 - DEV F1 0.86 / 0.89 / 0.90 / 0.857 as a finding
 - Ablation D as a valid F1

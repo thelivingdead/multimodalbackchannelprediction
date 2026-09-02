@@ -117,6 +117,12 @@ def main() -> None:
     ap.add_argument("--out-dir", type=Path, default=DEFAULT_OUT)
     ap.add_argument("--epochs", type=int, default=15)
     ap.add_argument("--seed", type=int, default=42)
+    ap.add_argument(
+        "--criterion",
+        choices=("balanced_accuracy", "f1"),
+        default="balanced_accuracy",
+        help="DEV selection criterion for epoch and probability threshold",
+    )
     ap.add_argument("--smoke-test", action="store_true")
     ap.add_argument("--force", action="store_true")
     args = ap.parse_args()
@@ -189,16 +195,26 @@ def main() -> None:
         with torch.no_grad():
             logits = model(torch.from_numpy(np.transpose(Xdv, (0, 2, 1)))).numpy()
         prob = 1.0 / (1.0 + np.exp(-logits))
-        thr, dev_m = choose_dev_threshold(ydv, prob)
+        thr, dev_m = choose_dev_threshold(ydv, prob, criterion=args.criterion)
         row = {
             "epoch": epoch,
             "train_loss": float(np.mean(losses) if losses else 0.0),
             "dev_f1": float(dev_m["f1"]),
+            "dev_balanced_accuracy": float(dev_m["balanced_accuracy"]),
             "dev_probability_threshold": float(thr),
         }
         hist.append(row)
-        print(f"epoch {epoch} loss={row['train_loss']:.4f} DEV window F1={row['dev_f1']:.3f}")
-        if best is None or row["dev_f1"] > best["dev_f1"]:
+        print(
+            f"epoch {epoch} loss={row['train_loss']:.4f} "
+            f"DEV window bacc={row['dev_balanced_accuracy']:.3f} "
+            f"F1={row['dev_f1']:.3f}"
+        )
+        objective = (
+            "dev_balanced_accuracy"
+            if args.criterion == "balanced_accuracy"
+            else "dev_f1"
+        )
+        if best is None or row[objective] > best[objective]:
             best = dict(row)
             torch.save(model.state_dict(), ckpt)
             bad = 0
@@ -251,7 +267,18 @@ def main() -> None:
             "window_sec": 3.0,
             "stride_sec": 2.0,
             "window_frames": WINDOW_FRAMES,
-            "selection": "DEV window F1; trained on all DEV windows; TEST once",
+            "selection": (
+                "DEV window balanced accuracy; trained on all DEV windows; TEST once"
+            ),
+            "headline_metric": "balanced_accuracy",
+            "headline_metric_floor": 0.5,
+            "selection_criterion": args.criterion,
+            "criterion_rationale": (
+                "F1 is unsuitable as a selection criterion at roughly 12 percent "
+                "window prevalence: it barely penalises false positives, so an F1 "
+                "sweep drifts towards always-yes. Balanced accuracy weights the "
+                "negative class equally. Criterion fixed before TEST scoring."
+            ),
             "n_dev_windows": int(len(dev)),
             "n_test_windows": int(len(tes)),
             "n_dev_pos": int((ydv == 1).sum()),
@@ -259,6 +286,7 @@ def main() -> None:
             "pos_weight": float(neg / pos),
             "best_epoch": int(best["epoch"]),
             "dev_window_f1": float(best["dev_f1"]),
+            "dev_window_balanced_accuracy": float(best["dev_balanced_accuracy"]),
             "dev_probability_threshold": thr,
             "test_window": test_w,
             "test_clip_any_window": test_c,
@@ -269,7 +297,14 @@ def main() -> None:
     )
     print("=====================================")
     print("windowed nod pose CNN (3 s, feature C)")
-    print(f"  best epoch (DEV): {best['epoch']}   DEV window F1: {best['dev_f1']:.3f}")
+    print(
+        f"  best epoch (DEV, {args.criterion}): {best['epoch']}   "
+        f"DEV window bacc: {best['dev_balanced_accuracy']:.3f}  "
+        f"F1: {best['dev_f1']:.3f}"
+    )
+    print(
+        f"  TEST window balanced accuracy {test_w['balanced_accuracy']:.3f}"
+    )
     print(
         f"  TEST window P {test_w['precision']:.3f}  R {test_w['recall']:.3f}  "
         f"F1 {test_w['f1']:.3f}  (TP{test_w['tp']} FP{test_w['fp']} TN{test_w['tn']} FN{test_w['fn']})"

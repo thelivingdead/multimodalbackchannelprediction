@@ -34,6 +34,16 @@ EVENTS_TEST_CSV = WINDOWED_DIR / "nod_events_windowed_test.csv"
 STATUS_TEST_CSV = WINDOWED_DIR / "annotation_status_test.csv"
 WINDOWS_TEST_CSV = WINDOWED_DIR / "nod_windows_test.csv"
 TEST_SAMPLE_IDS = [f"gold_{i:03d}" for i in range(16, 31)]
+SHAKE_ENTRY_CSV = WINDOWED_DIR / "shake_event_entry.csv"
+SHAKE_EVENTS_CSV = WINDOWED_DIR / "shake_events_windowed.csv"
+SHAKE_STATUS_CSV = WINDOWED_DIR / "annotation_status_shake.csv"
+SHAKE_WINDOWS_DEV_CSV = WINDOWED_DIR / "shake_windows_dev.csv"
+SHAKE_ENTRY_TEST_CSV = WINDOWED_DIR / "shake_event_entry_test.csv"
+SHAKE_EVENTS_TEST_CSV = WINDOWED_DIR / "shake_events_windowed_test.csv"
+SHAKE_STATUS_TEST_CSV = WINDOWED_DIR / "annotation_status_shake_test.csv"
+SHAKE_WINDOWS_TEST_CSV = WINDOWED_DIR / "shake_windows_test.csv"
+SHAKE_STATUS_COLUMNS = ["sample_id", "reviewed", "n_shake_events", "notes"]
+DEV_SAMPLE_IDS = [f"gold_{i:03d}" for i in range(1, 16)]
 CLIPS_DIR = WINDOWED_DIR / "clips"
 MIN_EVENT_SEC = 0.4
 
@@ -329,6 +339,7 @@ def events_to_rows(
     clip_sec: float = CLIP_SEC,
     *,
     allow_test: bool = False,
+    event_prefix: str = "nod",
 ) -> pd.DataFrame:
     if allow_test:
         require_test_id(sample_id)
@@ -344,7 +355,7 @@ def events_to_rows(
         rows.append(
             {
                 "sample_id": sample_id,
-                "event_id": f"nod_{i:03d}",
+                "event_id": f"{event_prefix}_{i:03d}",
                 "start_sec": round(s, 3),
                 "end_sec": round(e, 3),
                 "start_frame_relative": sec_to_rel_frame(s),
@@ -830,3 +841,324 @@ def generate_test_windows(
         raise WindowedProtocolError("STOP: non-TEST sample_id in TEST windows")
     atomic_to_csv(win, out_path)
     return win
+
+
+def _relative_span(
+    raw_start: Any,
+    raw_end: Any,
+    origin: float,
+    clip_sec: float,
+) -> tuple[float, float, bool]:
+    clock_s = parse_clock(raw_start)
+    clock_e = parse_clock(raw_end)
+    if clock_s is None or clock_e is None:
+        raise WindowedProtocolError("empty clock after parse")
+    text = str(raw_start)
+    if ":" in text or ";" in text:
+        rel_s = clock_s - origin
+        rel_e = clock_e - origin
+    else:
+        rel_s = clock_s
+        rel_e = clock_e
+    if rel_e < rel_s:
+        raise WindowedProtocolError(f"end before start ({raw_start}, {raw_end})")
+    expanded = abs(rel_e - rel_s) < 1e-9
+    if expanded:
+        rel_e = rel_s + MIN_EVENT_SEC
+    if rel_s < 0.0 and rel_s >= -0.51:
+        rel_s = 0.0
+    if rel_e > clip_sec and rel_e <= clip_sec + 0.51:
+        rel_e = clip_sec
+    if rel_s >= clip_sec - 1e-9:
+        rel_s = max(0.0, clip_sec - MIN_EVENT_SEC)
+        rel_e = clip_sec
+        expanded = True
+    return validate_event(rel_s, rel_e, clip_sec=clip_sec) + (expanded,)
+
+
+def compile_shake_entry_file(
+    entry_path: Path | None = None,
+    *,
+    events_path: Path | None = None,
+    status_path: Path | None = None,
+) -> tuple[pd.DataFrame, pd.DataFrame, list[str]]:
+    """Compile DEV shake clocks. Does not touch nod files or TEST."""
+    entry_path = entry_path or SHAKE_ENTRY_CSV
+    events_path = events_path or SHAKE_EVENTS_CSV
+    status_path = status_path or SHAKE_STATUS_CSV
+    if events_path.resolve() in {EVENTS_CSV.resolve(), EVENTS_TEST_CSV.resolve()}:
+        raise WindowedProtocolError("STOP: will not write shake events into a nod file")
+    clips = {c["sample_id"]: c for c in clip_records()}
+    raw = pd.read_csv(entry_path)
+    need = {"sample_id", "start_sec", "end_sec"}
+    missing = need - set(raw.columns)
+    if missing:
+        raise WindowedProtocolError(f"{entry_path.name} missing {sorted(missing)}")
+
+    notes: dict[str, str] = {sid: "" for sid in clips}
+    grouped: dict[str, list[dict[str, float]]] = {sid: [] for sid in clips}
+    log: list[str] = []
+
+    for _, row in raw.iterrows():
+        sid = str(row["sample_id"]).strip()
+        refuse_test_id(sid)
+        if sid not in clips:
+            raise WindowedProtocolError(f"STOP: {sid} is not a DEV gold clip")
+        if pd.isna(row["start_sec"]) and pd.isna(row["end_sec"]):
+            continue
+        if pd.isna(row["start_sec"]) or pd.isna(row["end_sec"]):
+            raise WindowedProtocolError(f"{sid} has only one of start_sec/end_sec filled")
+        origin = float(clips[sid]["source_start_sec"])
+        clip_sec = float(clips[sid]["clip_sec"])
+        s, e, expanded = _relative_span(row["start_sec"], row["end_sec"], origin, clip_sec)
+        if expanded:
+            notes[sid] = "point time expanded by 0.4 s"
+            log.append(f"{sid}: point mark {row['start_sec']} expanded to {MIN_EVENT_SEC:.1f}s")
+        grouped[sid].append({"start_sec": s, "end_sec": e})
+
+    parts = []
+    status_rows = []
+    for sid in DEV_SAMPLE_IDS:
+        evs = grouped.get(sid, [])
+        rows = events_to_rows(
+            sid,
+            evs,
+            clip_sec=float(clips[sid]["clip_sec"]),
+            event_prefix="shake",
+        )
+        if not rows.empty:
+            parts.append(rows)
+        status_rows.append(
+            {
+                "sample_id": sid,
+                "reviewed": True,
+                "n_shake_events": int(len(rows)),
+                "notes": notes.get(sid, "") if evs else "no clear shakes",
+            }
+        )
+        if not evs:
+            log.append(f"{sid}: no events (reviewed, zero shakes)")
+
+    all_ev = pd.concat(parts, ignore_index=True) if parts else empty_events()
+    st = pd.DataFrame(status_rows, columns=SHAKE_STATUS_COLUMNS)
+    atomic_to_csv(all_ev, events_path)
+    atomic_to_csv(st, status_path)
+    return all_ev, st, log
+
+
+def generate_shake_dev_windows(
+    *,
+    events_path: Path | None = None,
+    out_path: Path | None = None,
+) -> pd.DataFrame:
+    """3 s shake windows, DEV only. Label 1 if any overlap with a shake."""
+    events_path = events_path or SHAKE_EVENTS_CSV
+    out_path = out_path or SHAKE_WINDOWS_DEV_CSV
+    if out_path.resolve() in {WINDOWS_DEV_CSV.resolve(), WINDOWS_TEST_CSV.resolve()}:
+        raise WindowedProtocolError("STOP: will not overwrite nod window labels")
+    st = pd.read_csv(SHAKE_STATUS_CSV)
+    if not bool(st["reviewed"].astype(str).str.lower().isin({"true", "1", "yes"}).all()):
+        raise WindowedProtocolError("STOP: shake DEV annotation is not finished")
+    clips = clip_records()
+    ev = pd.read_csv(events_path) if events_path.exists() else empty_events()
+    shakes_by: dict[str, list[tuple[float, float]]] = {c["sample_id"]: [] for c in clips}
+    if not ev.empty:
+        for _, r in ev.iterrows():
+            sid = str(r.sample_id)
+            refuse_test_id(sid)
+            if sid not in shakes_by:
+                raise WindowedProtocolError(f"STOP: shake event for unknown DEV clip {sid}")
+            shakes_by[sid].append((float(r.start_sec), float(r.end_sec)))
+
+    rows: list[dict[str, Any]] = []
+    for clip in clips:
+        sid = clip["sample_id"]
+        refuse_test_id(sid)
+        shakes = shakes_by[sid]
+        for ws, we in iter_window_bounds(clip_sec=float(clip["clip_sec"])):
+            ov = [overlap_seconds(ws, we, ss, se) for ss, se in shakes]
+            best = max(ov) if ov else 0.0
+            rows.append(
+                {
+                    "window_id": f"{sid}_w{sec_to_rel_frame(ws):05d}",
+                    "sample_id": sid,
+                    "video_id": clip["video_id"],
+                    "person": clip["person"],
+                    "split": SPLIT_DEV,
+                    "start_sec": round(ws, 3),
+                    "end_sec": round(we, 3),
+                    "start_frame_relative": sec_to_rel_frame(ws),
+                    "end_frame_relative": sec_to_rel_frame(we),
+                    "label": 1 if best > 0.0 else 0,
+                    "n_shakes_touched": int(sum(1 for x in ov if x > 0.0)),
+                }
+            )
+    win = pd.DataFrame(rows)
+    if win.empty:
+        raise WindowedProtocolError("STOP: no shake DEV windows generated")
+    if (win["split"] != SPLIT_DEV).any():
+        raise WindowedProtocolError("STOP: non-DEV window leaked")
+    atomic_to_csv(win, out_path)
+    return win
+
+
+def _shake_forbidden_event_paths() -> set[Path]:
+    return {
+        EVENTS_CSV.resolve(),
+        EVENTS_TEST_CSV.resolve(),
+        SHAKE_EVENTS_CSV.resolve(),
+    }
+
+
+def _shake_forbidden_status_paths() -> set[Path]:
+    return {
+        STATUS_CSV.resolve(),
+        STATUS_TEST_CSV.resolve(),
+        SHAKE_STATUS_CSV.resolve(),
+    }
+
+
+def _shake_forbidden_window_paths() -> set[Path]:
+    return {
+        WINDOWS_DEV_CSV.resolve(),
+        WINDOWS_TEST_CSV.resolve(),
+        SHAKE_WINDOWS_DEV_CSV.resolve(),
+    }
+
+
+def compile_shake_test_entry_file(
+    entry_path: Path | None = None,
+    *,
+    events_path: Path | None = None,
+    status_path: Path | None = None,
+) -> tuple[pd.DataFrame, pd.DataFrame, list[str]]:
+    """Compile TEST shake clocks. Does not touch nod files or DEV shake."""
+    entry_path = entry_path or SHAKE_ENTRY_TEST_CSV
+    events_path = events_path or SHAKE_EVENTS_TEST_CSV
+    status_path = status_path or SHAKE_STATUS_TEST_CSV
+    if events_path.resolve() in _shake_forbidden_event_paths():
+        raise WindowedProtocolError("STOP: will not write TEST shake events into a nod or DEV shake file")
+    if status_path.resolve() in _shake_forbidden_status_paths():
+        raise WindowedProtocolError("STOP: will not write TEST shake status into a nod or DEV shake file")
+    clips = load_test_clip_meta()
+    raw = pd.read_csv(entry_path)
+    need = {"sample_id", "start_sec", "end_sec"}
+    missing = need - set(raw.columns)
+    if missing:
+        raise WindowedProtocolError(f"{entry_path.name} missing {sorted(missing)}")
+
+    notes: dict[str, str] = {sid: "" for sid in clips}
+    grouped: dict[str, list[dict[str, float]]] = {sid: [] for sid in clips}
+    log: list[str] = []
+
+    for _, row in raw.iterrows():
+        sid = str(row["sample_id"]).strip()
+        require_test_id(sid)
+        if sid not in clips:
+            raise WindowedProtocolError(f"STOP: {sid} is not a TEST gold clip")
+        if pd.isna(row["start_sec"]) and pd.isna(row["end_sec"]):
+            continue
+        if pd.isna(row["start_sec"]) or pd.isna(row["end_sec"]):
+            raise WindowedProtocolError(f"{sid} has only one of start_sec/end_sec filled")
+        origin = float(clips[sid]["source_start_sec"])
+        clip_sec = float(clips[sid]["clip_sec"])
+        s, e, expanded = _relative_span(row["start_sec"], row["end_sec"], origin, clip_sec)
+        if expanded:
+            notes[sid] = "point time expanded by 0.4 s"
+            log.append(f"{sid}: point mark {row['start_sec']} expanded to {MIN_EVENT_SEC:.1f}s")
+        grouped[sid].append({"start_sec": s, "end_sec": e})
+
+    parts = []
+    status_rows = []
+    for sid in TEST_SAMPLE_IDS:
+        evs = grouped.get(sid, [])
+        rows = events_to_rows(
+            sid,
+            evs,
+            clip_sec=float(clips[sid]["clip_sec"]),
+            allow_test=True,
+            event_prefix="shake",
+        )
+        if not rows.empty:
+            parts.append(rows)
+        status_rows.append(
+            {
+                "sample_id": sid,
+                "reviewed": True,
+                "n_shake_events": int(len(rows)),
+                "notes": notes.get(sid, "") if evs else "no clear shakes",
+            }
+        )
+        if not evs:
+            log.append(f"{sid}: no events (reviewed, zero shakes)")
+
+    all_ev = pd.concat(parts, ignore_index=True) if parts else empty_events()
+    st = pd.DataFrame(status_rows, columns=SHAKE_STATUS_COLUMNS)
+    atomic_to_csv(all_ev, events_path)
+    atomic_to_csv(st, status_path)
+    return all_ev, st, log
+
+
+def generate_shake_test_windows(
+    *,
+    events_path: Path | None = None,
+    status_path: Path | None = None,
+    out_path: Path | None = None,
+) -> pd.DataFrame:
+    """3 s shake windows, TEST only. Label 1 if any overlap with a shake."""
+    events_path = events_path or SHAKE_EVENTS_TEST_CSV
+    status_path = status_path or SHAKE_STATUS_TEST_CSV
+    out_path = out_path or SHAKE_WINDOWS_TEST_CSV
+    if out_path.resolve() in _shake_forbidden_window_paths():
+        raise WindowedProtocolError("STOP: will not overwrite nod or DEV shake window labels")
+    if not status_path.exists():
+        raise WindowedProtocolError("STOP: shake TEST annotation is not finished")
+    st = pd.read_csv(status_path)
+    if not bool(st["reviewed"].astype(str).str.lower().isin({"true", "1", "yes"}).all()):
+        raise WindowedProtocolError("STOP: shake TEST annotation is not finished")
+    if set(st["sample_id"].astype(str)) != set(TEST_SAMPLE_IDS):
+        raise WindowedProtocolError("STOP: shake TEST status is missing a TEST clip")
+    clips = clip_records_test()
+    ev = pd.read_csv(events_path) if events_path.exists() else empty_events()
+    shakes_by: dict[str, list[tuple[float, float]]] = {c["sample_id"]: [] for c in clips}
+    if not ev.empty:
+        for _, r in ev.iterrows():
+            sid = str(r.sample_id)
+            require_test_id(sid)
+            if sid not in shakes_by:
+                raise WindowedProtocolError(f"STOP: shake event for unknown TEST clip {sid}")
+            shakes_by[sid].append((float(r.start_sec), float(r.end_sec)))
+
+    rows: list[dict[str, Any]] = []
+    for clip in clips:
+        sid = clip["sample_id"]
+        require_test_id(sid)
+        shakes = shakes_by[sid]
+        for ws, we in iter_window_bounds(clip_sec=float(clip["clip_sec"])):
+            ov = [overlap_seconds(ws, we, ss, se) for ss, se in shakes]
+            best = max(ov) if ov else 0.0
+            rows.append(
+                {
+                    "window_id": f"{sid}_w{sec_to_rel_frame(ws):05d}",
+                    "sample_id": sid,
+                    "video_id": clip["video_id"],
+                    "person": clip["person"],
+                    "split": SPLIT_TEST,
+                    "start_sec": round(ws, 3),
+                    "end_sec": round(we, 3),
+                    "start_frame_relative": sec_to_rel_frame(ws),
+                    "end_frame_relative": sec_to_rel_frame(we),
+                    "label": 1 if best > 0.0 else 0,
+                    "n_shakes_touched": int(sum(1 for x in ov if x > 0.0)),
+                }
+            )
+    win = pd.DataFrame(rows)
+    if win.empty:
+        raise WindowedProtocolError("STOP: no shake TEST windows generated")
+    if (win["split"] != SPLIT_TEST).any():
+        raise WindowedProtocolError("STOP: non-TEST window leaked")
+    if set(win["sample_id"].astype(str)) - set(TEST_SAMPLE_IDS):
+        raise WindowedProtocolError("STOP: non-TEST sample_id in shake TEST windows")
+    atomic_to_csv(win, out_path)
+    return win
+

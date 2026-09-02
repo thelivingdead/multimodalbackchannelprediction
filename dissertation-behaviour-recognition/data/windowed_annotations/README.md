@@ -14,6 +14,14 @@ This folder holds a new protocol: mark each clear nod *event* inside every DEV c
 - `nod_windows_dev.csv` — 3 s DEV window labels (1 if the slice overlaps a nod)
 - `nod_windows_test.csv` — 3 s TEST window labels (same rule; separate file)
 - `annotation_status.csv` — `reviewed=true` with `n_nod_events=0` means the clip was watched and had no clear nods. `reviewed=false` means annotation is not finished (not a negative label)
+- `shake_event_entry.csv` — DEV shake fill-in (`gold_001`–`gold_015`); left–right, not nod
+- `shake_event_entry_test.csv` — TEST shake fill-in (`gold_016`–`gold_030`); left–right, not nod; do not mix with DEV
+- `shake_events_windowed.csv` — compiled DEV shake events
+- `shake_events_windowed_test.csv` — compiled TEST shake events (`gold_016`–`gold_030`)
+- `shake_windows_dev.csv` — 3 s DEV shake window labels
+- `shake_windows_test.csv` — 3 s TEST shake window labels
+- `annotation_status_shake.csv` — DEV shake reviewed flags
+- `annotation_status_shake_test.csv` — TEST shake reviewed flags; `reviewed=true` with 0 events means watched, no clear shake
 - `clips/` — optional local `{sample_id}.mp4` files (gitignored). If absent, the tool uses YouTube for the RealTalk `video_id`
 
 ## Launch (Mac)

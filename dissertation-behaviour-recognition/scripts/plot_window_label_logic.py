@@ -39,7 +39,7 @@ STATUS_X = 12.55
 TIME_X = -0.55
 
 
-def render(out: Path, title: str) -> None:
+def render(out: Path, title: str, event_word: str = "nod") -> None:
     labels = example_protocol_labels()
     n = len(labels)
     y_bar0 = 5.15
@@ -60,8 +60,9 @@ def render(out: Path, title: str) -> None:
     )
 
     # Nod names sit above the time ticks so they do not cover 2 s / 8 s.
-    ax.text(2.6, 8.42, "Nod A   2.3 to 2.9 s", ha="center", fontsize=13, color=NOD, fontweight="700")
-    ax.text(7.55, 8.42, "Nod B   7.2 to 7.9 s", ha="center", fontsize=13, color=NOD, fontweight="700")
+    word = event_word.capitalize()
+    ax.text(2.6, 8.42, f"{word} A   2.3 to 2.9 s", ha="center", fontsize=13, color=NOD, fontweight="700")
+    ax.text(7.55, 8.42, f"{word} B   7.2 to 7.9 s", ha="center", fontsize=13, color=NOD, fontweight="700")
 
     ax.add_patch(Rectangle((0, 8.05), 12, 0.12, facecolor=TRACK, edgecolor=INK, linewidth=1.0))
     for t in range(0, 13, 2):
@@ -114,7 +115,7 @@ def render(out: Path, title: str) -> None:
     ax.text(
         0.0,
         y_bottom - 0.85,
-        "YES means the 3 s bar overlaps a nod. First 12 s of a 60 s clip.",
+        f"YES means the 3 s bar overlaps a {event_word}. First 12 s of a 60 s clip.",
         fontsize=13,
         color=INK,
     )
@@ -138,6 +139,16 @@ def main() -> None:
 
 def write_test() -> None:
     render(OUT_TEST, "Nod window TEST")
+
+
+def write_shake() -> None:
+    out = ROOT / "results" / "windowed_shake" / "window_label_logic.png"
+    render(out, "Shake window DEV", event_word="shake")
+
+
+def write_shake_test() -> None:
+    out = ROOT / "results" / "windowed_shake_test" / "window_label_logic.png"
+    render(out, "Shake window TEST", event_word="shake")
 
 
 if __name__ == "__main__":

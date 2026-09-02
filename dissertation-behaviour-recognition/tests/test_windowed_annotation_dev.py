@@ -12,13 +12,18 @@ from src.windowed_protocol import (
     EVENTS_CSV,
     FPS,
     ORIGINAL_GOLD_FILES,
+    SHAKE_ENTRY_TEST_CSV,
+    SHAKE_EVENTS_CSV,
+    SHAKE_WINDOWS_DEV_CSV,
     STATUS_CSV,
     WINDOWS_DEV_CSV,
     WINDOWS_TEST_CSV,
     WindowedProtocolError,
     annotation_complete,
     clip_records,
+    compile_shake_test_entry_file,
     compile_test_entry_file,
+    generate_shake_test_windows,
     generate_test_windows,
     example_protocol_labels,
     events_to_rows,
@@ -319,3 +324,48 @@ def test_protocol_figure_exists_after_plot() -> None:
     assert fig.stat().st_size > 1000
     assert test_fig.is_file()
     assert test_fig.stat().st_size > 1000
+
+
+def test_shake_test_entry_is_blank_test_only() -> None:
+    assert SHAKE_ENTRY_TEST_CSV.is_file()
+    raw = pd.read_csv(SHAKE_ENTRY_TEST_CSV)
+    ids = set(raw["sample_id"].astype(str))
+    assert ids == {f"gold_{i:03d}" for i in range(16, 31)}
+    assert "gold_001" not in ids
+    assert len(raw) == 15 * 5
+
+
+def test_compile_shake_test_does_not_touch_dev(tmp_path: Path) -> None:
+    ev, st, _log = compile_shake_test_entry_file(
+        SHAKE_ENTRY_TEST_CSV,
+        events_path=tmp_path / "shake_events_windowed_test.csv",
+        status_path=tmp_path / "annotation_status_shake_test.csv",
+    )
+    if not ev.empty:
+        assert set(ev["sample_id"].astype(str)) <= {f"gold_{i:03d}" for i in range(16, 31)}
+        assert "gold_001" not in set(ev["sample_id"].astype(str))
+    ids = set(st["sample_id"].astype(str))
+    assert ids == {f"gold_{i:03d}" for i in range(16, 31)}
+    assert "gold_001" not in ids
+    try:
+        compile_shake_test_entry_file(
+            SHAKE_ENTRY_TEST_CSV,
+            events_path=SHAKE_EVENTS_CSV,
+            status_path=tmp_path / "annotation_status_shake_test.csv",
+        )
+        raise AssertionError("must refuse DEV shake events path")
+    except WindowedProtocolError:
+        pass
+
+
+def test_generate_shake_test_windows_will_not_overwrite_dev() -> None:
+    try:
+        generate_shake_test_windows(out_path=SHAKE_WINDOWS_DEV_CSV)
+        raise AssertionError("must refuse DEV shake window path")
+    except WindowedProtocolError as e:
+        assert "DEV" in str(e) or "overwrite" in str(e).lower()
+    try:
+        generate_shake_test_windows(out_path=WINDOWS_DEV_CSV)
+        raise AssertionError("must refuse nod DEV window path")
+    except WindowedProtocolError:
+        pass

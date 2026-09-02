@@ -1,0 +1,16 @@
+sample_id,reviewed,n_shake_events,notes
+gold_001,true,2,point time expanded by 0.4 s
+gold_002,true,3,
+gold_003,true,0,no clear shakes
+gold_004,true,3,
+gold_005,true,0,no clear shakes
+gold_006,true,2,
+gold_007,true,2,point time expanded by 0.4 s
+gold_008,true,1,
+gold_009,true,1,point time expanded by 0.4 s
+gold_010,true,2,
+gold_011,true,2,
+gold_012,true,1,
+gold_013,true,3,point time expanded by 0.4 s
+gold_014,true,2,point time expanded by 0.4 s
+gold_015,true,2,

@@ -1,0 +1,33 @@
+{
+  "protocol": "windowed_nod_3s_pose_mil",
+  "development_only": true,
+  "test_scored": false,
+  "training": "80 weakly labelled 60 s TRAIN bags; 29 windows per bag; top-2 multiple-instance pooling",
+  "selection": "human DEV window F1 and threshold only",
+  "feature_set": "rotation_xyz_plus_first_difference",
+  "window_sec": 3.0,
+  "stride_sec": 2.0,
+  "n_train_clips": 80,
+  "n_train_positive_bags": 70,
+  "n_train_negative_bags": 10,
+  "n_train_instances": 2320,
+  "weak_label_pos_weight": 0.14285714285714285,
+  "n_dev_windows": 435,
+  "n_dev_positive": 52,
+  "best_epoch": 4,
+  "dev_probability_threshold": 0.25,
+  "dev_window": {
+    "accuracy": 0.2942528735632184,
+    "balanced_accuracy": 0.5327374974894558,
+    "precision": 0.1282798833819242,
+    "recall": 0.8461538461538461,
+    "f1": 0.22278481012658227,
+    "tp": 44,
+    "fp": 299,
+    "tn": 84,
+    "fn": 8
+  },
+  "device": "cuda",
+  "seed": 42,
+  "checkpoint": "models/windowed_nod_pose_mil_pseudo80_dev.pt"
+}

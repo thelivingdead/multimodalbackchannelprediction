@@ -1,0 +1,31 @@
+{
+  "protocol": "windowed_nod_3s_videomae",
+  "selection": "DEV window F1; trained on DEV windows; TEST once",
+  "best_epoch": 15,
+  "dev_window_f1": 1.0,
+  "dev_probability_threshold": 0.6500000000000001,
+  "test_window": {
+    "accuracy": 0.8298850574712644,
+    "balanced_accuracy": 0.4931693989071038,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "tp": 0,
+    "fp": 5,
+    "tn": 361,
+    "fn": 69
+  },
+  "test_clip_any_window": {
+    "accuracy": 0.13333333333333333,
+    "balanced_accuracy": 0.06666666666666667,
+    "precision": 1.0,
+    "recall": 0.13333333333333333,
+    "f1": 0.23529411764705882,
+    "tp": 2,
+    "fp": 0,
+    "tn": 0,
+    "fn": 13
+  },
+  "n_dev": 435,
+  "n_test": 435
+}

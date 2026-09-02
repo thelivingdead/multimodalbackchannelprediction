@@ -1,0 +1,5493 @@
+{
+  "script": "fetch_rgb_windows_nod3s.py",
+  "n_windows": 870,
+  "n_ok_this_run": 609,
+  "n_skipped": 261,
+  "n_failed_this_run": 0,
+  "http_requests": 21,
+  "bytes_ranged": 16399722450,
+  "free_gb_end": 4.02,
+  "windows": {
+    "gold_010_w00000": {
+      "window_id": "gold_010_w00000",
+      "sample_id": "gold_010",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.7
+    },
+    "gold_010_w00050": {
+      "window_id": "gold_010_w00050",
+      "sample_id": "gold_010",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_010_w00100": {
+      "window_id": "gold_010_w00100",
+      "sample_id": "gold_010",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_010_w00150": {
+      "window_id": "gold_010_w00150",
+      "sample_id": "gold_010",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_010_w00200": {
+      "window_id": "gold_010_w00200",
+      "sample_id": "gold_010",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.5
+    },
+    "gold_010_w00250": {
+      "window_id": "gold_010_w00250",
+      "sample_id": "gold_010",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_010_w00300": {
+      "window_id": "gold_010_w00300",
+      "sample_id": "gold_010",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.5
+    },
+    "gold_010_w00350": {
+      "window_id": "gold_010_w00350",
+      "sample_id": "gold_010",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.5
+    },
+    "gold_010_w00400": {
+      "window_id": "gold_010_w00400",
+      "sample_id": "gold_010",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_010_w00450": {
+      "window_id": "gold_010_w00450",
+      "sample_id": "gold_010",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_010_w00500": {
+      "window_id": "gold_010_w00500",
+      "sample_id": "gold_010",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.5
+    },
+    "gold_010_w00550": {
+      "window_id": "gold_010_w00550",
+      "sample_id": "gold_010",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 4,
+      "elapsed_s": 0.5
+    },
+    "gold_010_w00600": {
+      "window_id": "gold_010_w00600",
+      "sample_id": "gold_010",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_010_w00650": {
+      "window_id": "gold_010_w00650",
+      "sample_id": "gold_010",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_010_w00700": {
+      "window_id": "gold_010_w00700",
+      "sample_id": "gold_010",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_010_w00750": {
+      "window_id": "gold_010_w00750",
+      "sample_id": "gold_010",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_010_w00800": {
+      "window_id": "gold_010_w00800",
+      "sample_id": "gold_010",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_010_w00850": {
+      "window_id": "gold_010_w00850",
+      "sample_id": "gold_010",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_010_w00900": {
+      "window_id": "gold_010_w00900",
+      "sample_id": "gold_010",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.6
+    },
+    "gold_010_w00950": {
+      "window_id": "gold_010_w00950",
+      "sample_id": "gold_010",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_010_w01000": {
+      "window_id": "gold_010_w01000",
+      "sample_id": "gold_010",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 4,
+      "elapsed_s": 0.6
+    },
+    "gold_010_w01050": {
+      "window_id": "gold_010_w01050",
+      "sample_id": "gold_010",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 5,
+      "elapsed_s": 0.6
+    },
+    "gold_010_w01100": {
+      "window_id": "gold_010_w01100",
+      "sample_id": "gold_010",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 4,
+      "elapsed_s": 0.6
+    },
+    "gold_010_w01150": {
+      "window_id": "gold_010_w01150",
+      "sample_id": "gold_010",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_010_w01200": {
+      "window_id": "gold_010_w01200",
+      "sample_id": "gold_010",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_010_w01250": {
+      "window_id": "gold_010_w01250",
+      "sample_id": "gold_010",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_010_w01300": {
+      "window_id": "gold_010_w01300",
+      "sample_id": "gold_010",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_010_w01350": {
+      "window_id": "gold_010_w01350",
+      "sample_id": "gold_010",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_010_w01400": {
+      "window_id": "gold_010_w01400",
+      "sample_id": "gold_010",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_011_w00000": {
+      "window_id": "gold_011_w00000",
+      "sample_id": "gold_011",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_011_w00050": {
+      "window_id": "gold_011_w00050",
+      "sample_id": "gold_011",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_011_w00100": {
+      "window_id": "gold_011_w00100",
+      "sample_id": "gold_011",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_011_w00150": {
+      "window_id": "gold_011_w00150",
+      "sample_id": "gold_011",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_011_w00200": {
+      "window_id": "gold_011_w00200",
+      "sample_id": "gold_011",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_011_w00250": {
+      "window_id": "gold_011_w00250",
+      "sample_id": "gold_011",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_011_w00300": {
+      "window_id": "gold_011_w00300",
+      "sample_id": "gold_011",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_011_w00350": {
+      "window_id": "gold_011_w00350",
+      "sample_id": "gold_011",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_011_w00400": {
+      "window_id": "gold_011_w00400",
+      "sample_id": "gold_011",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_011_w00450": {
+      "window_id": "gold_011_w00450",
+      "sample_id": "gold_011",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_011_w00500": {
+      "window_id": "gold_011_w00500",
+      "sample_id": "gold_011",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_011_w00550": {
+      "window_id": "gold_011_w00550",
+      "sample_id": "gold_011",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_011_w00600": {
+      "window_id": "gold_011_w00600",
+      "sample_id": "gold_011",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_011_w00650": {
+      "window_id": "gold_011_w00650",
+      "sample_id": "gold_011",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_011_w00700": {
+      "window_id": "gold_011_w00700",
+      "sample_id": "gold_011",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.5
+    },
+    "gold_011_w00750": {
+      "window_id": "gold_011_w00750",
+      "sample_id": "gold_011",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_011_w00800": {
+      "window_id": "gold_011_w00800",
+      "sample_id": "gold_011",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_011_w00850": {
+      "window_id": "gold_011_w00850",
+      "sample_id": "gold_011",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_011_w00900": {
+      "window_id": "gold_011_w00900",
+      "sample_id": "gold_011",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_011_w00950": {
+      "window_id": "gold_011_w00950",
+      "sample_id": "gold_011",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_011_w01000": {
+      "window_id": "gold_011_w01000",
+      "sample_id": "gold_011",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_011_w01050": {
+      "window_id": "gold_011_w01050",
+      "sample_id": "gold_011",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_011_w01100": {
+      "window_id": "gold_011_w01100",
+      "sample_id": "gold_011",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_011_w01150": {
+      "window_id": "gold_011_w01150",
+      "sample_id": "gold_011",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_011_w01200": {
+      "window_id": "gold_011_w01200",
+      "sample_id": "gold_011",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_011_w01250": {
+      "window_id": "gold_011_w01250",
+      "sample_id": "gold_011",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_011_w01300": {
+      "window_id": "gold_011_w01300",
+      "sample_id": "gold_011",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_011_w01350": {
+      "window_id": "gold_011_w01350",
+      "sample_id": "gold_011",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_011_w01400": {
+      "window_id": "gold_011_w01400",
+      "sample_id": "gold_011",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_012_w00000": {
+      "window_id": "gold_012_w00000",
+      "sample_id": "gold_012",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_012_w00050": {
+      "window_id": "gold_012_w00050",
+      "sample_id": "gold_012",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_012_w00100": {
+      "window_id": "gold_012_w00100",
+      "sample_id": "gold_012",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_012_w00150": {
+      "window_id": "gold_012_w00150",
+      "sample_id": "gold_012",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_012_w00200": {
+      "window_id": "gold_012_w00200",
+      "sample_id": "gold_012",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_012_w00250": {
+      "window_id": "gold_012_w00250",
+      "sample_id": "gold_012",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 1.1
+    },
+    "gold_012_w00300": {
+      "window_id": "gold_012_w00300",
+      "sample_id": "gold_012",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_012_w00350": {
+      "window_id": "gold_012_w00350",
+      "sample_id": "gold_012",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_012_w00400": {
+      "window_id": "gold_012_w00400",
+      "sample_id": "gold_012",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_012_w00450": {
+      "window_id": "gold_012_w00450",
+      "sample_id": "gold_012",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_012_w00500": {
+      "window_id": "gold_012_w00500",
+      "sample_id": "gold_012",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_012_w00550": {
+      "window_id": "gold_012_w00550",
+      "sample_id": "gold_012",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_012_w00600": {
+      "window_id": "gold_012_w00600",
+      "sample_id": "gold_012",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_012_w00650": {
+      "window_id": "gold_012_w00650",
+      "sample_id": "gold_012",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.1
+    },
+    "gold_012_w00700": {
+      "window_id": "gold_012_w00700",
+      "sample_id": "gold_012",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.1
+    },
+    "gold_012_w00750": {
+      "window_id": "gold_012_w00750",
+      "sample_id": "gold_012",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.1
+    },
+    "gold_012_w00800": {
+      "window_id": "gold_012_w00800",
+      "sample_id": "gold_012",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.1
+    },
+    "gold_012_w00850": {
+      "window_id": "gold_012_w00850",
+      "sample_id": "gold_012",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.1
+    },
+    "gold_012_w00900": {
+      "window_id": "gold_012_w00900",
+      "sample_id": "gold_012",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.1
+    },
+    "gold_012_w00950": {
+      "window_id": "gold_012_w00950",
+      "sample_id": "gold_012",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.1
+    },
+    "gold_012_w01000": {
+      "window_id": "gold_012_w01000",
+      "sample_id": "gold_012",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.1
+    },
+    "gold_012_w01050": {
+      "window_id": "gold_012_w01050",
+      "sample_id": "gold_012",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.2
+    },
+    "gold_012_w01100": {
+      "window_id": "gold_012_w01100",
+      "sample_id": "gold_012",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.1
+    },
+    "gold_012_w01150": {
+      "window_id": "gold_012_w01150",
+      "sample_id": "gold_012",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.2
+    },
+    "gold_012_w01200": {
+      "window_id": "gold_012_w01200",
+      "sample_id": "gold_012",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.2
+    },
+    "gold_012_w01250": {
+      "window_id": "gold_012_w01250",
+      "sample_id": "gold_012",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.2
+    },
+    "gold_012_w01300": {
+      "window_id": "gold_012_w01300",
+      "sample_id": "gold_012",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 1.1
+    },
+    "gold_012_w01350": {
+      "window_id": "gold_012_w01350",
+      "sample_id": "gold_012",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 4,
+      "elapsed_s": 1.2
+    },
+    "gold_012_w01400": {
+      "window_id": "gold_012_w01400",
+      "sample_id": "gold_012",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.2
+    },
+    "gold_013_w00000": {
+      "window_id": "gold_013_w00000",
+      "sample_id": "gold_013",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.3
+    },
+    "gold_013_w00050": {
+      "window_id": "gold_013_w00050",
+      "sample_id": "gold_013",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.3
+    },
+    "gold_013_w00100": {
+      "window_id": "gold_013_w00100",
+      "sample_id": "gold_013",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.3
+    },
+    "gold_013_w00150": {
+      "window_id": "gold_013_w00150",
+      "sample_id": "gold_013",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.3
+    },
+    "gold_013_w00200": {
+      "window_id": "gold_013_w00200",
+      "sample_id": "gold_013",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "centre",
+      "n_faces": 0,
+      "elapsed_s": 0.3
+    },
+    "gold_013_w00250": {
+      "window_id": "gold_013_w00250",
+      "sample_id": "gold_013",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.3
+    },
+    "gold_013_w00300": {
+      "window_id": "gold_013_w00300",
+      "sample_id": "gold_013",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.3
+    },
+    "gold_013_w00350": {
+      "window_id": "gold_013_w00350",
+      "sample_id": "gold_013",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.3
+    },
+    "gold_013_w00400": {
+      "window_id": "gold_013_w00400",
+      "sample_id": "gold_013",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.4
+    },
+    "gold_013_w00450": {
+      "window_id": "gold_013_w00450",
+      "sample_id": "gold_013",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.3
+    },
+    "gold_013_w00500": {
+      "window_id": "gold_013_w00500",
+      "sample_id": "gold_013",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_013_w00550": {
+      "window_id": "gold_013_w00550",
+      "sample_id": "gold_013",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 4,
+      "elapsed_s": 0.4
+    },
+    "gold_013_w00600": {
+      "window_id": "gold_013_w00600",
+      "sample_id": "gold_013",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.4
+    },
+    "gold_013_w00650": {
+      "window_id": "gold_013_w00650",
+      "sample_id": "gold_013",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.4
+    },
+    "gold_013_w00700": {
+      "window_id": "gold_013_w00700",
+      "sample_id": "gold_013",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.4
+    },
+    "gold_013_w00750": {
+      "window_id": "gold_013_w00750",
+      "sample_id": "gold_013",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "centre",
+      "n_faces": 0,
+      "elapsed_s": 0.4
+    },
+    "gold_013_w00800": {
+      "window_id": "gold_013_w00800",
+      "sample_id": "gold_013",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "centre",
+      "n_faces": 0,
+      "elapsed_s": 0.4
+    },
+    "gold_013_w00850": {
+      "window_id": "gold_013_w00850",
+      "sample_id": "gold_013",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "centre",
+      "n_faces": 0,
+      "elapsed_s": 0.4
+    },
+    "gold_013_w00900": {
+      "window_id": "gold_013_w00900",
+      "sample_id": "gold_013",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.4
+    },
+    "gold_013_w00950": {
+      "window_id": "gold_013_w00950",
+      "sample_id": "gold_013",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "centre",
+      "n_faces": 0,
+      "elapsed_s": 0.4
+    },
+    "gold_013_w01000": {
+      "window_id": "gold_013_w01000",
+      "sample_id": "gold_013",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_013_w01050": {
+      "window_id": "gold_013_w01050",
+      "sample_id": "gold_013",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.4
+    },
+    "gold_013_w01100": {
+      "window_id": "gold_013_w01100",
+      "sample_id": "gold_013",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.4
+    },
+    "gold_013_w01150": {
+      "window_id": "gold_013_w01150",
+      "sample_id": "gold_013",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "centre",
+      "n_faces": 0,
+      "elapsed_s": 0.4
+    },
+    "gold_013_w01200": {
+      "window_id": "gold_013_w01200",
+      "sample_id": "gold_013",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.4
+    },
+    "gold_013_w01250": {
+      "window_id": "gold_013_w01250",
+      "sample_id": "gold_013",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.4
+    },
+    "gold_013_w01300": {
+      "window_id": "gold_013_w01300",
+      "sample_id": "gold_013",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_013_w01350": {
+      "window_id": "gold_013_w01350",
+      "sample_id": "gold_013",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_013_w01400": {
+      "window_id": "gold_013_w01400",
+      "sample_id": "gold_013",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.4
+    },
+    "gold_014_w00000": {
+      "window_id": "gold_014_w00000",
+      "sample_id": "gold_014",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.6
+    },
+    "gold_014_w00050": {
+      "window_id": "gold_014_w00050",
+      "sample_id": "gold_014",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "centre",
+      "n_faces": 0,
+      "elapsed_s": 0.6
+    },
+    "gold_014_w00100": {
+      "window_id": "gold_014_w00100",
+      "sample_id": "gold_014",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.7
+    },
+    "gold_014_w00150": {
+      "window_id": "gold_014_w00150",
+      "sample_id": "gold_014",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.7
+    },
+    "gold_014_w00200": {
+      "window_id": "gold_014_w00200",
+      "sample_id": "gold_014",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.7
+    },
+    "gold_014_w00250": {
+      "window_id": "gold_014_w00250",
+      "sample_id": "gold_014",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.7
+    },
+    "gold_014_w00300": {
+      "window_id": "gold_014_w00300",
+      "sample_id": "gold_014",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.7
+    },
+    "gold_014_w00350": {
+      "window_id": "gold_014_w00350",
+      "sample_id": "gold_014",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.8
+    },
+    "gold_014_w00400": {
+      "window_id": "gold_014_w00400",
+      "sample_id": "gold_014",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.7
+    },
+    "gold_014_w00450": {
+      "window_id": "gold_014_w00450",
+      "sample_id": "gold_014",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "centre",
+      "n_faces": 0,
+      "elapsed_s": 0.8
+    },
+    "gold_014_w00500": {
+      "window_id": "gold_014_w00500",
+      "sample_id": "gold_014",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.8
+    },
+    "gold_014_w00550": {
+      "window_id": "gold_014_w00550",
+      "sample_id": "gold_014",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.8
+    },
+    "gold_014_w00600": {
+      "window_id": "gold_014_w00600",
+      "sample_id": "gold_014",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.8
+    },
+    "gold_014_w00650": {
+      "window_id": "gold_014_w00650",
+      "sample_id": "gold_014",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.8
+    },
+    "gold_014_w00700": {
+      "window_id": "gold_014_w00700",
+      "sample_id": "gold_014",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.9
+    },
+    "gold_014_w00750": {
+      "window_id": "gold_014_w00750",
+      "sample_id": "gold_014",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_014_w00800": {
+      "window_id": "gold_014_w00800",
+      "sample_id": "gold_014",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "centre",
+      "n_faces": 0,
+      "elapsed_s": 0.9
+    },
+    "gold_014_w00850": {
+      "window_id": "gold_014_w00850",
+      "sample_id": "gold_014",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "centre",
+      "n_faces": 0,
+      "elapsed_s": 1.0
+    },
+    "gold_014_w00900": {
+      "window_id": "gold_014_w00900",
+      "sample_id": "gold_014",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "centre",
+      "n_faces": 0,
+      "elapsed_s": 1.0
+    },
+    "gold_014_w00950": {
+      "window_id": "gold_014_w00950",
+      "sample_id": "gold_014",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "centre",
+      "n_faces": 0,
+      "elapsed_s": 1.0
+    },
+    "gold_014_w01000": {
+      "window_id": "gold_014_w01000",
+      "sample_id": "gold_014",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_014_w01050": {
+      "window_id": "gold_014_w01050",
+      "sample_id": "gold_014",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_014_w01100": {
+      "window_id": "gold_014_w01100",
+      "sample_id": "gold_014",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.0
+    },
+    "gold_014_w01150": {
+      "window_id": "gold_014_w01150",
+      "sample_id": "gold_014",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_014_w01200": {
+      "window_id": "gold_014_w01200",
+      "sample_id": "gold_014",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.1
+    },
+    "gold_014_w01250": {
+      "window_id": "gold_014_w01250",
+      "sample_id": "gold_014",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_014_w01300": {
+      "window_id": "gold_014_w01300",
+      "sample_id": "gold_014",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "centre",
+      "n_faces": 0,
+      "elapsed_s": 1.1
+    },
+    "gold_014_w01350": {
+      "window_id": "gold_014_w01350",
+      "sample_id": "gold_014",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.1
+    },
+    "gold_014_w01400": {
+      "window_id": "gold_014_w01400",
+      "sample_id": "gold_014",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.2
+    },
+    "gold_015_w00000": {
+      "window_id": "gold_015_w00000",
+      "sample_id": "gold_015",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 2.4
+    },
+    "gold_015_w00050": {
+      "window_id": "gold_015_w00050",
+      "sample_id": "gold_015",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 2.3
+    },
+    "gold_015_w00100": {
+      "window_id": "gold_015_w00100",
+      "sample_id": "gold_015",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 2.4
+    },
+    "gold_015_w00150": {
+      "window_id": "gold_015_w00150",
+      "sample_id": "gold_015",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 2.4
+    },
+    "gold_015_w00200": {
+      "window_id": "gold_015_w00200",
+      "sample_id": "gold_015",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 2.4
+    },
+    "gold_015_w00250": {
+      "window_id": "gold_015_w00250",
+      "sample_id": "gold_015",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 2.3
+    },
+    "gold_015_w00300": {
+      "window_id": "gold_015_w00300",
+      "sample_id": "gold_015",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 2.3
+    },
+    "gold_015_w00350": {
+      "window_id": "gold_015_w00350",
+      "sample_id": "gold_015",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 2.4
+    },
+    "gold_015_w00400": {
+      "window_id": "gold_015_w00400",
+      "sample_id": "gold_015",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 2.4
+    },
+    "gold_015_w00450": {
+      "window_id": "gold_015_w00450",
+      "sample_id": "gold_015",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 2.3
+    },
+    "gold_015_w00500": {
+      "window_id": "gold_015_w00500",
+      "sample_id": "gold_015",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 2.4
+    },
+    "gold_015_w00550": {
+      "window_id": "gold_015_w00550",
+      "sample_id": "gold_015",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 2.5
+    },
+    "gold_015_w00600": {
+      "window_id": "gold_015_w00600",
+      "sample_id": "gold_015",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 2.6
+    },
+    "gold_015_w00650": {
+      "window_id": "gold_015_w00650",
+      "sample_id": "gold_015",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 2.7
+    },
+    "gold_015_w00700": {
+      "window_id": "gold_015_w00700",
+      "sample_id": "gold_015",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 2.6
+    },
+    "gold_015_w00750": {
+      "window_id": "gold_015_w00750",
+      "sample_id": "gold_015",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 2.6
+    },
+    "gold_015_w00800": {
+      "window_id": "gold_015_w00800",
+      "sample_id": "gold_015",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 2.7
+    },
+    "gold_015_w00850": {
+      "window_id": "gold_015_w00850",
+      "sample_id": "gold_015",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 2.7
+    },
+    "gold_015_w00900": {
+      "window_id": "gold_015_w00900",
+      "sample_id": "gold_015",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 2.7
+    },
+    "gold_015_w00950": {
+      "window_id": "gold_015_w00950",
+      "sample_id": "gold_015",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 2.7
+    },
+    "gold_015_w01000": {
+      "window_id": "gold_015_w01000",
+      "sample_id": "gold_015",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 2.7
+    },
+    "gold_015_w01050": {
+      "window_id": "gold_015_w01050",
+      "sample_id": "gold_015",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 2.7
+    },
+    "gold_015_w01100": {
+      "window_id": "gold_015_w01100",
+      "sample_id": "gold_015",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 2.7
+    },
+    "gold_015_w01150": {
+      "window_id": "gold_015_w01150",
+      "sample_id": "gold_015",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 2.7
+    },
+    "gold_015_w01200": {
+      "window_id": "gold_015_w01200",
+      "sample_id": "gold_015",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 2.7
+    },
+    "gold_015_w01250": {
+      "window_id": "gold_015_w01250",
+      "sample_id": "gold_015",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 2.7
+    },
+    "gold_015_w01300": {
+      "window_id": "gold_015_w01300",
+      "sample_id": "gold_015",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 2.7
+    },
+    "gold_015_w01350": {
+      "window_id": "gold_015_w01350",
+      "sample_id": "gold_015",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 2.8
+    },
+    "gold_015_w01400": {
+      "window_id": "gold_015_w01400",
+      "sample_id": "gold_015",
+      "split": "DEV",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 2.7
+    },
+    "gold_016_w00000": {
+      "window_id": "gold_016_w00000",
+      "sample_id": "gold_016",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.3
+    },
+    "gold_016_w00050": {
+      "window_id": "gold_016_w00050",
+      "sample_id": "gold_016",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.4
+    },
+    "gold_016_w00100": {
+      "window_id": "gold_016_w00100",
+      "sample_id": "gold_016",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.4
+    },
+    "gold_016_w00150": {
+      "window_id": "gold_016_w00150",
+      "sample_id": "gold_016",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.4
+    },
+    "gold_016_w00200": {
+      "window_id": "gold_016_w00200",
+      "sample_id": "gold_016",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.4
+    },
+    "gold_016_w00250": {
+      "window_id": "gold_016_w00250",
+      "sample_id": "gold_016",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.4
+    },
+    "gold_016_w00300": {
+      "window_id": "gold_016_w00300",
+      "sample_id": "gold_016",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.4
+    },
+    "gold_016_w00350": {
+      "window_id": "gold_016_w00350",
+      "sample_id": "gold_016",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.4
+    },
+    "gold_016_w00400": {
+      "window_id": "gold_016_w00400",
+      "sample_id": "gold_016",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.4
+    },
+    "gold_016_w00450": {
+      "window_id": "gold_016_w00450",
+      "sample_id": "gold_016",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.4
+    },
+    "gold_016_w00500": {
+      "window_id": "gold_016_w00500",
+      "sample_id": "gold_016",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.4
+    },
+    "gold_016_w00550": {
+      "window_id": "gold_016_w00550",
+      "sample_id": "gold_016",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.4
+    },
+    "gold_016_w00600": {
+      "window_id": "gold_016_w00600",
+      "sample_id": "gold_016",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.5
+    },
+    "gold_016_w00650": {
+      "window_id": "gold_016_w00650",
+      "sample_id": "gold_016",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.5
+    },
+    "gold_016_w00700": {
+      "window_id": "gold_016_w00700",
+      "sample_id": "gold_016",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.4
+    },
+    "gold_016_w00750": {
+      "window_id": "gold_016_w00750",
+      "sample_id": "gold_016",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.5
+    },
+    "gold_016_w00800": {
+      "window_id": "gold_016_w00800",
+      "sample_id": "gold_016",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.4
+    },
+    "gold_016_w00850": {
+      "window_id": "gold_016_w00850",
+      "sample_id": "gold_016",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.6
+    },
+    "gold_016_w00900": {
+      "window_id": "gold_016_w00900",
+      "sample_id": "gold_016",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.5
+    },
+    "gold_016_w00950": {
+      "window_id": "gold_016_w00950",
+      "sample_id": "gold_016",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.6
+    },
+    "gold_016_w01000": {
+      "window_id": "gold_016_w01000",
+      "sample_id": "gold_016",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.6
+    },
+    "gold_016_w01050": {
+      "window_id": "gold_016_w01050",
+      "sample_id": "gold_016",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.6
+    },
+    "gold_016_w01100": {
+      "window_id": "gold_016_w01100",
+      "sample_id": "gold_016",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.6
+    },
+    "gold_016_w01150": {
+      "window_id": "gold_016_w01150",
+      "sample_id": "gold_016",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.6
+    },
+    "gold_016_w01200": {
+      "window_id": "gold_016_w01200",
+      "sample_id": "gold_016",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.6
+    },
+    "gold_016_w01250": {
+      "window_id": "gold_016_w01250",
+      "sample_id": "gold_016",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.6
+    },
+    "gold_016_w01300": {
+      "window_id": "gold_016_w01300",
+      "sample_id": "gold_016",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.6
+    },
+    "gold_016_w01350": {
+      "window_id": "gold_016_w01350",
+      "sample_id": "gold_016",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.6
+    },
+    "gold_016_w01400": {
+      "window_id": "gold_016_w01400",
+      "sample_id": "gold_016",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.6
+    },
+    "gold_017_w00000": {
+      "window_id": "gold_017_w00000",
+      "sample_id": "gold_017",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.9
+    },
+    "gold_017_w00050": {
+      "window_id": "gold_017_w00050",
+      "sample_id": "gold_017",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.9
+    },
+    "gold_017_w00100": {
+      "window_id": "gold_017_w00100",
+      "sample_id": "gold_017",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.9
+    },
+    "gold_017_w00150": {
+      "window_id": "gold_017_w00150",
+      "sample_id": "gold_017",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.9
+    },
+    "gold_017_w00200": {
+      "window_id": "gold_017_w00200",
+      "sample_id": "gold_017",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_017_w00250": {
+      "window_id": "gold_017_w00250",
+      "sample_id": "gold_017",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.9
+    },
+    "gold_017_w00300": {
+      "window_id": "gold_017_w00300",
+      "sample_id": "gold_017",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_017_w00350": {
+      "window_id": "gold_017_w00350",
+      "sample_id": "gold_017",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.9
+    },
+    "gold_017_w00400": {
+      "window_id": "gold_017_w00400",
+      "sample_id": "gold_017",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_017_w00450": {
+      "window_id": "gold_017_w00450",
+      "sample_id": "gold_017",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_017_w00500": {
+      "window_id": "gold_017_w00500",
+      "sample_id": "gold_017",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_017_w00550": {
+      "window_id": "gold_017_w00550",
+      "sample_id": "gold_017",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_017_w00600": {
+      "window_id": "gold_017_w00600",
+      "sample_id": "gold_017",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_017_w00650": {
+      "window_id": "gold_017_w00650",
+      "sample_id": "gold_017",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_017_w00700": {
+      "window_id": "gold_017_w00700",
+      "sample_id": "gold_017",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_017_w00750": {
+      "window_id": "gold_017_w00750",
+      "sample_id": "gold_017",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_017_w00800": {
+      "window_id": "gold_017_w00800",
+      "sample_id": "gold_017",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 1.0
+    },
+    "gold_017_w00850": {
+      "window_id": "gold_017_w00850",
+      "sample_id": "gold_017",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_017_w00900": {
+      "window_id": "gold_017_w00900",
+      "sample_id": "gold_017",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_017_w00950": {
+      "window_id": "gold_017_w00950",
+      "sample_id": "gold_017",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 1.0
+    },
+    "gold_017_w01000": {
+      "window_id": "gold_017_w01000",
+      "sample_id": "gold_017",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_017_w01050": {
+      "window_id": "gold_017_w01050",
+      "sample_id": "gold_017",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 1.0
+    },
+    "gold_017_w01100": {
+      "window_id": "gold_017_w01100",
+      "sample_id": "gold_017",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_017_w01150": {
+      "window_id": "gold_017_w01150",
+      "sample_id": "gold_017",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_017_w01200": {
+      "window_id": "gold_017_w01200",
+      "sample_id": "gold_017",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_017_w01250": {
+      "window_id": "gold_017_w01250",
+      "sample_id": "gold_017",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_017_w01300": {
+      "window_id": "gold_017_w01300",
+      "sample_id": "gold_017",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_017_w01350": {
+      "window_id": "gold_017_w01350",
+      "sample_id": "gold_017",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.0
+    },
+    "gold_017_w01400": {
+      "window_id": "gold_017_w01400",
+      "sample_id": "gold_017",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.1
+    },
+    "gold_018_w00000": {
+      "window_id": "gold_018_w00000",
+      "sample_id": "gold_018",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 1.1
+    },
+    "gold_018_w00050": {
+      "window_id": "gold_018_w00050",
+      "sample_id": "gold_018",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_018_w00100": {
+      "window_id": "gold_018_w00100",
+      "sample_id": "gold_018",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_018_w00150": {
+      "window_id": "gold_018_w00150",
+      "sample_id": "gold_018",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_018_w00200": {
+      "window_id": "gold_018_w00200",
+      "sample_id": "gold_018",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_018_w00250": {
+      "window_id": "gold_018_w00250",
+      "sample_id": "gold_018",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_018_w00300": {
+      "window_id": "gold_018_w00300",
+      "sample_id": "gold_018",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_018_w00350": {
+      "window_id": "gold_018_w00350",
+      "sample_id": "gold_018",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_018_w00400": {
+      "window_id": "gold_018_w00400",
+      "sample_id": "gold_018",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 1.1
+    },
+    "gold_018_w00450": {
+      "window_id": "gold_018_w00450",
+      "sample_id": "gold_018",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 1.1
+    },
+    "gold_018_w00500": {
+      "window_id": "gold_018_w00500",
+      "sample_id": "gold_018",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.2
+    },
+    "gold_018_w00550": {
+      "window_id": "gold_018_w00550",
+      "sample_id": "gold_018",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 1.1
+    },
+    "gold_018_w00600": {
+      "window_id": "gold_018_w00600",
+      "sample_id": "gold_018",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.2
+    },
+    "gold_018_w00650": {
+      "window_id": "gold_018_w00650",
+      "sample_id": "gold_018",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.2
+    },
+    "gold_018_w00700": {
+      "window_id": "gold_018_w00700",
+      "sample_id": "gold_018",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.2
+    },
+    "gold_018_w00750": {
+      "window_id": "gold_018_w00750",
+      "sample_id": "gold_018",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 1.2
+    },
+    "gold_018_w00800": {
+      "window_id": "gold_018_w00800",
+      "sample_id": "gold_018",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.2
+    },
+    "gold_018_w00850": {
+      "window_id": "gold_018_w00850",
+      "sample_id": "gold_018",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.2
+    },
+    "gold_018_w00900": {
+      "window_id": "gold_018_w00900",
+      "sample_id": "gold_018",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.2
+    },
+    "gold_018_w00950": {
+      "window_id": "gold_018_w00950",
+      "sample_id": "gold_018",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.2
+    },
+    "gold_018_w01000": {
+      "window_id": "gold_018_w01000",
+      "sample_id": "gold_018",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.2
+    },
+    "gold_018_w01050": {
+      "window_id": "gold_018_w01050",
+      "sample_id": "gold_018",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.2
+    },
+    "gold_018_w01100": {
+      "window_id": "gold_018_w01100",
+      "sample_id": "gold_018",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.2
+    },
+    "gold_018_w01150": {
+      "window_id": "gold_018_w01150",
+      "sample_id": "gold_018",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.2
+    },
+    "gold_018_w01200": {
+      "window_id": "gold_018_w01200",
+      "sample_id": "gold_018",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.2
+    },
+    "gold_018_w01250": {
+      "window_id": "gold_018_w01250",
+      "sample_id": "gold_018",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 1.3
+    },
+    "gold_018_w01300": {
+      "window_id": "gold_018_w01300",
+      "sample_id": "gold_018",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.3
+    },
+    "gold_018_w01350": {
+      "window_id": "gold_018_w01350",
+      "sample_id": "gold_018",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 1.2
+    },
+    "gold_018_w01400": {
+      "window_id": "gold_018_w01400",
+      "sample_id": "gold_018",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 1.2
+    },
+    "gold_019_w00000": {
+      "window_id": "gold_019_w00000",
+      "sample_id": "gold_019",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "centre",
+      "n_faces": 0,
+      "elapsed_s": 0.4
+    },
+    "gold_019_w00050": {
+      "window_id": "gold_019_w00050",
+      "sample_id": "gold_019",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_019_w00100": {
+      "window_id": "gold_019_w00100",
+      "sample_id": "gold_019",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_019_w00150": {
+      "window_id": "gold_019_w00150",
+      "sample_id": "gold_019",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_019_w00200": {
+      "window_id": "gold_019_w00200",
+      "sample_id": "gold_019",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_019_w00250": {
+      "window_id": "gold_019_w00250",
+      "sample_id": "gold_019",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_019_w00300": {
+      "window_id": "gold_019_w00300",
+      "sample_id": "gold_019",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.6
+    },
+    "gold_019_w00350": {
+      "window_id": "gold_019_w00350",
+      "sample_id": "gold_019",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.6
+    },
+    "gold_019_w00400": {
+      "window_id": "gold_019_w00400",
+      "sample_id": "gold_019",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_019_w00450": {
+      "window_id": "gold_019_w00450",
+      "sample_id": "gold_019",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.7
+    },
+    "gold_019_w00500": {
+      "window_id": "gold_019_w00500",
+      "sample_id": "gold_019",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.7
+    },
+    "gold_019_w00550": {
+      "window_id": "gold_019_w00550",
+      "sample_id": "gold_019",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.7
+    },
+    "gold_019_w00600": {
+      "window_id": "gold_019_w00600",
+      "sample_id": "gold_019",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.7
+    },
+    "gold_019_w00650": {
+      "window_id": "gold_019_w00650",
+      "sample_id": "gold_019",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.7
+    },
+    "gold_019_w00700": {
+      "window_id": "gold_019_w00700",
+      "sample_id": "gold_019",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.7
+    },
+    "gold_019_w00750": {
+      "window_id": "gold_019_w00750",
+      "sample_id": "gold_019",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.7
+    },
+    "gold_019_w00800": {
+      "window_id": "gold_019_w00800",
+      "sample_id": "gold_019",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.8
+    },
+    "gold_019_w00850": {
+      "window_id": "gold_019_w00850",
+      "sample_id": "gold_019",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.8
+    },
+    "gold_019_w00900": {
+      "window_id": "gold_019_w00900",
+      "sample_id": "gold_019",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.8
+    },
+    "gold_019_w00950": {
+      "window_id": "gold_019_w00950",
+      "sample_id": "gold_019",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.8
+    },
+    "gold_019_w01000": {
+      "window_id": "gold_019_w01000",
+      "sample_id": "gold_019",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 4,
+      "elapsed_s": 0.9
+    },
+    "gold_019_w01050": {
+      "window_id": "gold_019_w01050",
+      "sample_id": "gold_019",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.9
+    },
+    "gold_019_w01100": {
+      "window_id": "gold_019_w01100",
+      "sample_id": "gold_019",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.9
+    },
+    "gold_019_w01150": {
+      "window_id": "gold_019_w01150",
+      "sample_id": "gold_019",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.9
+    },
+    "gold_019_w01200": {
+      "window_id": "gold_019_w01200",
+      "sample_id": "gold_019",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.9
+    },
+    "gold_019_w01250": {
+      "window_id": "gold_019_w01250",
+      "sample_id": "gold_019",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_019_w01300": {
+      "window_id": "gold_019_w01300",
+      "sample_id": "gold_019",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_019_w01350": {
+      "window_id": "gold_019_w01350",
+      "sample_id": "gold_019",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_019_w01400": {
+      "window_id": "gold_019_w01400",
+      "sample_id": "gold_019",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_020_w00000": {
+      "window_id": "gold_020_w00000",
+      "sample_id": "gold_020",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_020_w00050": {
+      "window_id": "gold_020_w00050",
+      "sample_id": "gold_020",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.1
+    },
+    "gold_020_w00100": {
+      "window_id": "gold_020_w00100",
+      "sample_id": "gold_020",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_020_w00150": {
+      "window_id": "gold_020_w00150",
+      "sample_id": "gold_020",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_020_w00200": {
+      "window_id": "gold_020_w00200",
+      "sample_id": "gold_020",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_020_w00250": {
+      "window_id": "gold_020_w00250",
+      "sample_id": "gold_020",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.1
+    },
+    "gold_020_w00300": {
+      "window_id": "gold_020_w00300",
+      "sample_id": "gold_020",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.1
+    },
+    "gold_020_w00350": {
+      "window_id": "gold_020_w00350",
+      "sample_id": "gold_020",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_020_w00400": {
+      "window_id": "gold_020_w00400",
+      "sample_id": "gold_020",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.1
+    },
+    "gold_020_w00450": {
+      "window_id": "gold_020_w00450",
+      "sample_id": "gold_020",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.2
+    },
+    "gold_020_w00500": {
+      "window_id": "gold_020_w00500",
+      "sample_id": "gold_020",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_020_w00550": {
+      "window_id": "gold_020_w00550",
+      "sample_id": "gold_020",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_020_w00600": {
+      "window_id": "gold_020_w00600",
+      "sample_id": "gold_020",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.2
+    },
+    "gold_020_w00650": {
+      "window_id": "gold_020_w00650",
+      "sample_id": "gold_020",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.2
+    },
+    "gold_020_w00700": {
+      "window_id": "gold_020_w00700",
+      "sample_id": "gold_020",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_020_w00750": {
+      "window_id": "gold_020_w00750",
+      "sample_id": "gold_020",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.2
+    },
+    "gold_020_w00800": {
+      "window_id": "gold_020_w00800",
+      "sample_id": "gold_020",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.2
+    },
+    "gold_020_w00850": {
+      "window_id": "gold_020_w00850",
+      "sample_id": "gold_020",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.2
+    },
+    "gold_020_w00900": {
+      "window_id": "gold_020_w00900",
+      "sample_id": "gold_020",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.2
+    },
+    "gold_020_w00950": {
+      "window_id": "gold_020_w00950",
+      "sample_id": "gold_020",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 1.2
+    },
+    "gold_020_w01000": {
+      "window_id": "gold_020_w01000",
+      "sample_id": "gold_020",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 1.2
+    },
+    "gold_020_w01050": {
+      "window_id": "gold_020_w01050",
+      "sample_id": "gold_020",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 1.2
+    },
+    "gold_020_w01100": {
+      "window_id": "gold_020_w01100",
+      "sample_id": "gold_020",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.2
+    },
+    "gold_020_w01150": {
+      "window_id": "gold_020_w01150",
+      "sample_id": "gold_020",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.2
+    },
+    "gold_020_w01200": {
+      "window_id": "gold_020_w01200",
+      "sample_id": "gold_020",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.2
+    },
+    "gold_020_w01250": {
+      "window_id": "gold_020_w01250",
+      "sample_id": "gold_020",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.2
+    },
+    "gold_020_w01300": {
+      "window_id": "gold_020_w01300",
+      "sample_id": "gold_020",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.3
+    },
+    "gold_020_w01350": {
+      "window_id": "gold_020_w01350",
+      "sample_id": "gold_020",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 1.3
+    },
+    "gold_020_w01400": {
+      "window_id": "gold_020_w01400",
+      "sample_id": "gold_020",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.3
+    },
+    "gold_021_w00000": {
+      "window_id": "gold_021_w00000",
+      "sample_id": "gold_021",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.9
+    },
+    "gold_021_w00050": {
+      "window_id": "gold_021_w00050",
+      "sample_id": "gold_021",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.9
+    },
+    "gold_021_w00100": {
+      "window_id": "gold_021_w00100",
+      "sample_id": "gold_021",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.9
+    },
+    "gold_021_w00150": {
+      "window_id": "gold_021_w00150",
+      "sample_id": "gold_021",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.8
+    },
+    "gold_021_w00200": {
+      "window_id": "gold_021_w00200",
+      "sample_id": "gold_021",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.9
+    },
+    "gold_021_w00250": {
+      "window_id": "gold_021_w00250",
+      "sample_id": "gold_021",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.9
+    },
+    "gold_021_w00300": {
+      "window_id": "gold_021_w00300",
+      "sample_id": "gold_021",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.9
+    },
+    "gold_021_w00350": {
+      "window_id": "gold_021_w00350",
+      "sample_id": "gold_021",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.9
+    },
+    "gold_021_w00400": {
+      "window_id": "gold_021_w00400",
+      "sample_id": "gold_021",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.9
+    },
+    "gold_021_w00450": {
+      "window_id": "gold_021_w00450",
+      "sample_id": "gold_021",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.9
+    },
+    "gold_021_w00500": {
+      "window_id": "gold_021_w00500",
+      "sample_id": "gold_021",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.9
+    },
+    "gold_021_w00550": {
+      "window_id": "gold_021_w00550",
+      "sample_id": "gold_021",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.9
+    },
+    "gold_021_w00600": {
+      "window_id": "gold_021_w00600",
+      "sample_id": "gold_021",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.9
+    },
+    "gold_021_w00650": {
+      "window_id": "gold_021_w00650",
+      "sample_id": "gold_021",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.9
+    },
+    "gold_021_w00700": {
+      "window_id": "gold_021_w00700",
+      "sample_id": "gold_021",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.9
+    },
+    "gold_021_w00750": {
+      "window_id": "gold_021_w00750",
+      "sample_id": "gold_021",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.9
+    },
+    "gold_021_w00800": {
+      "window_id": "gold_021_w00800",
+      "sample_id": "gold_021",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.9
+    },
+    "gold_021_w00850": {
+      "window_id": "gold_021_w00850",
+      "sample_id": "gold_021",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_021_w00900": {
+      "window_id": "gold_021_w00900",
+      "sample_id": "gold_021",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.9
+    },
+    "gold_021_w00950": {
+      "window_id": "gold_021_w00950",
+      "sample_id": "gold_021",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.9
+    },
+    "gold_021_w01000": {
+      "window_id": "gold_021_w01000",
+      "sample_id": "gold_021",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_021_w01050": {
+      "window_id": "gold_021_w01050",
+      "sample_id": "gold_021",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_021_w01100": {
+      "window_id": "gold_021_w01100",
+      "sample_id": "gold_021",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_021_w01150": {
+      "window_id": "gold_021_w01150",
+      "sample_id": "gold_021",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_021_w01200": {
+      "window_id": "gold_021_w01200",
+      "sample_id": "gold_021",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_021_w01250": {
+      "window_id": "gold_021_w01250",
+      "sample_id": "gold_021",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_021_w01300": {
+      "window_id": "gold_021_w01300",
+      "sample_id": "gold_021",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_021_w01350": {
+      "window_id": "gold_021_w01350",
+      "sample_id": "gold_021",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_021_w01400": {
+      "window_id": "gold_021_w01400",
+      "sample_id": "gold_021",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_022_w00000": {
+      "window_id": "gold_022_w00000",
+      "sample_id": "gold_022",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.3
+    },
+    "gold_022_w00050": {
+      "window_id": "gold_022_w00050",
+      "sample_id": "gold_022",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.4
+    },
+    "gold_022_w00100": {
+      "window_id": "gold_022_w00100",
+      "sample_id": "gold_022",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_022_w00150": {
+      "window_id": "gold_022_w00150",
+      "sample_id": "gold_022",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_022_w00200": {
+      "window_id": "gold_022_w00200",
+      "sample_id": "gold_022",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_022_w00250": {
+      "window_id": "gold_022_w00250",
+      "sample_id": "gold_022",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_022_w00300": {
+      "window_id": "gold_022_w00300",
+      "sample_id": "gold_022",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_022_w00350": {
+      "window_id": "gold_022_w00350",
+      "sample_id": "gold_022",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_022_w00400": {
+      "window_id": "gold_022_w00400",
+      "sample_id": "gold_022",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.4
+    },
+    "gold_022_w00450": {
+      "window_id": "gold_022_w00450",
+      "sample_id": "gold_022",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.4
+    },
+    "gold_022_w00500": {
+      "window_id": "gold_022_w00500",
+      "sample_id": "gold_022",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_022_w00550": {
+      "window_id": "gold_022_w00550",
+      "sample_id": "gold_022",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "centre",
+      "n_faces": 0,
+      "elapsed_s": 0.4
+    },
+    "gold_022_w00600": {
+      "window_id": "gold_022_w00600",
+      "sample_id": "gold_022",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_022_w00650": {
+      "window_id": "gold_022_w00650",
+      "sample_id": "gold_022",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "centre",
+      "n_faces": 0,
+      "elapsed_s": 0.4
+    },
+    "gold_022_w00700": {
+      "window_id": "gold_022_w00700",
+      "sample_id": "gold_022",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.4
+    },
+    "gold_022_w00750": {
+      "window_id": "gold_022_w00750",
+      "sample_id": "gold_022",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.4
+    },
+    "gold_022_w00800": {
+      "window_id": "gold_022_w00800",
+      "sample_id": "gold_022",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "centre",
+      "n_faces": 0,
+      "elapsed_s": 0.4
+    },
+    "gold_022_w00850": {
+      "window_id": "gold_022_w00850",
+      "sample_id": "gold_022",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_022_w00900": {
+      "window_id": "gold_022_w00900",
+      "sample_id": "gold_022",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_022_w00950": {
+      "window_id": "gold_022_w00950",
+      "sample_id": "gold_022",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.5
+    },
+    "gold_022_w01000": {
+      "window_id": "gold_022_w01000",
+      "sample_id": "gold_022",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.5
+    },
+    "gold_022_w01050": {
+      "window_id": "gold_022_w01050",
+      "sample_id": "gold_022",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.5
+    },
+    "gold_022_w01100": {
+      "window_id": "gold_022_w01100",
+      "sample_id": "gold_022",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "centre",
+      "n_faces": 0,
+      "elapsed_s": 0.5
+    },
+    "gold_022_w01150": {
+      "window_id": "gold_022_w01150",
+      "sample_id": "gold_022",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.5
+    },
+    "gold_022_w01200": {
+      "window_id": "gold_022_w01200",
+      "sample_id": "gold_022",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_022_w01250": {
+      "window_id": "gold_022_w01250",
+      "sample_id": "gold_022",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.5
+    },
+    "gold_022_w01300": {
+      "window_id": "gold_022_w01300",
+      "sample_id": "gold_022",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "centre",
+      "n_faces": 0,
+      "elapsed_s": 0.5
+    },
+    "gold_022_w01350": {
+      "window_id": "gold_022_w01350",
+      "sample_id": "gold_022",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_022_w01400": {
+      "window_id": "gold_022_w01400",
+      "sample_id": "gold_022",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_023_w00000": {
+      "window_id": "gold_023_w00000",
+      "sample_id": "gold_023",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_023_w00050": {
+      "window_id": "gold_023_w00050",
+      "sample_id": "gold_023",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_023_w00100": {
+      "window_id": "gold_023_w00100",
+      "sample_id": "gold_023",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.6
+    },
+    "gold_023_w00150": {
+      "window_id": "gold_023_w00150",
+      "sample_id": "gold_023",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_023_w00200": {
+      "window_id": "gold_023_w00200",
+      "sample_id": "gold_023",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_023_w00250": {
+      "window_id": "gold_023_w00250",
+      "sample_id": "gold_023",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.6
+    },
+    "gold_023_w00300": {
+      "window_id": "gold_023_w00300",
+      "sample_id": "gold_023",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_023_w00350": {
+      "window_id": "gold_023_w00350",
+      "sample_id": "gold_023",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_023_w00400": {
+      "window_id": "gold_023_w00400",
+      "sample_id": "gold_023",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_023_w00450": {
+      "window_id": "gold_023_w00450",
+      "sample_id": "gold_023",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_023_w00500": {
+      "window_id": "gold_023_w00500",
+      "sample_id": "gold_023",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_023_w00550": {
+      "window_id": "gold_023_w00550",
+      "sample_id": "gold_023",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_023_w00600": {
+      "window_id": "gold_023_w00600",
+      "sample_id": "gold_023",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.6
+    },
+    "gold_023_w00650": {
+      "window_id": "gold_023_w00650",
+      "sample_id": "gold_023",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_023_w00700": {
+      "window_id": "gold_023_w00700",
+      "sample_id": "gold_023",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_023_w00750": {
+      "window_id": "gold_023_w00750",
+      "sample_id": "gold_023",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_023_w00800": {
+      "window_id": "gold_023_w00800",
+      "sample_id": "gold_023",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_023_w00850": {
+      "window_id": "gold_023_w00850",
+      "sample_id": "gold_023",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.7
+    },
+    "gold_023_w00900": {
+      "window_id": "gold_023_w00900",
+      "sample_id": "gold_023",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.6
+    },
+    "gold_023_w00950": {
+      "window_id": "gold_023_w00950",
+      "sample_id": "gold_023",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.6
+    },
+    "gold_023_w01000": {
+      "window_id": "gold_023_w01000",
+      "sample_id": "gold_023",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "centre",
+      "n_faces": 0,
+      "elapsed_s": 0.6
+    },
+    "gold_023_w01050": {
+      "window_id": "gold_023_w01050",
+      "sample_id": "gold_023",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.6
+    },
+    "gold_023_w01100": {
+      "window_id": "gold_023_w01100",
+      "sample_id": "gold_023",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.7
+    },
+    "gold_023_w01150": {
+      "window_id": "gold_023_w01150",
+      "sample_id": "gold_023",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.7
+    },
+    "gold_023_w01200": {
+      "window_id": "gold_023_w01200",
+      "sample_id": "gold_023",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.7
+    },
+    "gold_023_w01250": {
+      "window_id": "gold_023_w01250",
+      "sample_id": "gold_023",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.7
+    },
+    "gold_023_w01300": {
+      "window_id": "gold_023_w01300",
+      "sample_id": "gold_023",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.7
+    },
+    "gold_023_w01350": {
+      "window_id": "gold_023_w01350",
+      "sample_id": "gold_023",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "centre",
+      "n_faces": 0,
+      "elapsed_s": 0.7
+    },
+    "gold_023_w01400": {
+      "window_id": "gold_023_w01400",
+      "sample_id": "gold_023",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "centre",
+      "n_faces": 0,
+      "elapsed_s": 0.7
+    },
+    "gold_024_w00000": {
+      "window_id": "gold_024_w00000",
+      "sample_id": "gold_024",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "centre",
+      "n_faces": 0,
+      "elapsed_s": 0.2
+    },
+    "gold_024_w00050": {
+      "window_id": "gold_024_w00050",
+      "sample_id": "gold_024",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "centre",
+      "n_faces": 0,
+      "elapsed_s": 0.2
+    },
+    "gold_024_w00100": {
+      "window_id": "gold_024_w00100",
+      "sample_id": "gold_024",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.2
+    },
+    "gold_024_w00150": {
+      "window_id": "gold_024_w00150",
+      "sample_id": "gold_024",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.3
+    },
+    "gold_024_w00200": {
+      "window_id": "gold_024_w00200",
+      "sample_id": "gold_024",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.2
+    },
+    "gold_024_w00250": {
+      "window_id": "gold_024_w00250",
+      "sample_id": "gold_024",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.3
+    },
+    "gold_024_w00300": {
+      "window_id": "gold_024_w00300",
+      "sample_id": "gold_024",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.3
+    },
+    "gold_024_w00350": {
+      "window_id": "gold_024_w00350",
+      "sample_id": "gold_024",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.3
+    },
+    "gold_024_w00400": {
+      "window_id": "gold_024_w00400",
+      "sample_id": "gold_024",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.3
+    },
+    "gold_024_w00450": {
+      "window_id": "gold_024_w00450",
+      "sample_id": "gold_024",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.3
+    },
+    "gold_024_w00500": {
+      "window_id": "gold_024_w00500",
+      "sample_id": "gold_024",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.2
+    },
+    "gold_024_w00550": {
+      "window_id": "gold_024_w00550",
+      "sample_id": "gold_024",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.3
+    },
+    "gold_024_w00600": {
+      "window_id": "gold_024_w00600",
+      "sample_id": "gold_024",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.3
+    },
+    "gold_024_w00650": {
+      "window_id": "gold_024_w00650",
+      "sample_id": "gold_024",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.3
+    },
+    "gold_024_w00700": {
+      "window_id": "gold_024_w00700",
+      "sample_id": "gold_024",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.3
+    },
+    "gold_024_w00750": {
+      "window_id": "gold_024_w00750",
+      "sample_id": "gold_024",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.3
+    },
+    "gold_024_w00800": {
+      "window_id": "gold_024_w00800",
+      "sample_id": "gold_024",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.3
+    },
+    "gold_024_w00850": {
+      "window_id": "gold_024_w00850",
+      "sample_id": "gold_024",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.3
+    },
+    "gold_024_w00900": {
+      "window_id": "gold_024_w00900",
+      "sample_id": "gold_024",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.3
+    },
+    "gold_024_w00950": {
+      "window_id": "gold_024_w00950",
+      "sample_id": "gold_024",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.3
+    },
+    "gold_024_w01000": {
+      "window_id": "gold_024_w01000",
+      "sample_id": "gold_024",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.3
+    },
+    "gold_024_w01050": {
+      "window_id": "gold_024_w01050",
+      "sample_id": "gold_024",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.3
+    },
+    "gold_024_w01100": {
+      "window_id": "gold_024_w01100",
+      "sample_id": "gold_024",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.3
+    },
+    "gold_024_w01150": {
+      "window_id": "gold_024_w01150",
+      "sample_id": "gold_024",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_024_w01200": {
+      "window_id": "gold_024_w01200",
+      "sample_id": "gold_024",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.3
+    },
+    "gold_024_w01250": {
+      "window_id": "gold_024_w01250",
+      "sample_id": "gold_024",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.3
+    },
+    "gold_024_w01300": {
+      "window_id": "gold_024_w01300",
+      "sample_id": "gold_024",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.4
+    },
+    "gold_024_w01350": {
+      "window_id": "gold_024_w01350",
+      "sample_id": "gold_024",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_024_w01400": {
+      "window_id": "gold_024_w01400",
+      "sample_id": "gold_024",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_025_w00000": {
+      "window_id": "gold_025_w00000",
+      "sample_id": "gold_025",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_025_w00050": {
+      "window_id": "gold_025_w00050",
+      "sample_id": "gold_025",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.9
+    },
+    "gold_025_w00100": {
+      "window_id": "gold_025_w00100",
+      "sample_id": "gold_025",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.0
+    },
+    "gold_025_w00150": {
+      "window_id": "gold_025_w00150",
+      "sample_id": "gold_025",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.9
+    },
+    "gold_025_w00200": {
+      "window_id": "gold_025_w00200",
+      "sample_id": "gold_025",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.0
+    },
+    "gold_025_w00250": {
+      "window_id": "gold_025_w00250",
+      "sample_id": "gold_025",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_025_w00300": {
+      "window_id": "gold_025_w00300",
+      "sample_id": "gold_025",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_025_w00350": {
+      "window_id": "gold_025_w00350",
+      "sample_id": "gold_025",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_025_w00400": {
+      "window_id": "gold_025_w00400",
+      "sample_id": "gold_025",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 1.0
+    },
+    "gold_025_w00450": {
+      "window_id": "gold_025_w00450",
+      "sample_id": "gold_025",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_025_w00500": {
+      "window_id": "gold_025_w00500",
+      "sample_id": "gold_025",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_025_w00550": {
+      "window_id": "gold_025_w00550",
+      "sample_id": "gold_025",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 1.0
+    },
+    "gold_025_w00600": {
+      "window_id": "gold_025_w00600",
+      "sample_id": "gold_025",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.0
+    },
+    "gold_025_w00650": {
+      "window_id": "gold_025_w00650",
+      "sample_id": "gold_025",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_025_w00700": {
+      "window_id": "gold_025_w00700",
+      "sample_id": "gold_025",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_025_w00750": {
+      "window_id": "gold_025_w00750",
+      "sample_id": "gold_025",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_025_w00800": {
+      "window_id": "gold_025_w00800",
+      "sample_id": "gold_025",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.0
+    },
+    "gold_025_w00850": {
+      "window_id": "gold_025_w00850",
+      "sample_id": "gold_025",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 1.1
+    },
+    "gold_025_w00900": {
+      "window_id": "gold_025_w00900",
+      "sample_id": "gold_025",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "centre",
+      "n_faces": 0,
+      "elapsed_s": 1.1
+    },
+    "gold_025_w00950": {
+      "window_id": "gold_025_w00950",
+      "sample_id": "gold_025",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 1.1
+    },
+    "gold_025_w01000": {
+      "window_id": "gold_025_w01000",
+      "sample_id": "gold_025",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_025_w01050": {
+      "window_id": "gold_025_w01050",
+      "sample_id": "gold_025",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_025_w01100": {
+      "window_id": "gold_025_w01100",
+      "sample_id": "gold_025",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.1
+    },
+    "gold_025_w01150": {
+      "window_id": "gold_025_w01150",
+      "sample_id": "gold_025",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.1
+    },
+    "gold_025_w01200": {
+      "window_id": "gold_025_w01200",
+      "sample_id": "gold_025",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.1
+    },
+    "gold_025_w01250": {
+      "window_id": "gold_025_w01250",
+      "sample_id": "gold_025",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 1.1
+    },
+    "gold_025_w01300": {
+      "window_id": "gold_025_w01300",
+      "sample_id": "gold_025",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 1.1
+    },
+    "gold_025_w01350": {
+      "window_id": "gold_025_w01350",
+      "sample_id": "gold_025",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "centre",
+      "n_faces": 0,
+      "elapsed_s": 1.2
+    },
+    "gold_025_w01400": {
+      "window_id": "gold_025_w01400",
+      "sample_id": "gold_025",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 1.1
+    },
+    "gold_026_w00000": {
+      "window_id": "gold_026_w00000",
+      "sample_id": "gold_026",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.3
+    },
+    "gold_026_w00050": {
+      "window_id": "gold_026_w00050",
+      "sample_id": "gold_026",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.3
+    },
+    "gold_026_w00100": {
+      "window_id": "gold_026_w00100",
+      "sample_id": "gold_026",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.3
+    },
+    "gold_026_w00150": {
+      "window_id": "gold_026_w00150",
+      "sample_id": "gold_026",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.4
+    },
+    "gold_026_w00200": {
+      "window_id": "gold_026_w00200",
+      "sample_id": "gold_026",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.4
+    },
+    "gold_026_w00250": {
+      "window_id": "gold_026_w00250",
+      "sample_id": "gold_026",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.4
+    },
+    "gold_026_w00300": {
+      "window_id": "gold_026_w00300",
+      "sample_id": "gold_026",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.4
+    },
+    "gold_026_w00350": {
+      "window_id": "gold_026_w00350",
+      "sample_id": "gold_026",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.4
+    },
+    "gold_026_w00400": {
+      "window_id": "gold_026_w00400",
+      "sample_id": "gold_026",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.4
+    },
+    "gold_026_w00450": {
+      "window_id": "gold_026_w00450",
+      "sample_id": "gold_026",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.4
+    },
+    "gold_026_w00500": {
+      "window_id": "gold_026_w00500",
+      "sample_id": "gold_026",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.4
+    },
+    "gold_026_w00550": {
+      "window_id": "gold_026_w00550",
+      "sample_id": "gold_026",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.4
+    },
+    "gold_026_w00600": {
+      "window_id": "gold_026_w00600",
+      "sample_id": "gold_026",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.5
+    },
+    "gold_026_w00650": {
+      "window_id": "gold_026_w00650",
+      "sample_id": "gold_026",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.5
+    },
+    "gold_026_w00700": {
+      "window_id": "gold_026_w00700",
+      "sample_id": "gold_026",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.5
+    },
+    "gold_026_w00750": {
+      "window_id": "gold_026_w00750",
+      "sample_id": "gold_026",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.5
+    },
+    "gold_026_w00800": {
+      "window_id": "gold_026_w00800",
+      "sample_id": "gold_026",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.5
+    },
+    "gold_026_w00850": {
+      "window_id": "gold_026_w00850",
+      "sample_id": "gold_026",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 5,
+      "elapsed_s": 1.5
+    },
+    "gold_026_w00900": {
+      "window_id": "gold_026_w00900",
+      "sample_id": "gold_026",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 1.5
+    },
+    "gold_026_w00950": {
+      "window_id": "gold_026_w00950",
+      "sample_id": "gold_026",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 4,
+      "elapsed_s": 1.5
+    },
+    "gold_026_w01000": {
+      "window_id": "gold_026_w01000",
+      "sample_id": "gold_026",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 4,
+      "elapsed_s": 1.5
+    },
+    "gold_026_w01050": {
+      "window_id": "gold_026_w01050",
+      "sample_id": "gold_026",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 5,
+      "elapsed_s": 1.5
+    },
+    "gold_026_w01100": {
+      "window_id": "gold_026_w01100",
+      "sample_id": "gold_026",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.6
+    },
+    "gold_026_w01150": {
+      "window_id": "gold_026_w01150",
+      "sample_id": "gold_026",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.6
+    },
+    "gold_026_w01200": {
+      "window_id": "gold_026_w01200",
+      "sample_id": "gold_026",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 1.6
+    },
+    "gold_026_w01250": {
+      "window_id": "gold_026_w01250",
+      "sample_id": "gold_026",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.7
+    },
+    "gold_026_w01300": {
+      "window_id": "gold_026_w01300",
+      "sample_id": "gold_026",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 1.7
+    },
+    "gold_026_w01350": {
+      "window_id": "gold_026_w01350",
+      "sample_id": "gold_026",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 1.7
+    },
+    "gold_026_w01400": {
+      "window_id": "gold_026_w01400",
+      "sample_id": "gold_026",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 1.7
+    },
+    "gold_027_w00000": {
+      "window_id": "gold_027_w00000",
+      "sample_id": "gold_027",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.5
+    },
+    "gold_027_w00050": {
+      "window_id": "gold_027_w00050",
+      "sample_id": "gold_027",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_027_w00100": {
+      "window_id": "gold_027_w00100",
+      "sample_id": "gold_027",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.5
+    },
+    "gold_027_w00150": {
+      "window_id": "gold_027_w00150",
+      "sample_id": "gold_027",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_027_w00200": {
+      "window_id": "gold_027_w00200",
+      "sample_id": "gold_027",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.5
+    },
+    "gold_027_w00250": {
+      "window_id": "gold_027_w00250",
+      "sample_id": "gold_027",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.5
+    },
+    "gold_027_w00300": {
+      "window_id": "gold_027_w00300",
+      "sample_id": "gold_027",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.5
+    },
+    "gold_027_w00350": {
+      "window_id": "gold_027_w00350",
+      "sample_id": "gold_027",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.5
+    },
+    "gold_027_w00400": {
+      "window_id": "gold_027_w00400",
+      "sample_id": "gold_027",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_027_w00450": {
+      "window_id": "gold_027_w00450",
+      "sample_id": "gold_027",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_027_w00500": {
+      "window_id": "gold_027_w00500",
+      "sample_id": "gold_027",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.5
+    },
+    "gold_027_w00550": {
+      "window_id": "gold_027_w00550",
+      "sample_id": "gold_027",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_027_w00600": {
+      "window_id": "gold_027_w00600",
+      "sample_id": "gold_027",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 4,
+      "elapsed_s": 0.5
+    },
+    "gold_027_w00650": {
+      "window_id": "gold_027_w00650",
+      "sample_id": "gold_027",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_027_w00700": {
+      "window_id": "gold_027_w00700",
+      "sample_id": "gold_027",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_027_w00750": {
+      "window_id": "gold_027_w00750",
+      "sample_id": "gold_027",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_027_w00800": {
+      "window_id": "gold_027_w00800",
+      "sample_id": "gold_027",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_027_w00850": {
+      "window_id": "gold_027_w00850",
+      "sample_id": "gold_027",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.5
+    },
+    "gold_027_w00900": {
+      "window_id": "gold_027_w00900",
+      "sample_id": "gold_027",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.6
+    },
+    "gold_027_w00950": {
+      "window_id": "gold_027_w00950",
+      "sample_id": "gold_027",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_027_w01000": {
+      "window_id": "gold_027_w01000",
+      "sample_id": "gold_027",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_027_w01050": {
+      "window_id": "gold_027_w01050",
+      "sample_id": "gold_027",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_027_w01100": {
+      "window_id": "gold_027_w01100",
+      "sample_id": "gold_027",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.6
+    },
+    "gold_027_w01150": {
+      "window_id": "gold_027_w01150",
+      "sample_id": "gold_027",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.6
+    },
+    "gold_027_w01200": {
+      "window_id": "gold_027_w01200",
+      "sample_id": "gold_027",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.6
+    },
+    "gold_027_w01250": {
+      "window_id": "gold_027_w01250",
+      "sample_id": "gold_027",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.6
+    },
+    "gold_027_w01300": {
+      "window_id": "gold_027_w01300",
+      "sample_id": "gold_027",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.6
+    },
+    "gold_027_w01350": {
+      "window_id": "gold_027_w01350",
+      "sample_id": "gold_027",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.6
+    },
+    "gold_027_w01400": {
+      "window_id": "gold_027_w01400",
+      "sample_id": "gold_027",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.6
+    },
+    "gold_028_w00000": {
+      "window_id": "gold_028_w00000",
+      "sample_id": "gold_028",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_028_w00050": {
+      "window_id": "gold_028_w00050",
+      "sample_id": "gold_028",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_028_w00100": {
+      "window_id": "gold_028_w00100",
+      "sample_id": "gold_028",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_028_w00150": {
+      "window_id": "gold_028_w00150",
+      "sample_id": "gold_028",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_028_w00200": {
+      "window_id": "gold_028_w00200",
+      "sample_id": "gold_028",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_028_w00250": {
+      "window_id": "gold_028_w00250",
+      "sample_id": "gold_028",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_028_w00300": {
+      "window_id": "gold_028_w00300",
+      "sample_id": "gold_028",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_028_w00350": {
+      "window_id": "gold_028_w00350",
+      "sample_id": "gold_028",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_028_w00400": {
+      "window_id": "gold_028_w00400",
+      "sample_id": "gold_028",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_028_w00450": {
+      "window_id": "gold_028_w00450",
+      "sample_id": "gold_028",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_028_w00500": {
+      "window_id": "gold_028_w00500",
+      "sample_id": "gold_028",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_028_w00550": {
+      "window_id": "gold_028_w00550",
+      "sample_id": "gold_028",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_028_w00600": {
+      "window_id": "gold_028_w00600",
+      "sample_id": "gold_028",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_028_w00650": {
+      "window_id": "gold_028_w00650",
+      "sample_id": "gold_028",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_028_w00700": {
+      "window_id": "gold_028_w00700",
+      "sample_id": "gold_028",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_028_w00750": {
+      "window_id": "gold_028_w00750",
+      "sample_id": "gold_028",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_028_w00800": {
+      "window_id": "gold_028_w00800",
+      "sample_id": "gold_028",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_028_w00850": {
+      "window_id": "gold_028_w00850",
+      "sample_id": "gold_028",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_028_w00900": {
+      "window_id": "gold_028_w00900",
+      "sample_id": "gold_028",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_028_w00950": {
+      "window_id": "gold_028_w00950",
+      "sample_id": "gold_028",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_028_w01000": {
+      "window_id": "gold_028_w01000",
+      "sample_id": "gold_028",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_028_w01050": {
+      "window_id": "gold_028_w01050",
+      "sample_id": "gold_028",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.5
+    },
+    "gold_028_w01100": {
+      "window_id": "gold_028_w01100",
+      "sample_id": "gold_028",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_028_w01150": {
+      "window_id": "gold_028_w01150",
+      "sample_id": "gold_028",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_028_w01200": {
+      "window_id": "gold_028_w01200",
+      "sample_id": "gold_028",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_028_w01250": {
+      "window_id": "gold_028_w01250",
+      "sample_id": "gold_028",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_028_w01300": {
+      "window_id": "gold_028_w01300",
+      "sample_id": "gold_028",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_028_w01350": {
+      "window_id": "gold_028_w01350",
+      "sample_id": "gold_028",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_028_w01400": {
+      "window_id": "gold_028_w01400",
+      "sample_id": "gold_028",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_029_w00000": {
+      "window_id": "gold_029_w00000",
+      "sample_id": "gold_029",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_029_w00050": {
+      "window_id": "gold_029_w00050",
+      "sample_id": "gold_029",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.4
+    },
+    "gold_029_w00100": {
+      "window_id": "gold_029_w00100",
+      "sample_id": "gold_029",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_029_w00150": {
+      "window_id": "gold_029_w00150",
+      "sample_id": "gold_029",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.4
+    },
+    "gold_029_w00200": {
+      "window_id": "gold_029_w00200",
+      "sample_id": "gold_029",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.4
+    },
+    "gold_029_w00250": {
+      "window_id": "gold_029_w00250",
+      "sample_id": "gold_029",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.4
+    },
+    "gold_029_w00300": {
+      "window_id": "gold_029_w00300",
+      "sample_id": "gold_029",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_029_w00350": {
+      "window_id": "gold_029_w00350",
+      "sample_id": "gold_029",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.4
+    },
+    "gold_029_w00400": {
+      "window_id": "gold_029_w00400",
+      "sample_id": "gold_029",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_029_w00450": {
+      "window_id": "gold_029_w00450",
+      "sample_id": "gold_029",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_029_w00500": {
+      "window_id": "gold_029_w00500",
+      "sample_id": "gold_029",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.4
+    },
+    "gold_029_w00550": {
+      "window_id": "gold_029_w00550",
+      "sample_id": "gold_029",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.4
+    },
+    "gold_029_w00600": {
+      "window_id": "gold_029_w00600",
+      "sample_id": "gold_029",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.4
+    },
+    "gold_029_w00650": {
+      "window_id": "gold_029_w00650",
+      "sample_id": "gold_029",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_029_w00700": {
+      "window_id": "gold_029_w00700",
+      "sample_id": "gold_029",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_029_w00750": {
+      "window_id": "gold_029_w00750",
+      "sample_id": "gold_029",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_029_w00800": {
+      "window_id": "gold_029_w00800",
+      "sample_id": "gold_029",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.4
+    },
+    "gold_029_w00850": {
+      "window_id": "gold_029_w00850",
+      "sample_id": "gold_029",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.5
+    },
+    "gold_029_w00900": {
+      "window_id": "gold_029_w00900",
+      "sample_id": "gold_029",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.5
+    },
+    "gold_029_w00950": {
+      "window_id": "gold_029_w00950",
+      "sample_id": "gold_029",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_029_w01000": {
+      "window_id": "gold_029_w01000",
+      "sample_id": "gold_029",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_029_w01050": {
+      "window_id": "gold_029_w01050",
+      "sample_id": "gold_029",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.5
+    },
+    "gold_029_w01100": {
+      "window_id": "gold_029_w01100",
+      "sample_id": "gold_029",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.5
+    },
+    "gold_029_w01150": {
+      "window_id": "gold_029_w01150",
+      "sample_id": "gold_029",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_029_w01200": {
+      "window_id": "gold_029_w01200",
+      "sample_id": "gold_029",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.5
+    },
+    "gold_029_w01250": {
+      "window_id": "gold_029_w01250",
+      "sample_id": "gold_029",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.5
+    },
+    "gold_029_w01300": {
+      "window_id": "gold_029_w01300",
+      "sample_id": "gold_029",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_029_w01350": {
+      "window_id": "gold_029_w01350",
+      "sample_id": "gold_029",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.5
+    },
+    "gold_029_w01400": {
+      "window_id": "gold_029_w01400",
+      "sample_id": "gold_029",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.5
+    },
+    "gold_030_w00000": {
+      "window_id": "gold_030_w00000",
+      "sample_id": "gold_030",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.5
+    },
+    "gold_030_w00050": {
+      "window_id": "gold_030_w00050",
+      "sample_id": "gold_030",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_030_w00100": {
+      "window_id": "gold_030_w00100",
+      "sample_id": "gold_030",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_030_w00150": {
+      "window_id": "gold_030_w00150",
+      "sample_id": "gold_030",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_030_w00200": {
+      "window_id": "gold_030_w00200",
+      "sample_id": "gold_030",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.5
+    },
+    "gold_030_w00250": {
+      "window_id": "gold_030_w00250",
+      "sample_id": "gold_030",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.5
+    },
+    "gold_030_w00300": {
+      "window_id": "gold_030_w00300",
+      "sample_id": "gold_030",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_030_w00350": {
+      "window_id": "gold_030_w00350",
+      "sample_id": "gold_030",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_030_w00400": {
+      "window_id": "gold_030_w00400",
+      "sample_id": "gold_030",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.5
+    },
+    "gold_030_w00450": {
+      "window_id": "gold_030_w00450",
+      "sample_id": "gold_030",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_030_w00500": {
+      "window_id": "gold_030_w00500",
+      "sample_id": "gold_030",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_030_w00550": {
+      "window_id": "gold_030_w00550",
+      "sample_id": "gold_030",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_030_w00600": {
+      "window_id": "gold_030_w00600",
+      "sample_id": "gold_030",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_030_w00650": {
+      "window_id": "gold_030_w00650",
+      "sample_id": "gold_030",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_030_w00700": {
+      "window_id": "gold_030_w00700",
+      "sample_id": "gold_030",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_030_w00750": {
+      "window_id": "gold_030_w00750",
+      "sample_id": "gold_030",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 1,
+      "elapsed_s": 0.5
+    },
+    "gold_030_w00800": {
+      "window_id": "gold_030_w00800",
+      "sample_id": "gold_030",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 3,
+      "elapsed_s": 0.6
+    },
+    "gold_030_w00850": {
+      "window_id": "gold_030_w00850",
+      "sample_id": "gold_030",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_030_w00900": {
+      "window_id": "gold_030_w00900",
+      "sample_id": "gold_030",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.5
+    },
+    "gold_030_w00950": {
+      "window_id": "gold_030_w00950",
+      "sample_id": "gold_030",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_030_w01000": {
+      "window_id": "gold_030_w01000",
+      "sample_id": "gold_030",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_030_w01050": {
+      "window_id": "gold_030_w01050",
+      "sample_id": "gold_030",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_030_w01100": {
+      "window_id": "gold_030_w01100",
+      "sample_id": "gold_030",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_030_w01150": {
+      "window_id": "gold_030_w01150",
+      "sample_id": "gold_030",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_030_w01200": {
+      "window_id": "gold_030_w01200",
+      "sample_id": "gold_030",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_030_w01250": {
+      "window_id": "gold_030_w01250",
+      "sample_id": "gold_030",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_030_w01300": {
+      "window_id": "gold_030_w01300",
+      "sample_id": "gold_030",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_030_w01350": {
+      "window_id": "gold_030_w01350",
+      "sample_id": "gold_030",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    },
+    "gold_030_w01400": {
+      "window_id": "gold_030_w01400",
+      "sample_id": "gold_030",
+      "split": "TEST",
+      "status": "ok",
+      "crop_mode": "haar",
+      "n_faces": 2,
+      "elapsed_s": 0.6
+    }
+  }
+}

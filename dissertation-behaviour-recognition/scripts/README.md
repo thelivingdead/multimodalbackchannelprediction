@@ -45,6 +45,8 @@ These read existing csv/json/npz. They must not rescore GOLD TEST.
 | `plot_window_label_logic.py` | Protocol diagram `results/windowed_dev/window_label_logic.png` (not a result) |
 | `generate_window_labels_test.py` | After TEST events are reviewed: write `nod_windows_test.csv` |
 | `train_windowed_nod_pose_cnn.py` | 3 s pose CNN in `results/windowed_nod/pose_cnn/`. DEV select; TEST once. Does not write locked 60 s dirs |
+| `fetch_rgb_windows_nod3s.py` | 16-frame RGB crops per 3 s window → `features/rgb16_windowed/`. Does not write `features/rgb16/` |
+| `train_windowed_nod_videomae.py` | 3 s VideoMAE in `results/windowed_nod/videomae_finetuned/`. Run after the fetch. TEST once |
 | `plot_annotated_dev_windows.py` | Clear sliding-window figures for the 15 annotated DEV clips |
 | `audio_alignment_check.py` | DEV audio/video alignment |
 | `train_audio_baseline_dev.py` | MFCC LR on DEV |

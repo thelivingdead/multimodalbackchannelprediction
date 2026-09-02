@@ -38,6 +38,14 @@ These read existing csv/json/npz. They must not rescore GOLD TEST.
 
 | Script | Purpose |
 | --- | --- |
+| `annotate_nod_events_dev.py` | Local UI: mark nod events inside 60 s DEV clips. Writes `data/windowed_annotations/`. Does not generate 3 s labels, train, or load TEST |
+| `import_nod_event_entry.py` | Compile `nod_event_entry.csv` YouTube clocks into `nod_events_windowed.csv`. No 3 s windows |
+| `prepare_dev_annotation_clips.py` | Optional yt-dlp cut of 60 s DEV mp4s into `data/windowed_annotations/clips/`. TEST refused |
+| `generate_window_labels.py` | After all DEV clips are reviewed: write `data/windowed_annotations/nod_windows_dev.csv`. TEST refused |
+| `plot_window_label_logic.py` | Protocol diagram `results/windowed_dev/window_label_logic.png` (not a result) |
+| `generate_window_labels_test.py` | After TEST events are reviewed: write `nod_windows_test.csv` |
+| `train_windowed_nod_pose_cnn.py` | 3 s pose CNN in `results/windowed_nod/pose_cnn/`. DEV select; TEST once. Does not write locked 60 s dirs |
+| `plot_annotated_dev_windows.py` | Clear sliding-window figures for the 15 annotated DEV clips |
 | `audio_alignment_check.py` | DEV audio/video alignment |
 | `train_audio_baseline_dev.py` | MFCC LR on DEV |
 | `train_av_fusion_dev.py` | RGB+audio concat on DEV |

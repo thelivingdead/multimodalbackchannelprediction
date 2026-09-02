@@ -31,6 +31,7 @@ Scripts: [`scripts/README.md`](scripts/README.md). Validation: [`reports/reposit
 - TRAIN = frozen-rule **pseudo-labels**.
 - Metric: clip-level P/R/F1.
 - RealTalk: p0 = LEFT, p1 = RIGHT, 25 fps.
+- New DEV work (in progress): mark nod *events* inside each 60 s clip (`data/windowed_annotations/`; `python scripts/annotate_nod_events_dev.py`). 3 s window labels are not generated yet. Original gold CSVs stay frozen.
 
 ## Layout
 

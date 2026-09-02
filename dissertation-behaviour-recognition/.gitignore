@@ -20,6 +20,7 @@ __pycache__/
 .env
 *.wav
 data/audio_alignment_check/
+data/windowed_annotations/clips/*.mp4
 .pytest_cache/
 *.pyc
 .DS_Store

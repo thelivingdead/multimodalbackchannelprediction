@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DEV nod event annotation</title>
+  <style>
+    :root {
+      --ink: #1a1a1a;
+      --muted: #5c5c5c;
+      --line: #d8d4cc;
+      --paper: #f7f4ee;
+      --card: #fffdf8;
+      --start: #1f6f4a;
+      --end: #8a2f1a;
+      --pos: #2c5aa0;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; background: var(--paper); color: var(--ink); font: 15px/1.45 "Source Sans 3", "Helvetica Neue", sans-serif; }
+    header { padding: 16px 22px 8px; border-bottom: 1px solid var(--line); background: var(--card); }
+    header h1 { margin: 0; font-size: 18px; font-weight: 650; letter-spacing: 0.01em; }
+    header p { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+    .wrap { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.85fr); gap: 18px; padding: 18px 22px 28px; align-items: start; }
+    .card { background: var(--card); border: 1px solid var(--line); padding: 14px 16px; }
+    .def { font-size: 13.5px; color: #333; }
+    .def strong { display: block; margin-bottom: 6px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+    .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; font-variant-numeric: tabular-nums; font-size: 14px; }
+    .meta .k { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .watch { grid-column: 1 / -1; background: #efe8d8; padding: 8px 10px; font-size: 15px; font-weight: 650; }
+    .nav { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 10px 0; }
+    button, .btn { font: inherit; background: var(--ink); color: #fff; border: 0; padding: 8px 12px; cursor: pointer; }
+    button.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+    button.start { background: var(--start); }
+    button.end { background: var(--end); }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
+    #player-box { background: #111; min-height: 360px; position: relative; }
+    #yt, #local { width: 100%; aspect-ratio: 16/9; display: none; background: #111; }
+    #local { height: auto; }
+    #missing { display: none; padding: 48px 24px; color: #eee; }
+    .time { display: flex; align-items: baseline; gap: 14px; margin-top: 10px; font-variant-numeric: tabular-nums; }
+    .time .now { font-size: 42px; font-weight: 650; letter-spacing: -0.03em; line-height: 1; }
+    .time .unit { color: var(--muted); font-size: 13px; }
+    input[type="range"] { width: 100%; margin: 8px 0 0; }
+    table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 13.5px; }
+    th, td { text-align: left; padding: 6px 4px; border-bottom: 1px solid var(--line); }
+    input[type="number"], textarea { font: inherit; width: 100%; border: 1px solid var(--line); background: #fff; padding: 6px 8px; }
+    textarea { min-height: 64px; resize: vertical; }
+    .status { font-size: 13px; color: var(--muted); margin-top: 8px; }
+    .status.ok { color: var(--start); }
+    .pending { margin: 8px 0; font-size: 13px; color: var(--start); min-height: 1.2em; }
+    .err { color: var(--end); font-size: 13px; min-height: 1.2em; }
+    @media (max-width: 960px) { .wrap { grid-template-columns: 1fr; } .time .now { font-size: 32px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>DEV nod event annotation</h1>
+    <p>Do not annotate the whole YouTube video. Each item is a <strong>60 s gold clip</strong>. Mark nods inside that minute only. 3 s windows are generated later.</p>
+  </header>
+  <div class="wrap">
+    <section>
+      <div class="card def" id="definition"></div>
+      <div class="card" style="margin-top:12px">
+        <div class="nav">
+          <button class="ghost" id="prev" type="button">Previous clip</button>
+          <strong id="clip-index">—</strong>
+          <button class="ghost" id="next" type="button">Next clip</button>
+          <span id="progress" class="status"></span>
+        </div>
+        <div class="meta" id="meta"></div>
+        <div id="player-box">
+          <div id="yt"></div>
+          <video id="local" controls playsinline></video>
+          <div id="missing"></div>
+        </div>
+        <div class="time">
+          <div class="now" id="now">0.00</div>
+          <div class="unit">seconds from clip start<br /><span id="frame">frame 0</span> · <span id="absclock"></span></div>
+        </div>
+        <input id="seek" type="range" min="0" max="60" step="0.04" value="0" />
+        <div class="pending" id="pending"></div>
+        <div class="nav">
+          <button class="start" id="mark-start" type="button">Mark NOD START</button>
+          <button class="end" id="mark-end" type="button">Mark NOD END</button>
+          <button class="ghost" id="play" type="button">Play / pause</button>
+        </div>
+        <p class="status">Keys: S start · E end · space play/pause · J / L ±1 s · [ previous clip · ] next clip</p>
+      </div>
+    </section>
+    <aside>
+      <div class="card">
+        <strong>Events on this clip</strong>
+        <p class="status" id="event-count">0 nod events</p>
+        <table>
+          <thead><tr><th>id</th><th>start</th><th>end</th><th></th></tr></thead>
+          <tbody id="events"></tbody>
+        </table>
+        <p class="err" id="err"></p>
+      </div>
+      <div class="card" style="margin-top:12px">
+        <strong>Review</strong>
+        <p class="status" id="reviewed-label">Not reviewed</p>
+        <label>Notes<br /><textarea id="notes" placeholder="optional"></textarea></label>
+        <div class="nav">
+          <button id="save" type="button">Save</button>
+          <button class="ghost" id="mark-reviewed" type="button">Mark reviewed</button>
+          <button class="ghost" id="mark-zero" type="button">Reviewed, zero nods</button>
+        </div>
+        <p class="status">Save writes immediately. Closing the browser keeps the CSV files. An unreviewed clip is not a negative clip.</p>
+        <p class="status ok" id="save-msg"></p>
+      </div>
+    </aside>
+  </div>
+  <script>
+    const state = {
+      data: null,
+      index: 0,
+      pendingStart: null,
+      rel: 0,
+      mode: "none",
+      yt: null,
+      ytReady: false,
+      ytCreating: false,
+      poll: null,
+    };
+
+    function clip() { return state.data.clips[state.index]; }
+    function sid() { return clip().sample_id; }
+    function clipSec() { return Number(clip().clip_sec || 60); }
+    function events() { return state.data.events[sid()] || []; }
+    function status() { return state.data.status[sid()] || { reviewed: false, n_nod_events: 0, notes: "" }; }
+
+    function fmt(t) { return Number(t).toFixed(2); }
+    function relFrame(t) { return Math.round(Number(t) * state.data.fps); }
+
+    function setErr(msg) { document.getElementById("err").textContent = msg || ""; }
+    function setSave(msg) { document.getElementById("save-msg").textContent = msg || ""; }
+
+    async function api(path, opts) {
+      const r = await fetch(path, Object.assign({ headers: { "Content-Type": "application/json" } }, opts));
+      const text = await r.text();
+      let body;
+      try { body = JSON.parse(text); } catch { body = { error: text }; }
+      if (!r.ok) throw new Error(body.error || r.statusText);
+      return body;
+    }
+
+    function renderMeta() {
+      const c = clip();
+      const st = status();
+      const n = events().length;
+      const nClips = state.data.clips.length;
+      document.getElementById("clip-index").textContent = `${c.sample_id}  (${state.index + 1} / ${nClips})`;
+      document.getElementById("progress").textContent =
+        `${state.data.n_reviewed} / ${nClips} reviewed`;
+      document.getElementById("event-count").textContent =
+        `${n} nod event${n === 1 ? "" : "s"} marked`;
+      document.getElementById("reviewed-label").textContent = st.reviewed
+        ? (n === 0 ? "Reviewed — no clear nods" : "Reviewed")
+        : "Not reviewed";
+      document.getElementById("notes").value = st.notes || "";
+      document.getElementById("meta").innerHTML = `
+        <div><div class="k">sample_id</div>${c.sample_id}</div>
+        <div><div class="k">video_id</div>${c.video_id}</div>
+        <div><div class="k">person</div>${c.person}</div>
+        <div><div class="k">completion</div>${st.reviewed ? "reviewed" : "not reviewed"} · ${n} events</div>
+        <div><div class="k">60 s source range</div>frames ${c.start_frame}–${c.end_frame}<br/>${c.source_start_clock}–${c.source_end_clock} in the source video</div>
+        <div><div class="k">relative timestamp</div><span id="meta-rel">${fmt(state.rel)} s</span> (clip is ${fmt(c.clip_sec)} s)</div>
+        <div class="watch">Watch ${c.watch_side || c.person} for 60 s only (${c.source_start_clock}–${c.source_end_clock}). Ignore the rest of the YouTube video.<br/>${c.who_to_watch || "listener only"}</div>`;
+      document.getElementById("seek").max = String(clipSec());
+    }
+
+    function renderEvents() {
+      const tb = document.getElementById("events");
+      tb.innerHTML = "";
+      events().forEach((ev, i) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${ev.event_id}</td>
+          <td><input type="number" step="0.01" min="0" max="${clipSec()}" value="${fmt(ev.start_sec)}" data-i="${i}" data-f="start_sec" /></td>
+          <td><input type="number" step="0.01" min="0" max="${clipSec()}" value="${fmt(ev.end_sec)}" data-i="${i}" data-f="end_sec" /></td>
+          <td><button class="ghost" data-jump="${i}" type="button">jump</button>
+              <button class="ghost" data-del="${i}" type="button">delete</button></td>`;
+        tb.appendChild(tr);
+      });
+      tb.querySelectorAll("input").forEach((inp) => {
+        inp.addEventListener("change", onEditEvent);
+      });
+      tb.querySelectorAll("[data-del]").forEach((b) => {
+        b.addEventListener("click", () => deleteEvent(Number(b.dataset.del)));
+      });
+      tb.querySelectorAll("[data-jump]").forEach((b) => {
+        b.addEventListener("click", () => seekTo(events()[Number(b.dataset.jump)].start_sec));
+      });
+    }
+
+    function showTime(rel) {
+      state.rel = Math.min(clipSec(), Math.max(0, rel));
+      document.getElementById("now").textContent = fmt(state.rel);
+      document.getElementById("frame").textContent = `frame ${relFrame(state.rel)}`;
+      const abs = clip().source_start_sec + state.rel;
+      const m = Math.floor(abs / 60);
+      const s = (abs - 60 * m).toFixed(2);
+      document.getElementById("absclock").textContent = `source ${m}:${s.padStart(5, "0")}`;
+      document.getElementById("seek").value = String(state.rel);
+      const metaRel = document.getElementById("meta-rel");
+      if (metaRel) metaRel.textContent = `${fmt(state.rel)} s`;
+    }
+
+    function currentRel() {
+      const c = clip();
+      let rel = state.rel;
+      if (state.mode === "local") {
+        const v = document.getElementById("local");
+        rel = v.currentTime || 0;
+      } else if (state.mode === "youtube" && state.yt && state.yt.getCurrentTime) {
+        const t = state.yt.getCurrentTime();
+        if (typeof t === "number") rel = t - c.source_start_sec;
+      }
+      if (rel < 0) rel = 0;
+      if (rel > clipSec()) {
+        if (state.mode === "youtube" && state.yt && state.yt.pauseVideo) {
+          state.yt.pauseVideo();
+          state.yt.seekTo(c.source_start_sec + clipSec(), true);
+        }
+        rel = clipSec();
+      }
+      return rel;
+    }
+
+    function seekTo(rel) {
+      const c = clip();
+      const t = Math.min(clipSec(), Math.max(0, Number(rel)));
+      showTime(t);
+      if (state.mode === "local") document.getElementById("local").currentTime = t;
+      if (state.mode === "youtube" && state.yt && state.yt.seekTo) {
+        state.yt.seekTo(c.source_start_sec + t, true);
+      }
+    }
+
+    function togglePlay() {
+      if (state.mode === "local") {
+        const v = document.getElementById("local");
+        if (v.paused) v.play(); else v.pause();
+        return;
+      }
+      if (state.mode === "youtube" && state.yt && state.yt.getPlayerState) {
+        const ps = state.yt.getPlayerState();
+        if (ps === 1) state.yt.pauseVideo();
+        else state.yt.playVideo();
+      }
+    }
+
+    function mountPlayer() {
+      const c = clip();
+      const ytEl = document.getElementById("yt");
+      const local = document.getElementById("local");
+      const missing = document.getElementById("missing");
+      ytEl.style.display = "none";
+      local.style.display = "none";
+      missing.style.display = "none";
+      local.removeAttribute("src");
+      if (c.has_local_video) {
+        state.mode = "local";
+        local.style.display = "block";
+        local.src = `/video/${c.sample_id}`;
+        local.ontimeupdate = () => {
+          if (local.currentTime > clipSec()) {
+            local.pause();
+            local.currentTime = clipSec();
+          }
+          showTime(local.currentTime);
+        };
+        return;
+      }
+      if (c.video_id && window.YT && YT.Player) {
+        state.mode = "youtube";
+        ytEl.style.display = "block";
+        const opts = {
+          videoId: c.video_id,
+          startSeconds: c.source_start_sec,
+          endSeconds: c.source_end_sec,
+        };
+        if (state.yt && state.yt.cueVideoById) {
+          state.yt.cueVideoById(opts);
+          return;
+        }
+        if (state.ytCreating) return;
+        state.ytCreating = true;
+        state.yt = new YT.Player("yt", {
+          width: "100%",
+          height: "360",
+          playerVars: {
+            rel: 0,
+            modestbranding: 1,
+            playsinline: 1,
+            fs: 1,
+            origin: window.location.origin,
+            start: Math.floor(c.source_start_sec),
+            end: Math.ceil(c.source_end_sec),
+          },
+          events: {
+            onReady: (e) => {
+              state.ytReady = true;
+              e.target.cueVideoById(opts);
+            },
+            onError: () => showMissing("YouTube could not play this clip."),
+          },
+        });
+        return;
+      }
+      showMissing("No local 60 s mp4 and YouTube API is not available.");
+    }
+
+    function showMissing(why) {
+      state.mode = "none";
+      const c = clip();
+      const box = document.getElementById("missing");
+      box.style.display = "block";
+      box.innerHTML = `<p>${why}</p>
+        <p>Place a 60-second clip at <code>data/windowed_annotations/clips/${c.sample_id}.mp4</code>
+        (relative to clip start = 0 s), or open the source:
+        <a href="${c.youtube_url}" style="color:#9cf">${c.youtube_url}</a>
+        and annotate using the relative timestamp controls.</p>`;
+    }
+
+    async function persistEvents(extra) {
+      setErr("");
+      const body = Object.assign({
+        events: events(),
+        notes: document.getElementById("notes").value,
+      }, extra || {});
+      const out = await api(`/api/clip/${sid()}/events`, { method: "PUT", body: JSON.stringify(body) });
+      state.data.events[sid()] = out.events;
+      state.data.status[sid()] = out.status;
+      state.data.n_reviewed = out.n_reviewed;
+      renderMeta();
+      renderEvents();
+      setSave("Saved " + new Date().toLocaleTimeString());
+    }
+
+    async function persistStatus(reviewed, notesDefault) {
+      const notes = document.getElementById("notes").value || notesDefault || "";
+      const out = await api(`/api/clip/${sid()}/status`, {
+        method: "PUT",
+        body: JSON.stringify({ reviewed, notes }),
+      });
+      state.data.status[sid()] = out.status;
+      state.data.n_reviewed = out.n_reviewed;
+      renderMeta();
+      setSave("Saved " + new Date().toLocaleTimeString());
+    }
+
+    async function onEditEvent(ev) {
+      const i = Number(ev.target.dataset.i);
+      const f = ev.target.dataset.f;
+      const copy = events().map((e) => Object.assign({}, e));
+      copy[i][f] = Number(ev.target.value);
+      try {
+        state.data.events[sid()] = copy;
+        await persistEvents();
+      } catch (err) {
+        setErr(err.message);
+        await reload();
+      }
+    }
+
+    async function deleteEvent(i) {
+      const copy = events().filter((_, j) => j !== i);
+      state.data.events[sid()] = copy;
+      await persistEvents();
+    }
+
+    async function markStart() {
+      state.pendingStart = currentRel();
+      document.getElementById("pending").textContent =
+        `NOD START at ${fmt(state.pendingStart)} s — now mark NOD END`;
+    }
+
+    async function markEnd() {
+      const end = currentRel();
+      const start = state.pendingStart;
+      if (start == null) {
+        setErr("Mark NOD START first.");
+        return;
+      }
+      try {
+        const copy = events().concat([{ start_sec: start, end_sec: end }]);
+        state.data.events[sid()] = copy;
+        state.pendingStart = null;
+        document.getElementById("pending").textContent = "";
+        await persistEvents();
+      } catch (err) {
+        setErr(err.message);
+      }
+    }
+
+    function goto(delta) {
+      const n = state.data.clips.length;
+      state.index = (state.index + delta + n) % n;
+      state.pendingStart = null;
+      document.getElementById("pending").textContent = "";
+      setErr("");
+      showTime(0);
+      renderMeta();
+      renderEvents();
+      mountPlayer();
+    }
+
+    async function reload() {
+      state.data = await api("/api/state");
+      renderMeta();
+      renderEvents();
+    }
+
+    function onYouTubeIframeAPIReady() {
+      if (state.data) mountPlayer();
+    }
+    window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
+
+    document.getElementById("prev").onclick = () => goto(-1);
+    document.getElementById("next").onclick = () => goto(1);
+    document.getElementById("mark-start").onclick = markStart;
+    document.getElementById("mark-end").onclick = markEnd;
+    document.getElementById("play").onclick = togglePlay;
+    document.getElementById("save").onclick = () => persistEvents();
+    document.getElementById("mark-reviewed").onclick = () => persistStatus(true);
+    document.getElementById("mark-zero").onclick = async () => {
+      if (events().length) {
+        setErr("This clip still has events. Delete them first, or use Mark reviewed.");
+        return;
+      }
+      document.getElementById("notes").value = document.getElementById("notes").value || "no clear nods";
+      await persistEvents({ reviewed: true, notes: document.getElementById("notes").value });
+    };
+    document.getElementById("seek").oninput = (e) => seekTo(Number(e.target.value));
+    document.getElementById("notes").onchange = () => persistEvents();
+
+    document.addEventListener("keydown", (e) => {
+      if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+      if (e.code === "Space") { e.preventDefault(); togglePlay(); }
+      if (e.key === "s" || e.key === "S") markStart();
+      if (e.key === "e" || e.key === "E") markEnd();
+      if (e.key === "j" || e.key === "J") seekTo(currentRel() - 1);
+      if (e.key === "l" || e.key === "L") seekTo(currentRel() + 1);
+      if (e.key === "[") goto(-1);
+      if (e.key === "]") goto(1);
+    });
+
+    (async function init() {
+      state.data = await api("/api/state");
+      document.getElementById("definition").innerHTML =
+        `<strong>Nod definition</strong>${state.data.nod_definition}`;
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      document.body.appendChild(tag);
+      renderMeta();
+      renderEvents();
+      showTime(0);
+      state.poll = setInterval(() => showTime(currentRel()), 120);
+      if (window.YT && YT.Player) mountPlayer();
+      else setTimeout(mountPlayer, 400);
+    })();
+  </script>
+</body>
+</html>

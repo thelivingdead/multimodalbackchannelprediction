@@ -1,0 +1,16 @@
+sample_id,reviewed,n_nod_events,notes
+gold_001,true,3,point time expanded by 0.4 s
+gold_002,true,2,
+gold_003,true,2,
+gold_004,true,2,
+gold_005,true,3,
+gold_006,true,3,
+gold_007,true,1,
+gold_008,true,5,
+gold_009,true,4,
+gold_010,true,1,
+gold_011,true,2,point time expanded by 0.4 s
+gold_012,true,0,no clear nods
+gold_013,true,3,
+gold_014,true,2,
+gold_015,true,3,

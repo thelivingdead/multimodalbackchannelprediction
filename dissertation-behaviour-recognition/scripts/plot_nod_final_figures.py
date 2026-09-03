@@ -353,7 +353,7 @@ def figure_f(rgb_dir: Path | None, manifest_path: Path, stem: Path) -> None:
     for ax in axes.ravel()[len(picked):]:
         ax.axis("off")
     fig.suptitle(
-        "Dissertation only. All 15 DEV clips. One resolved window per clip,\n"
+        "Identity-fixed crops, all 15 DEV clips. One resolved window per clip,\n"
         "centre furthest onto the annotator side. Wrong-half is a midline test,\n"
         "not a tight-head test. A two-shot on the annotated half still counts as 0.",
     )

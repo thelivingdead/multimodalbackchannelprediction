@@ -53,6 +53,8 @@ def main() -> None:
     ]
     dev = [float(data["metrics"]["DEV"][key]["balanced_accuracy"]) for key in keys]
     test = [float(data["metrics"]["TEST"][key]["balanced_accuracy"]) for key in keys]
+    test_f1 = [float(data["metrics"]["TEST"][key]["f1"]) for key in keys]
+    names = [f"{name}\nF1 {value:.3f}" for name, value in zip(names, test_f1)]
     ci = {
         split: data["clip_bootstrap"][split]["dev_selected_window_rule"][
             "balanced_accuracy"
@@ -91,10 +93,29 @@ def main() -> None:
             elinewidth=1.4,
             capsize=5,
         )
-        for position, value in zip(x + offset, values):
+    # Equal DEV/TEST values (the trivial baselines) get one shared label so the
+    # two numbers do not overprint each other.
+    for index, (position, dev_value, test_value) in enumerate(zip(x, dev, test)):
+        last = index == len(x) - 1
+        if abs(dev_value - test_value) < 0.004:
+            pairs = [(position, max(dev_value, test_value), 0.0)]
+        else:
+            pairs = [
+                (
+                    position - width / 2,
+                    dev_value,
+                    ci["DEV"]["ci_upper_95"] - dev_value if last else 0.0,
+                ),
+                (
+                    position + width / 2,
+                    test_value,
+                    ci["TEST"]["ci_upper_95"] - test_value if last else 0.0,
+                ),
+            ]
+        for text_x, value, clearance in pairs:
             ax.text(
-                position,
-                value + 0.008,
+                text_x,
+                value + max(clearance, 0.0) + 0.011,
                 f"{value:.3f}",
                 ha="center",
                 va="bottom",
@@ -114,8 +135,19 @@ def main() -> None:
     ax.legend(frameon=False, fontsize=9.5, loc="upper left", ncol=1)
     ax.text(
         0,
-        -0.2,
-        "15 clips per split · 435 windows · 3 s window, 2 s stride\n"
+        -0.25,
+        f"TEST 95% CI [{ci['TEST']['ci_lower_95']:.3f}, "
+        f"{ci['TEST']['ci_upper_95']:.3f}] includes 0.500, so the rule is\n"
+        "not distinguishable from chance on TEST.",
+        transform=ax.transAxes,
+        fontsize=9.5,
+        color=INK,
+        weight="bold",
+    )
+    ax.text(
+        0,
+        -0.37,
+        "F1 under each label is TEST F1 · 15 clips per split · 435 windows\n"
         "bars on the selected rule are 95% intervals from resampling clips",
         transform=ax.transAxes,
         fontsize=9.5,
@@ -150,14 +182,20 @@ def main() -> None:
         color=INK,
         arrowprops={"arrowstyle": "-", "color": MUTED, "linewidth": 1.0},
     )
-    ax_sweep.set_xlabel("Pitch amplitude threshold (degrees)", fontsize=11)
+    ax_sweep.set_xlabel(
+        "Pitch amplitude threshold (degrees)\n"
+        f"peak-to-peak amplitude scales with window length, so the 60 s\n"
+        f"threshold of {float(data['frozen_60s_threshold']):.2f}$\\degree$ "
+        f"cannot transfer to 3 s ({selected_threshold:.2f}$\\degree$)",
+        fontsize=11,
+    )
     ax_sweep.set_ylabel("DEV score", fontsize=12)
     ax_sweep.set_xlim(0, float(np.percentile(thresholds, 96)))
     ax_sweep.set_ylim(0.0, 0.75)
     ax_sweep.set_title("DEV threshold sweep", loc="left", fontsize=14, weight="bold")
     ax_sweep.grid(color="#dddddd", linewidth=0.7)
     ax_sweep.set_axisbelow(True)
-    ax_sweep.legend(frameon=False, fontsize=10, loc="lower right")
+    ax_sweep.legend(frameon=False, fontsize=10, loc="center right")
 
     image = ax_cm.imshow(cm, cmap="Blues", vmin=0)
     for (row, col), value in np.ndenumerate(cm):

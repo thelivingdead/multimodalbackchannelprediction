@@ -1,0 +1,203 @@
+{
+  "protocol": "windowed_shake_3s_baselines",
+  "task": "shake_only",
+  "window_sec": 3.0,
+  "stride_sec": 2.0,
+  "headline_metric": "balanced_accuracy",
+  "headline_metric_floor": 0.5,
+  "selection_criterion": "balanced_accuracy",
+  "axis": 1,
+  "axis_name": "y",
+  "axis_selection": "Axis and amplitude threshold selected together on shake DEV. No frozen 60 s shake axis exists and the repository does not assume EMOCA channel 0 is anatomical pitch, so the axis is a disclosed DEV decision over three candidates rather than an anatomical assumption. Nod, by contrast, inherited its axis from the frozen 60 s configuration.",
+  "criterion_rationale": "F1 is unsuitable as a selection criterion at roughly 9 percent window prevalence: it barely penalises false positives, so an F1 sweep drifts towards always-yes. Balanced accuracy weights the negative class equally. Criterion fixed before TEST was scored.",
+  "dev_selected_window_threshold": 4.091364522636089,
+  "axis_table_dev": [
+    {
+      "axis": 0,
+      "axis_name": "x",
+      "dev_threshold": 2.3211047310373525,
+      "dev_balanced_accuracy": 0.635975135975136,
+      "dev_precision": 0.12131147540983607,
+      "dev_recall": 0.9487179487179487,
+      "dev_f1": 0.21511627906976744,
+      "dev_pr_auc": 0.1292133456295999
+    },
+    {
+      "axis": 1,
+      "axis_name": "y",
+      "dev_threshold": 4.091364522636089,
+      "dev_balanced_accuracy": 0.704059829059829,
+      "dev_precision": 0.17341040462427745,
+      "dev_recall": 0.7692307692307693,
+      "dev_f1": 0.2830188679245283,
+      "dev_pr_auc": 0.18557115432458965
+    },
+    {
+      "axis": 2,
+      "axis_name": "z",
+      "dev_threshold": 3.6660947492628493,
+      "dev_balanced_accuracy": 0.6836635586635587,
+      "dev_precision": 0.16292134831460675,
+      "dev_recall": 0.7435897435897436,
+      "dev_f1": 0.2672811059907834,
+      "dev_pr_auc": 0.1736579534246786
+    }
+  ],
+  "criterion_comparison": {
+    "selected_criterion": "balanced_accuracy",
+    "selected_threshold": 4.091364522636089,
+    "alternative_criterion": "f1",
+    "alternative_threshold": 7.7830066863195455,
+    "thresholds_agree": false,
+    "alternative_dev_metrics": {
+      "accuracy": 0.7793103448275862,
+      "balanced_accuracy": 0.6823038073038072,
+      "precision": 0.21782178217821782,
+      "recall": 0.5641025641025641,
+      "f1": 0.3142857142857143,
+      "tp": 22,
+      "fp": 79,
+      "tn": 317,
+      "fn": 17
+    }
+  },
+  "n_dev": 435,
+  "n_dev_positive": 39,
+  "n_test": 435,
+  "n_test_positive": 40,
+  "metrics": {
+    "DEV": {
+      "always_no": {
+        "accuracy": 0.9103448275862069,
+        "balanced_accuracy": 0.5,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "tp": 0,
+        "fp": 0,
+        "tn": 396,
+        "fn": 39
+      },
+      "always_yes": {
+        "accuracy": 0.0896551724137931,
+        "balanced_accuracy": 0.5,
+        "precision": 0.0896551724137931,
+        "recall": 1.0,
+        "f1": 0.16455696202531647,
+        "tp": 39,
+        "fp": 396,
+        "tn": 0,
+        "fn": 0
+      },
+      "dev_selected_window_rule": {
+        "accuracy": 0.6505747126436782,
+        "balanced_accuracy": 0.704059829059829,
+        "precision": 0.17341040462427745,
+        "recall": 0.7692307692307693,
+        "f1": 0.2830188679245283,
+        "tp": 30,
+        "fp": 143,
+        "tn": 253,
+        "fn": 9
+      },
+      "pr_auc_rule_score": 0.18557115432458965
+    },
+    "TEST": {
+      "always_no": {
+        "accuracy": 0.9080459770114943,
+        "balanced_accuracy": 0.5,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "tp": 0,
+        "fp": 0,
+        "tn": 395,
+        "fn": 40
+      },
+      "always_yes": {
+        "accuracy": 0.09195402298850575,
+        "balanced_accuracy": 0.5,
+        "precision": 0.09195402298850575,
+        "recall": 1.0,
+        "f1": 0.16842105263157897,
+        "tp": 40,
+        "fp": 395,
+        "tn": 0,
+        "fn": 0
+      },
+      "dev_selected_window_rule": {
+        "accuracy": 0.6160919540229886,
+        "balanced_accuracy": 0.6537974683544303,
+        "precision": 0.15300546448087432,
+        "recall": 0.7,
+        "f1": 0.25112107623318386,
+        "tp": 28,
+        "fp": 155,
+        "tn": 240,
+        "fn": 12
+      },
+      "pr_auc_rule_score": 0.16384586246556762
+    }
+  },
+  "clip_bootstrap": {
+    "DEV": {
+      "dev_selected_window_rule": {
+        "n_resamples": 2000,
+        "n_clips": 15,
+        "n_skipped_single_class_resamples": 0,
+        "resampling_unit": "clip",
+        "balanced_accuracy": {
+          "mean": 0.704696992832941,
+          "ci_lower_95": 0.6110360516685917,
+          "ci_upper_95": 0.7925970225264963
+        },
+        "f1": {
+          "mean": 0.282503049248774,
+          "ci_lower_95": 0.19415909802693393,
+          "ci_upper_95": 0.36757120349048594
+        },
+        "precision": {
+          "mean": 0.17371280842016193,
+          "ci_lower_95": 0.11486486486486487,
+          "ci_upper_95": 0.237501726519337
+        },
+        "recall": {
+          "mean": 0.7705355904921651,
+          "ci_lower_95": 0.6176470588235294,
+          "ci_upper_95": 0.9056751179245283
+        }
+      },
+      "always_yes_balanced_accuracy": 0.5
+    },
+    "TEST": {
+      "dev_selected_window_rule": {
+        "n_resamples": 2000,
+        "n_clips": 15,
+        "n_skipped_single_class_resamples": 0,
+        "resampling_unit": "clip",
+        "balanced_accuracy": {
+          "mean": 0.6640739049986149,
+          "ci_lower_95": 0.5249989893280365,
+          "ci_upper_95": 0.7938252527688998
+        },
+        "f1": {
+          "mean": 0.2510612065301202,
+          "ci_lower_95": 0.15788927713474557,
+          "ci_upper_95": 0.3434387932185289
+        },
+        "precision": {
+          "mean": 0.15410885219811285,
+          "ci_lower_95": 0.0903954802259887,
+          "ci_upper_95": 0.22439024390243886
+        },
+        "recall": {
+          "mean": 0.7229937604346589,
+          "ci_lower_95": 0.4583035714285714,
+          "ci_upper_95": 0.9545948616600788
+        }
+      },
+      "always_yes_balanced_accuracy": 0.5
+    }
+  },
+  "bootstrap_note": "Percentile intervals from resampling the 15 clips of a split with replacement. Windows within a clip overlap by 1 s and are not independent, so window-level resampling would understate uncertainty."
+}

@@ -138,15 +138,41 @@ Under the finer protocol of Section 4.11 the pitch amplitude rule does not separ
 | Frozen 60 s threshold, transferred | 0.486 | 0.494 | 0.148 | 0.130 | 0.138 |
 | DEV-selected pitch rule | 0.580 | **0.549** | 0.179 | 0.710 | 0.287 |
 
-The 95 percent clip-bootstrap interval for the selected rule is [0.520, 0.647] on DEV and **[0.480, 0.619] on TEST**. The TEST interval contains 0.500, so on 15 clips this rule is not distinguishable from chance.
+The 95 percent clip-bootstrap interval for the selected rule is [0.520, 0.647] on DEV and **[0.480, 0.619] on TEST**. The TEST interval contains 0.500, so on 15 clips this rule is not distinguishable from chance. This is also the clearest illustration of why F1 was rejected as the headline: the selected rule's TEST F1 of 0.287 sits only 0.013 above the always-yes value of 0.274, a gap that invites over-reading, while the same operating point in balanced accuracy is 0.549 against a floor of exactly 0.500 with an interval that crosses it.
 
 Two observations matter for the interpretation. First, balanced accuracy and F1 select the *same* DEV threshold, 2.68 degrees, so the near-always-yes behaviour of the rule is not an artefact of the selection criterion: at that threshold the rule fires on 64.8 percent of DEV windows to reach recall 0.788 at precision 0.145. Across the whole 434-point DEV sweep balanced accuracy never exceeds 0.580 and its median is 0.536, so no threshold on this score yields a useful operating point. Second, the ranking itself is close to uninformative on DEV: PR AUC is 0.131 against a prevalence of 0.120. On TEST, PR AUC is 0.207 against a prevalence of 0.159, a slightly wider but still small margin. The criterion change was worth making because it makes the comparison against the trivial baseline meaningful, but it does not rescue the feature.
 
-The reason is a property of the feature rather than of the fitting procedure. Peak-to-peak pitch amplitude over 3 s cannot distinguish an oscillation from a single downward glance or a postural drift of the same magnitude, and at 3 s many non-nod windows contain exactly such movements; at 60 s these were diluted by the rest of the window. A rule that also counted direction reversals or zero crossings of the smoothed pitch velocity would address this directly and is the natural next step, but it is not part of the present results.
+The weakly supervised pose model does not improve on this. A multiple-instance pose network, trained on the 80 pseudo-labelled clips as bags of 29 windows with top-2 pooling on rotation and its first difference, and selected on DEV balanced accuracy, reaches DEV balanced accuracy 0.533 at epoch 4 and probability threshold 0.25, with precision 0.128 at recall 0.846 (TP 44, FP 299, TN 84, FN 8). It fires on 343 of 435 DEV windows, 78.9 percent, against a true prevalence of 12.0 percent, which is the always-yes collapse made visible: the same operating point reads as F1 0.223 and as balanced accuracy 0.533. It is therefore *worse* on DEV than the one-parameter amplitude rule at 0.580, so neither the additional capacity nor the 80 weakly labelled clips bought anything. TEST was not scored for this model, and results are in `results/windowed_nod/pose_mil_pseudo80_dev_bacc/metrics_dev.json`.
 
-The transferred 60 s threshold is reported unchanged: TEST F1 0.138 at balanced accuracy 0.494. This is the cleanest negative result in the chapter. A threshold frozen for a 60 s any-nod decision does not transfer to a 3 s window decision, which is what one would expect given that the two protocols have different positive rates and different signal durations, and it is stated here without refitting of any kind.
+That a hand rule and a learned model both land just above chance, from opposite directions, points at the representation rather than at either fitting procedure. Peak-to-peak pitch amplitude over 3 s cannot distinguish an oscillation from a single downward glance or a postural drift of the same magnitude, and at 3 s many non-nod windows contain exactly such movements; at 60 s these were diluted by the rest of the window. A rule that also counted direction reversals or zero crossings of the smoothed pitch velocity would address this directly and is the natural next step, but it is not part of the present results.
 
-### 5.10 What is not in this chapter
+The transferred 60 s threshold is reported unchanged: TEST F1 0.138 at balanced accuracy 0.494, marginally below chance. The mechanism is a scale mismatch rather than anything subtle. Peak-to-peak amplitude is a maximum over the window, so it grows with window length: the value frozen on 60 s windows is 16.35 degrees, whereas the DEV optimum for 3 s windows is 2.68 degrees, a factor of six. A 3 s window almost never accumulates 16 degrees of pitch excursion, so the transferred rule fires on only 61 of 435 TEST windows and recovers 13 percent of the nods. The transfer failure is therefore expected on dimensional grounds and is reported without refitting of any kind.
+
+### 5.10 Three-second sliding-window protocol: shake baselines
+
+The same protocol was applied to head shakes, using the shake event annotations for all 30 gold clips. Positive rates are lower than for nod: 39/435 (9.0 percent) on DEV and 40/435 (9.2 percent) on TEST. No frozen 60 s shake threshold exists, and the repository does not assume that EMOCA rotation channel 0 is anatomical pitch, so the axis was selected on shake DEV together with the amplitude threshold. That is one additional disclosed DEV decision relative to nod, which inherited its axis from the frozen 60 s configuration. The full three-axis DEV table is reported for transparency.
+
+| Axis | DEV threshold | DEV balanced accuracy | DEV precision | DEV recall | DEV F1 | DEV PR AUC |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 2.321 | 0.636 | 0.121 | 0.949 | 0.215 | 0.129 |
+| 1 | 4.091 | **0.704** | 0.173 | 0.769 | 0.283 | 0.186 |
+| 2 | 3.666 | 0.684 | 0.163 | 0.744 | 0.267 | 0.174 |
+
+Axis 1 was selected and applied once to TEST at 4.091 degrees.
+
+| Method | DEV balanced accuracy | TEST balanced accuracy | TEST P | TEST R | TEST F1 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Always no | 0.500 | 0.500 | 0.000 | 0.000 | 0.000 |
+| Always yes | 0.500 | 0.500 | 0.092 | 1.000 | 0.168 |
+| DEV-selected yaw rule | 0.704 | **0.654** | 0.153 | 0.700 | 0.251 |
+
+The 95 percent clip-bootstrap interval is [0.611, 0.793] on DEV and **[0.525, 0.794] on TEST**. Unlike nod, the TEST interval excludes 0.500, so the shake rule is distinguishable from chance, although the lower bound clears the floor by only 0.025 on 40 positives from 15 clips. TEST counts are TP 28, FP 155, TN 240, FN 12. Ranking quality is correspondingly better than for nod: DEV PR AUC 0.186 against a prevalence of 0.090, and TEST 0.164 against 0.092, roughly twice chance in both cases, where the nod rule managed 0.131 against 0.120.
+
+Two consequences follow. First, the axis sweep is an independent check on the pose features: shake selects axis 1 while nod's frozen configuration uses axis 0, so the rotation channels do separate vertical from horizontal head motion as an anatomical reading of pitch and yaw would require. Had shake also selected axis 0, the feature extraction itself would be in question. Second, and more importantly, the 3 s protocol is not inherently intractable and the pipeline is not at fault: a single amplitude parameter on the correct axis detects shakes but not nods. This is the amplitude-versus-oscillation argument in its sharpest form. A head shake is a distinctive horizontal oscillation with few competing sources of yaw excursion at this timescale, whereas vertical motion of nod-like magnitude arises constantly from downward glances and postural drift. The nod result of Section 5.9 is therefore a claim about which behaviour amplitude can separate at short timescales, not a claim that short-window recognition fails in general.
+
+One further note for the methods. Here the two selection criteria disagree: balanced accuracy selects 4.091 degrees while F1 would select 7.783. F1 prefers the higher, more conservative cut because at 9 percent prevalence the precision gain outweighs the lost recall in its harmonic mean, whereas balanced accuracy prefers the lower cut on the specificity-weighted trade. For nod the two criteria agreed exactly, so the disagreement here is a property of this score distribution rather than of the criteria in general.
+
+### 5.11 What is not in this chapter
 
 - DEV F1 0.86 / 0.89 / 0.90 / 0.857 as a finding
 - Ablation D as a valid F1

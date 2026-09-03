@@ -17,7 +17,6 @@ from 15 clips are not 435 independent observations.
 from __future__ import annotations
 
 import argparse
-import importlib.util
 import json
 import sys
 from pathlib import Path
@@ -31,8 +30,19 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 from check_split_leakage import assert_unlocked_out_dir  # noqa: E402
 from src.clip_metrics import always_predict, clip_binary_metrics  # noqa: E402
-from src.pose_cnn import load_npz  # noqa: E402
 from src.utils import dump_json  # noqa: E402
+from src.windowed_baselines import (  # noqa: E402
+    HEADLINE,
+    N_BOOTSTRAP,
+    WINDOW_FRAMES,
+    average_precision,
+    candidate_thresholds,
+    clip_bootstrap,
+    load_windows,
+    rule_score_function,
+    select_dev_threshold,
+)
+from src.windowed_baselines import score_windows as _score_windows  # noqa: E402
 
 WINDOWS_DEV = ROOT / "data" / "windowed_annotations" / "nod_windows_dev.csv"
 WINDOWS_TEST = ROOT / "data" / "windowed_annotations" / "nod_windows_test.csv"
@@ -44,185 +54,10 @@ OUT_BY_CRITERION = {
 }
 DEV_IDS = {f"gold_{i:03d}" for i in range(1, 16)}
 TEST_IDS = {f"gold_{i:03d}" for i in range(16, 31)}
-WINDOW_FRAMES = 75
-HEADLINE = "balanced_accuracy"
-N_BOOTSTRAP = 2000
-BOOTSTRAP_SEED = 42
-
-
-def _rule_score_function():
-    path = ROOT / "scripts" / "run_full_experiment.py"
-    spec = importlib.util.spec_from_file_location("run_full_experiment", path)
-    module = importlib.util.module_from_spec(spec)
-    if spec.loader is None:
-        raise SystemExit(f"STOP: cannot load {path}")
-    spec.loader.exec_module(module)
-    return module.rule_score
-
-
-def load_windows(path: Path, split: str, allowed: set[str]) -> pd.DataFrame:
-    df = pd.read_csv(path)
-    needed = {
-        "window_id",
-        "sample_id",
-        "split",
-        "start_frame_relative",
-        "end_frame_relative",
-        "label",
-    }
-    missing = needed - set(df.columns)
-    if missing:
-        raise SystemExit(f"STOP: {path.name} missing {sorted(missing)}")
-    df["sample_id"] = df["sample_id"].astype(str)
-    df["split"] = df["split"].astype(str).str.upper()
-    if (df["split"] != split).any():
-        raise SystemExit(f"STOP: {path.name} contains a non-{split} row")
-    ids = set(df["sample_id"])
-    if ids != allowed:
-        raise SystemExit(
-            f"STOP: {path.name} {split} ids differ: "
-            f"extra={sorted(ids - allowed)}, missing={sorted(allowed - ids)}"
-        )
-    counts = df.groupby("sample_id").size()
-    if len(df) != 15 * 29 or not (counts == 29).all():
-        raise SystemExit(f"STOP: {path.name} is not 15 clips x 29 windows")
-    return df.reset_index(drop=True)
 
 
 def score_windows(df: pd.DataFrame, axis: int, rule_score) -> np.ndarray:
-    cache: dict[str, dict] = {}
-    scores: list[float] = []
-    for row in df.itertuples(index=False):
-        sid = str(row.sample_id)
-        if sid not in cache:
-            pose_path = GOLD_DIR / f"{sid}.npz"
-            if not pose_path.exists():
-                raise SystemExit(f"STOP: missing pose file {pose_path}")
-            cache[sid] = load_npz(pose_path)
-        start = int(row.start_frame_relative)
-        end = int(row.end_frame_relative)
-        rotation = np.asarray(cache[sid]["rotation_xyz"], dtype=np.float32)
-        chunk = rotation[start:end]
-        if chunk.shape != (WINDOW_FRAMES, 3):
-            raise SystemExit(
-                f"STOP: {sid} window {start}:{end} has shape {chunk.shape}"
-            )
-        scores.append(float(rule_score(chunk, axis)))
-    return np.asarray(scores, dtype=float)
-
-
-def candidate_thresholds(scores: np.ndarray) -> list[float]:
-    values = np.unique(np.asarray(scores, dtype=float))
-    if not len(values):
-        raise SystemExit("STOP: no rule scores to sweep")
-    thresholds = [float(np.nextafter(values[0], -np.inf))]
-    thresholds.extend(float((a + b) / 2.0) for a, b in zip(values[:-1], values[1:]))
-    thresholds.append(float(np.nextafter(values[-1], np.inf)))
-    return thresholds
-
-
-def _selection_key(metrics: dict, threshold: float, criterion: str) -> tuple:
-    if criterion == "balanced_accuracy":
-        return (
-            metrics["balanced_accuracy"],
-            metrics["precision"],
-            metrics["f1"],
-            -threshold,
-        )
-    return (
-        metrics["f1"],
-        metrics["balanced_accuracy"],
-        metrics["precision"],
-        -threshold,
-    )
-
-
-def select_dev_threshold(
-    y_dev: np.ndarray,
-    scores_dev: np.ndarray,
-    criterion: str = HEADLINE,
-) -> tuple[float, dict, pd.DataFrame]:
-    """Select an amplitude threshold using DEV only.
-
-    ``criterion`` is fixed before TEST is touched. Balanced accuracy is the
-    default because F1 is not a safe selection criterion at this prevalence.
-    """
-    if criterion not in ("balanced_accuracy", "f1"):
-        raise SystemExit(f"STOP: unknown selection criterion {criterion!r}")
-    y_dev = np.asarray(y_dev, dtype=int)
-    scores_dev = np.asarray(scores_dev, dtype=float)
-    rows: list[dict] = []
-    best = None
-    for threshold in candidate_thresholds(scores_dev):
-        metrics = clip_binary_metrics(y_dev, (scores_dev >= threshold).astype(int))
-        rows.append({"threshold": threshold, **metrics})
-        key = _selection_key(metrics, threshold, criterion)
-        if best is None or key > best[0]:
-            best = (key, threshold, metrics)
-    assert best is not None
-    return float(best[1]), dict(best[2]), pd.DataFrame(rows)
-
-
-def average_precision(y_true: np.ndarray, scores: np.ndarray) -> float:
-    """PR AUC by the step-wise definition. Threshold-free ranking quality."""
-    y_true = np.asarray(y_true, dtype=int)
-    scores = np.asarray(scores, dtype=float)
-    n_pos = int(y_true.sum())
-    if n_pos == 0 or n_pos == len(y_true):
-        return float("nan")
-    order = np.argsort(-scores, kind="mergesort")
-    hits = y_true[order]
-    tp = np.cumsum(hits)
-    fp = np.cumsum(1 - hits)
-    precision = tp / np.maximum(tp + fp, 1)
-    recall = tp / n_pos
-    previous = np.concatenate([[0.0], recall[:-1]])
-    return float(np.sum((recall - previous) * precision))
-
-
-def clip_bootstrap(
-    sample_ids: np.ndarray,
-    y_true: np.ndarray,
-    y_pred: np.ndarray,
-    n_resamples: int = N_BOOTSTRAP,
-    seed: int = BOOTSTRAP_SEED,
-) -> dict:
-    """Percentile intervals from resampling whole clips with replacement."""
-    sample_ids = np.asarray(sample_ids)
-    clips = np.unique(sample_ids)
-    index_by_clip = {clip: np.flatnonzero(sample_ids == clip) for clip in clips}
-    rng = np.random.default_rng(seed)
-    collected: dict[str, list[float]] = {
-        "balanced_accuracy": [],
-        "f1": [],
-        "precision": [],
-        "recall": [],
-    }
-    n_degenerate = 0
-    for _ in range(n_resamples):
-        drawn = rng.choice(clips, size=len(clips), replace=True)
-        idx = np.concatenate([index_by_clip[clip] for clip in drawn])
-        labels = y_true[idx]
-        if labels.min() == labels.max():
-            n_degenerate += 1
-            continue
-        metrics = clip_binary_metrics(labels, y_pred[idx])
-        for name in collected:
-            collected[name].append(float(metrics[name]))
-    out: dict = {
-        "n_resamples": int(n_resamples),
-        "n_clips": int(len(clips)),
-        "n_skipped_single_class_resamples": int(n_degenerate),
-        "resampling_unit": "clip",
-    }
-    for name, values in collected.items():
-        array = np.asarray(values, dtype=float)
-        out[name] = {
-            "mean": float(array.mean()) if array.size else float("nan"),
-            "ci_lower_95": float(np.percentile(array, 2.5)) if array.size else float("nan"),
-            "ci_upper_95": float(np.percentile(array, 97.5)) if array.size else float("nan"),
-        }
-    return out
+    return _score_windows(df, axis, rule_score, GOLD_DIR)
 
 
 def main() -> None:
@@ -257,7 +92,7 @@ def main() -> None:
             f"STOP: nod baseline expected pitch axis x (0), config has axis {axis}"
         )
     frozen_threshold = float(config["selected_amplitude_threshold"])
-    rule_score = _rule_score_function()
+    rule_score = rule_score_function()
     scores_dev = score_windows(dev, axis, rule_score)
     scores_test = score_windows(test, axis, rule_score)
     y_dev = dev["label"].to_numpy(dtype=int)

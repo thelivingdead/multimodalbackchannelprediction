@@ -1,0 +1,69 @@
+{
+  "protocol": "windowed_nod_3s_pose_mil_train_selected",
+  "development_only": true,
+  "test_scored": false,
+  "training": "80 weakly labelled 60 s TRAIN bags; 29 windows per bag; top-2 multiple-instance pooling",
+  "selection": "TRAIN only: 5-fold cross-validation over the weak bags chose the epoch and the window threshold, by out-of-fold bag-level balanced accuracy. DEV was read once, after selection closed.",
+  "why_this_run_exists": "The pose_mil_pseudo80_dev_bacc run selected its epoch and threshold on the same DEV windows it reported, so its balanced accuracy is an upper bound. This run makes DEV a genuine held-out estimate.",
+  "headline_metric": "balanced_accuracy",
+  "headline_metric_floor": 0.5,
+  "feature_set": "rotation_xyz_plus_first_difference",
+  "window_sec": 3.0,
+  "stride_sec": 2.0,
+  "n_train_clips": 80,
+  "n_train_positive_bags": 70,
+  "n_train_negative_bags": 10,
+  "n_train_instances": 2320,
+  "weak_label_pos_weight": 0.14285714285714285,
+  "n_dev_windows": 435,
+  "n_dev_positive": 52,
+  "dev_prevalence": 0.11954022988505747,
+  "selected_epoch": 20,
+  "selected_threshold": 0.85,
+  "train_oof_bag_balanced_accuracy": 0.8642857142857143,
+  "dev_window": {
+    "accuracy": 0.8367816091954023,
+    "balanced_accuracy": 0.5001255272143,
+    "precision": 0.12,
+    "recall": 0.057692307692307696,
+    "f1": 0.07792207792207792,
+    "tp": 3,
+    "fp": 22,
+    "tn": 361,
+    "fn": 49
+  },
+  "dev_clip_bootstrap": {
+    "n_resamples": 2000,
+    "n_clips": 15,
+    "n_skipped_single_class_resamples": 0,
+    "resampling_unit": "clip",
+    "balanced_accuracy": {
+      "mean": 0.5008837783223944,
+      "ci_lower_95": 0.46816976127320953,
+      "ci_upper_95": 0.5549364460636264
+    },
+    "f1": {
+      "mean": 0.07290144707865298,
+      "ci_lower_95": 0.0,
+      "ci_upper_95": 0.20695669607056907
+    },
+    "precision": {
+      "mean": 0.10187445317257438,
+      "ci_lower_95": 0.0,
+      "ci_upper_95": 0.24324324324324326
+    },
+    "recall": {
+      "mean": 0.05868430839875566,
+      "ci_lower_95": 0.0,
+      "ci_upper_95": 0.18759973404255265
+    }
+  },
+  "dev_selected_oracle": {
+    "note": "Not a result. Best DEV balanced accuracy reachable by tuning the threshold on DEV itself, quoted to size the selection effect.",
+    "threshold": 0.8,
+    "balanced_accuracy": 0.49882004418557946
+  },
+  "device": "cuda",
+  "seed": 42,
+  "checkpoint": "models/windowed_nod_pose_mil_pseudo80_trainsel.pt"
+}

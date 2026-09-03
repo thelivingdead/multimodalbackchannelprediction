@@ -1,0 +1,20 @@
+{
+  "protocol": "windowed_nod_3s_videomae_identity_fixed",
+  "development_only": true,
+  "test_scored": false,
+  "test_crops": false,
+  "window_sec": 3.0,
+  "stride_sec": 2.0,
+  "overlap_sec": 1.0,
+  "fps": 25,
+  "frames_per_window": 16,
+  "frame_sampling": "uniform across the full 3 s window",
+  "label_source": "data/windowed_annotations/nod_windows_dev.csv",
+  "target": "human 3 s nod label",
+  "crop_function": "src.crop_target_person.crop_target_person_rgb",
+  "old_crop_function_not_used": "scripts/fetch_rgb_windows.py:crop_window",
+  "threshold": 0.5,
+  "folds": "leave one gold clip out, 15 folds",
+  "pos_weight": "negatives / positives inside the training clips of that fold only",
+  "output_root": "results/windowed_dev/videomae_identity_fixed"
+}

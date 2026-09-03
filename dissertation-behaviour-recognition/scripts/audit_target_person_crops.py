@@ -29,32 +29,37 @@ TEST_IDS = {f"gold_{i:03d}" for i in range(16, 31)}
 MAX_UNRESOLVED_FRAC = 0.25
 
 
+def with_window_labels(frame: pd.DataFrame, labels: pd.DataFrame) -> pd.DataFrame:
+    """Attach human 3 s labels without colliding with the fetch manifest."""
+    if "label" in frame.columns:
+        return frame
+    return frame.merge(labels[["window_id", "label"]], on="window_id", how="left")
+
+
 def pick_audit_windows(labels: pd.DataFrame, manifest: pd.DataFrame) -> pd.DataFrame:
     """About 2 windows per DEV clip, mixed positive and negative, 30 to 50 total."""
-    resolved = manifest[manifest["crop_status"] == "resolved"].copy()
+    resolved = with_window_labels(
+        manifest[manifest["crop_status"] == "resolved"].copy(), labels
+    )
     if resolved.empty:
         raise SystemExit("STOP: no resolved crops to audit")
+    if "label" not in resolved.columns:
+        raise SystemExit("STOP: no human window label available for the audit sample")
     chosen: list[pd.DataFrame] = []
     for sid, group in resolved.groupby("sample_id"):
-        joined = group.merge(
-            labels[["window_id", "label"]], on="window_id", how="left"
-        )
-        pos = joined[joined["label"] == 1]
-        neg = joined[joined["label"] == 0]
+        pos = group[group["label"] == 1]
+        neg = group[group["label"] == 0]
         take = []
         if not pos.empty:
             take.append(pos.iloc[len(pos) // 2])
         if not neg.empty:
             take.append(neg.iloc[len(neg) // 2])
         if not take:
-            take.append(joined.iloc[0])
+            take.append(group.iloc[0])
         chosen.append(pd.DataFrame(take))
     picked = pd.concat(chosen, ignore_index=True)
     if len(picked) < 30:
         extra = resolved[~resolved["window_id"].isin(picked["window_id"])]
-        extra = extra.merge(
-            labels[["window_id", "label"]], on="window_id", how="left"
-        )
         need = min(50 - len(picked), len(extra))
         if need:
             step = max(len(extra) // need, 1)

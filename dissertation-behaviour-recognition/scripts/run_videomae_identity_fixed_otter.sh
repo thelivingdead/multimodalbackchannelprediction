@@ -22,11 +22,15 @@ if [[ ! -x "$PY" ]]; then
 fi
 
 echo "==== 1 fetch DEV crops only ===="
-"$PY" scripts/fetch_rgb_windows_identity_dev.py \
-  --out-dir "$RGB_DIR" \
-  --summary-json "$OUT/fetch_summary.json" \
-  --min-free-gb 1 \
-  | tee "$LOGDIR/identity_fetch_dev.log"
+if [[ -f "$OUT/fetch_manifest.csv" ]] && [[ -d "$RGB_DIR" ]]; then
+  echo "fetch_manifest.csv already exists; skipping fetch. Delete it to redo."
+else
+  "$PY" scripts/fetch_rgb_windows_identity_dev.py \
+    --out-dir "$RGB_DIR" \
+    --summary-json "$OUT/fetch_summary.json" \
+    --min-free-gb 1 \
+    | tee "$LOGDIR/identity_fetch_dev.log"
+fi
 
 echo "==== 2 identity audit (must pass before VideoMAE) ===="
 "$PY" scripts/audit_target_person_crops.py \

@@ -1,0 +1,95 @@
+{
+  "protocol": "windowed_nod_3s_videomae_identity_fixed_last_blocks",
+  "development_only": true,
+  "test_scored": false,
+  "test_touched": false,
+  "crop_source": "/scratch/db01550/rgb16_windowed_identity_dev",
+  "audit": {
+    "pass": true,
+    "note": "Automatic check only: every resolved crop centre is on the annotated half, unresolved fraction is at most 25 percent, and at least 30 contact sheets were written. Look at crop_audit/ before trusting VideoMAE. Delete this file if any sheet shows the excluded person.",
+    "n_dev_windows": 435,
+    "n_successfully_cropped": 373,
+    "n_unresolved": 62,
+    "n_failed": 0,
+    "percent_successfully_cropped": 85.7,
+    "n_no_face_on_target_half": 13,
+    "n_resolved_on_wrong_half": 0,
+    "n_visually_audited": 50,
+    "automatic_half_check": "pass",
+    "audit_pass": true,
+    "test_touched": false,
+    "stop_training": false
+  },
+  "mode": "last_blocks",
+  "unfreeze_blocks": 2,
+  "threshold": 0.5,
+  "threshold_note": "fixed at 0.5 before any fold was scored",
+  "n_dev_windows": 435,
+  "n_excluded_unresolved": 62,
+  "n_windows_scored": 373,
+  "n_positive": 41,
+  "n_negative": 332,
+  "prevalence": 0.10991957104557641,
+  "balanced_accuracy": 0.5621143109021451,
+  "precision": 0.13690476190476192,
+  "recall": 0.5609756097560976,
+  "f1": 0.22009569377990437,
+  "pr_auc": 0.1311248328984064,
+  "confusion": {
+    "tp": 23,
+    "fp": 145,
+    "tn": 187,
+    "fn": 18
+  },
+  "clip_bootstrap": {
+    "n_resamples": 2000,
+    "n_clips": 15,
+    "n_skipped_single_class_resamples": 0,
+    "resampling_unit": "clip",
+    "balanced_accuracy": {
+      "mean": 0.5593565354885903,
+      "ci_lower_95": 0.4557912385071486,
+      "ci_upper_95": 0.6641019397469262
+    },
+    "f1": {
+      "mean": 0.21533297295440829,
+      "ci_lower_95": 0.12153859032312071,
+      "ci_upper_95": 0.3050965160075329
+    },
+    "precision": {
+      "mean": 0.13520822953613537,
+      "ci_lower_95": 0.07437251300887665,
+      "ci_upper_95": 0.19412184873949578
+    },
+    "recall": {
+      "mean": 0.5530959653506238,
+      "ci_lower_95": 0.2564102564102564,
+      "ci_upper_95": 0.818240093240093
+    }
+  },
+  "always_no": {
+    "accuracy": 0.8900804289544236,
+    "balanced_accuracy": 0.5,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "tp": 0,
+    "fp": 0,
+    "tn": 332,
+    "fn": 41
+  },
+  "always_yes": {
+    "accuracy": 0.10991957104557641,
+    "balanced_accuracy": 0.5,
+    "precision": 0.10991957104557641,
+    "recall": 1.0,
+    "f1": 0.19806763285024154,
+    "tp": 41,
+    "fp": 332,
+    "tn": 0,
+    "fn": 0
+  },
+  "epochs_per_fold": 6,
+  "seed": 42,
+  "device": "cuda"
+}

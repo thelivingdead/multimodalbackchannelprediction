@@ -25,7 +25,22 @@ from matplotlib.patches import Patch, Rectangle
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+from src.paper_figure_style import (  # noqa: E402
+    BLUE,
+    GREEN,
+    GREY,
+    INK,
+    MUTED,
+    ORANGE,
+    PAPER,
+    SIZE_FULL,
+    SIZE_FULL_TALL,
+    SIZE_HALF,
+    forest,
+    save,
+)
 from src.windowed_protocol import (  # noqa: E402
+    DEV_SAMPLE_IDS,
     EVENTS_CSV,
     TEST_SAMPLE_IDS,
     load_events,
@@ -37,14 +52,7 @@ FIXED_1P5 = ROOT / "results" / "windowed_dev" / "videomae_identity_fixed_1p5s"
 WIN = ROOT / "results" / "windowed_nod"
 WINDOWS = ROOT / "data" / "windowed_annotations" / "nod_windows_dev.csv"
 POSE_DIR = ROOT / "features" / "gold"
-
-INK = "#1d1d1f"
-MUTED = "#5c5c63"
-GREY = "#b0b0b4"
-ORANGE = "#c46a2d"
-BLUE = "#2c5f8a"
-GREEN = "#2f6b45"
-PAPER = "#ffffff"
+MIDLINE_FRAC = 0.15
 
 
 def loadj(path: Path) -> dict:
@@ -57,25 +65,6 @@ def maybe(path: Path) -> dict | None:
     return json.loads(path.read_text()) if path.exists() else None
 
 
-def save(fig: plt.Figure, stem: Path) -> None:
-    stem.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(
-        stem.with_suffix(".png"),
-        dpi=300,
-        facecolor=PAPER,
-        bbox_inches="tight",
-        pad_inches=0.35,
-    )
-    fig.savefig(
-        stem.with_suffix(".svg"),
-        facecolor=PAPER,
-        bbox_inches="tight",
-        pad_inches=0.35,
-    )
-    plt.close(fig)
-    print(f"wrote {stem.with_suffix('.png')}")
-
-
 def ci_of(metrics: dict) -> tuple[float, float, float]:
     ba = float(metrics["balanced_accuracy"])
     boot = metrics.get("clip_bootstrap") or {}
@@ -85,71 +74,45 @@ def ci_of(metrics: dict) -> tuple[float, float, float]:
     return ba, lo, hi
 
 
-def figure_a(rows: list[dict], stem: Path) -> None:
-    fig, ax = plt.subplots(figsize=(8.6, 5.2), facecolor=PAPER)
-    ax.set_facecolor(PAPER)
-    ax.axvline(0.5, color=INK, lw=1.0, ls="--", zorder=0)
-    ax.text(0.5, 0.52, "chance  0.500", color=MUTED, fontsize=7.4, ha="center", va="bottom")
-    for i, row in enumerate(rows):
-        y = -i
-        ax.plot([row["lo"], row["hi"]], [y, y], color=row["colour"], lw=1.8, zorder=2)
-        ax.plot(row["ba"], y, "o", color=row["colour"], markersize=8, zorder=3)
-        ax.text(0.18, y, row["name"], va="center", ha="left", fontsize=9, color=INK)
-        ax.text(
-            0.82, y,
-            f"{row['ba']:.3f}  [{row['lo']:.3f}, {row['hi']:.3f}]",
-            va="center",
-            ha="left",
-            fontsize=8.6,
-            color=INK,
-        )
-    ax.set_xlim(0.16, 1.08)
-    ax.set_ylim(-len(rows) + 0.45, 0.72)
-    ax.set_yticks([])
-    ax.set_xlabel("Balanced accuracy")
-    ax.set_title("DEV nod detection. No interval excludes chance.")
-    for side in ("top", "right", "left"):
-        ax.spines[side].set_visible(False)
-    fig.subplots_adjust(left=0.06, right=0.98, top=0.88, bottom=0.24)
+def figure_a(rows: list[dict], temporal: list[dict], stem: Path) -> None:
+    fig, axes = plt.subplots(
+        2,
+        1,
+        figsize=SIZE_FULL_TALL,
+        facecolor=PAPER,
+        gridspec_kw={"height_ratios": [max(len(rows), 1), max(len(temporal), 1)], "hspace": 0.40},
+    )
+    forest(axes[0], rows, title="A   DEV nod detection. No interval excludes chance.")
+    forest(axes[1], temporal, title="B   Same VideoMAE, 3 s vs 1.5 s. Points, not bars.")
+    fig.subplots_adjust(left=0.36, right=0.97, top=0.93, bottom=0.12)
     fig.text(
-        0.06, 0.06,
+        0.36,
+        0.03,
         "Nod only. Chance is the dashed line at 0.500. Error bars are 95% clip-level\n"
         "bootstrap intervals. An interval that includes 0.500 is not distinguished from chance.",
-        fontsize=8, color=MUTED, va="bottom",
+        color=MUTED,
+        va="bottom",
     )
     save(fig, stem)
 
 
-def figure_b(three: dict, one: dict | None, stem: Path) -> None:
-    fig, ax = plt.subplots(figsize=(6.4, 4.0), facecolor=PAPER)
-    ax.set_facecolor(PAPER)
-    items = [
-        ("3.0 s / 16 frames\n(5.3 frames/s)", three),
-    ]
-    if one is not None:
-        items.append(("1.5 s / 16 frames\n(10.7 frames/s)", one))
-    xs = np.arange(len(items))
-    ba = [it[1]["ba"] for it in items]
-    lo = [it[1]["lo"] for it in items]
-    hi = [it[1]["hi"] for it in items]
-    ax.axhline(0.5, color=INK, lw=1.0, ls="--")
-    ax.bar(xs, ba, color=GREEN, width=0.45, edgecolor=PAPER)
-    ax.errorbar(xs, ba, yerr=[np.array(ba) - np.array(lo), np.array(hi) - np.array(ba)],
-                fmt="none", ecolor=INK, capsize=4)
-    ax.set_xticks(xs, [it[0] for it in items])
-    ax.set_ylabel("Balanced accuracy")
-    ax.set_ylim(0.35, 0.85)
-    ax.set_title("Temporal sampling ablation, identity-fixed VideoMAE")
-    for side in ("top", "right"):
-        ax.spines[side].set_visible(False)
-    if one is None:
-        ax.text(0.5, 0.45, "1.5 s result not yet on disk", ha="center", color=MUTED)
-    fig.tight_layout()
+def figure_b(temporal: list[dict], stem: Path) -> None:
+    fig, ax = plt.subplots(figsize=SIZE_FULL, facecolor=PAPER)
+    forest(ax, temporal, title="Temporal sampling. Identity-fixed VideoMAE.")
+    fig.subplots_adjust(left=0.36, right=0.97, top=0.88, bottom=0.18)
+    fig.text(
+        0.36,
+        0.04,
+        "Points with 95% clip-level intervals. The y axis is not a bar length.\n"
+        "Both intervals include 0.500. The two estimates overlap.",
+        color=MUTED,
+        va="bottom",
+    )
     save(fig, stem)
 
 
 def figure_c(matrices: list[tuple[str, dict]], stem: Path) -> None:
-    fig, axes = plt.subplots(1, len(matrices), figsize=(4.2 * len(matrices), 4.0), facecolor=PAPER)
+    fig, axes = plt.subplots(1, len(matrices), figsize=SIZE_FULL, facecolor=PAPER)
     if len(matrices) == 1:
         axes = [axes]
     for ax, (title, cm) in zip(axes, matrices):
@@ -163,24 +126,20 @@ def figure_c(matrices: list[tuple[str, dict]], stem: Path) -> None:
         for i in range(2):
             for j in range(2):
                 ax.add_patch(Rectangle((j - 0.5, i - 0.5), 1, 1, fill=False, ec=GREY, lw=1.0))
-                ax.text(
-                    j, i - 0.10,
-                    str(grid[i, j]),
-                    ha="center", va="center", fontsize=14, color=INK,
-                )
+                ax.text(j, i - 0.10, str(grid[i, j]), ha="center", va="center", color=INK)
                 ax.text(
                     j, i + 0.22,
                     f"{100 * row_pct[i, j]:.0f}% of row",
-                    ha="center", va="center", fontsize=7.2, color=MUTED,
+                    ha="center", va="center", color=MUTED,
                 )
         ax.set_xticks([0, 1], ["Pred. 0", "Pred. 1"])
         ax.set_yticks([0, 1], ["True 0", "True 1"])
         ax.tick_params(length=0)
         for side in ("top", "right", "left", "bottom"):
             ax.spines[side].set_visible(False)
-        ax.set_title(f"{title}\nn = {int(grid.sum())}", fontsize=10)
-    fig.suptitle("Out-of-fold confusion on DEV. Counts and row percentages; no colour scale.", fontsize=12)
-    fig.tight_layout()
+        ax.set_title(f"{title}\nn = {int(grid.sum())}")
+    fig.suptitle("Out-of-fold confusion on DEV. Counts and row percentages; no colour scale.")
+    fig.subplots_adjust(left=0.06, right=0.98, top=0.82, bottom=0.10, wspace=0.28)
     save(fig, stem)
 
 
@@ -195,7 +154,7 @@ def pr_points(y: np.ndarray, p: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
 
 
 def figure_d(curves: list[tuple[str, np.ndarray, np.ndarray, float]], stem: Path) -> None:
-    fig, ax = plt.subplots(figsize=(5.8, 4.8), facecolor=PAPER)
+    fig, ax = plt.subplots(figsize=SIZE_HALF, facecolor=PAPER)
     ax.set_facecolor(PAPER)
     colours = [BLUE, GREEN, ORANGE, GREY]
     seen_prev: dict[float, str] = {}
@@ -219,10 +178,10 @@ def figure_d(curves: list[tuple[str, np.ndarray, np.ndarray, float]], stem: Path
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
     ax.set_title("Precision-recall, identity-fixed VideoMAE")
-    ax.legend(frameon=False, fontsize=8, loc="upper right")
+    ax.legend(frameon=False, loc="upper right")
     for side in ("top", "right"):
         ax.spines[side].set_visible(False)
-    fig.subplots_adjust(left=0.14, right=0.97, top=0.90, bottom=0.18)
+    fig.subplots_adjust(left=0.16, right=0.96, top=0.88, bottom=0.16)
     save(fig, stem)
 
 
@@ -241,7 +200,7 @@ def figure_e(stem: Path, rgb_preds: Path, clips: list[str]) -> None:
         on="window_id",
         how="left",
     )
-    fig, axes = plt.subplots(len(clips), 1, figsize=(9.4, 2.6 * len(clips)), facecolor=PAPER)
+    fig, axes = plt.subplots(len(clips), 1, figsize=SIZE_FULL_TALL, facecolor=PAPER)
     if len(clips) == 1:
         axes = [axes]
     for ax, sid in zip(axes, clips):
@@ -269,7 +228,7 @@ def figure_e(stem: Path, rgb_preds: Path, clips: list[str]) -> None:
         ax.set_xlim(0, 60)
         ax.set_ylim(-0.05, 1.05)
         ax.set_ylabel("P(nod)")
-        ax.set_title(sid.replace("gold_", "gold "), loc="left", fontsize=10)
+        ax.set_title(sid.replace("gold_", "gold "), loc="left")
         for side in ("top", "right"):
             ax.spines[side].set_visible(False)
     handles = [
@@ -278,62 +237,83 @@ def figure_e(stem: Path, rgb_preds: Path, clips: list[str]) -> None:
         Patch(facecolor=ORANGE, alpha=0.22, label="annotated nod"),
         Patch(facecolor=GREEN, alpha=0.20, label="predicted positive"),
     ]
-    axes[0].legend(handles=handles, frameon=False, fontsize=7.4, loc="upper right", ncol=2)
+    axes[0].legend(handles=handles, frameon=False, loc="upper right", ncol=2)
     axes[-1].set_xlabel("Time (s)")
-    fig.subplots_adjust(left=0.08, right=0.98, top=0.84, bottom=0.08, hspace=0.42)
-    fig.text(0.08, 0.97, "DEV clip timelines", fontsize=11, color=INK, va="top")
+    fig.subplots_adjust(left=0.10, right=0.98, top=0.86, bottom=0.07, hspace=0.38)
+    fig.text(0.10, 0.97, "DEV clip timelines", va="top")
     fig.text(
-        0.08, 0.92,
+        0.10, 0.925,
         "The green line is the result: P(nod) stays between 0.4 and 0.6 across each clip,\n"
         "with almost no dynamic range. Orange: annotated nod. Green shading: predicted positive. Grey: pose pitch.",
-        fontsize=8.2, color=MUTED, va="top",
+        color=MUTED,
+        va="top",
     )
     save(fig, stem)
 
 
-def _pick_contact_sheet(resolved: pd.DataFrame) -> pd.DataFrame:
-    """One resolved window per clip, crop centre furthest from the midline.
+def _watch_toward(cx: float, width: float, side: str) -> float:
+    mid = width / 2.0
+    if str(side).upper() == "LEFT":
+        return mid - cx
+    return cx - mid
 
-    gold 004 is a two-shot. Windows with crop_centre_x near 550 of 1280 are
-    still on the left half, so they pass the wrong-half check, but the square
-    includes both sitters. Drop centres within 12 percent of frame width of
-    the midline.
+
+def _pick_contact_sheet(resolved: pd.DataFrame, rgb_dir: Path | None) -> pd.DataFrame:
+    """One tile per DEV clip. Prefer the centre furthest onto the watch side.
+
+    Never fall back to a near-midline box when a tighter window exists in the
+    manifest. Wrong-half is a different test: centre on the other side of the
+    midline. A two-shot on the annotated half still has wrong-half = 0.
     """
     picked = []
-    for _, group in resolved.groupby("sample_id"):
-        g = group.copy()
-        if "crop_centre_x" in g.columns and "frame_width" in g.columns:
-            width = g["frame_width"].astype(float)
-            mid = width / 2.0
-            dist = (g["crop_centre_x"].astype(float) - mid).abs()
-            g = g.assign(_dist=dist, _frac=dist / width)
-            tight = g[g["_frac"] >= 0.12]
-            use = tight if not tight.empty else g
-            use = use.sort_values(["_dist", "window_id"], ascending=[False, True])
-            rec = use.iloc[0].copy()
-            rec["_two_shot"] = bool(tight.empty)
-            picked.append(rec)
-        else:
-            rec = group.iloc[0].copy()
-            rec["_two_shot"] = False
-            picked.append(rec)
-    return pd.DataFrame(picked).sort_values("sample_id")
+    for sid in DEV_SAMPLE_IDS:
+        g = resolved[resolved["sample_id"].astype(str) == sid].copy()
+        if g.empty:
+            picked.append(
+                {
+                    "sample_id": sid,
+                    "window_id": "",
+                    "watch_side": "",
+                    "crop_centre_x": np.nan,
+                    "frame_width": np.nan,
+                    "_two_shot": False,
+                    "_missing": True,
+                }
+            )
+            continue
+        side = str(g["watch_side"].iloc[0])
+        width = g["frame_width"].astype(float)
+        cx = g["crop_centre_x"].astype(float)
+        toward = [_watch_toward(float(a), float(b), side) for a, b in zip(cx, width)]
+        g = g.assign(_toward=toward, _frac=np.array(toward) / width.to_numpy())
+        tight = g[g["_frac"] >= MIDLINE_FRAC]
+        pool = tight if not tight.empty else g
+        pool = pool.sort_values(["_toward", "window_id"], ascending=[False, True])
+        rec = pool.iloc[0].copy()
+        rec["_two_shot"] = bool(tight.empty)
+        rec["_missing"] = False
+        picked.append(rec)
+    out = pd.DataFrame(picked)
+    print("figure F picks:")
+    for rec in out.itertuples(index=False):
+        print(
+            f"  {rec.sample_id}  {rec.window_id}  cx={rec.crop_centre_x}  "
+            f"two_shot={rec._two_shot}  missing={rec._missing}"
+        )
+    return out
 
 
 def figure_f_withheld(stem: Path) -> None:
-    fig = plt.figure(figsize=(8.6, 2.6), facecolor=PAPER)
-    fig.text(
-        0.50, 0.68,
-        "Figure F is withheld.",
-        ha="center", va="center", fontsize=13, color=INK,
-    )
+    fig = plt.figure(figsize=SIZE_FULL, facecolor=PAPER)
+    fig.text(0.50, 0.62, "Figure F is withheld.", ha="center", va="center")
     fig.text(
         0.50, 0.38,
-        "The stored plate showed 12 of 15 clips and a two-shot on gold 004.\n"
-        "That crop is still on the annotated half, so the automatic wrong-half\n"
-        "count stays zero, but it is not a head crop. Do not put that plate in.\n"
-        "On otter, after git pull:  python3 scripts/plot_nod_final_figures.py",
-        ha="center", va="center", fontsize=8.4, color=MUTED,
+        "This machine has no identity-fixed RGB crops.\n"
+        "The old 12-clip plate with a room shot on gold 004 must not go in.\n"
+        "On otter: python3 scripts/plot_nod_final_figures.py",
+        ha="center",
+        va="center",
+        color=MUTED,
     )
     save(fig, stem)
 
@@ -345,41 +325,44 @@ def figure_f(rgb_dir: Path | None, manifest_path: Path, stem: Path) -> None:
     manifest = pd.read_csv(manifest_path)
     resolved = manifest[manifest["crop_status"] == "resolved"].copy()
     if resolved.empty:
+        figure_f_withheld(stem)
         return
-    picked = _pick_contact_sheet(resolved)
-    n = len(picked)
+    picked = _pick_contact_sheet(resolved, rgb_dir)
     cols = 5
-    rows = int(np.ceil(n / cols))
-    fig, axes = plt.subplots(rows, cols, figsize=(11.4, 2.35 * rows), facecolor=PAPER)
+    rows = 3
+    fig, axes = plt.subplots(rows, cols, figsize=SIZE_FULL, facecolor=PAPER)
     axes = np.atleast_2d(axes)
     for ax, rec in zip(axes.ravel(), picked.itertuples(index=False)):
-        path = rgb_dir / f"{rec.window_id}.npz"
         ax.set_xticks([])
         ax.set_yticks([])
+        label = str(rec.sample_id).replace("gold_", "gold ")
+        if bool(rec._missing) or not rec.window_id:
+            ax.text(0.5, 0.5, "no resolved crop", ha="center", va="center", color=MUTED)
+            ax.set_title(label)
+            continue
+        path = rgb_dir / f"{rec.window_id}.npz"
         if path.exists():
             with np.load(path, allow_pickle=True) as payload:
                 ax.imshow(payload["rgb"][len(payload["rgb"]) // 2])
                 side = str(payload["watch_side"]) if "watch_side" in payload else rec.watch_side
         else:
-            ax.text(0.5, 0.5, "missing", ha="center")
+            ax.text(0.5, 0.5, "crop file missing", ha="center", va="center", color=MUTED)
             side = rec.watch_side
-        label = str(rec.sample_id).replace("gold_", "gold ")
-        note = "  two-shot" if bool(getattr(rec, "_two_shot", False)) else ""
-        ax.set_title(f"{label}  {side}{note}", fontsize=8)
-    for ax in axes.ravel()[n:]:
+        note = "  two-shot" if bool(rec._two_shot) else ""
+        ax.set_title(f"{label}  {side}{note}")
+    for ax in axes.ravel()[len(picked):]:
         ax.axis("off")
     fig.suptitle(
         "Dissertation only. All 15 DEV clips. One resolved window per clip,\n"
-        "crop centre furthest from the midline. gold 004 is a two-shot source.",
-        fontsize=9.2,
+        "centre furthest onto the annotator side. Wrong-half is a midline test,\n"
+        "not a tight-head test. A two-shot on the annotated half still counts as 0.",
     )
     fig.text(
         0.01, 0.01,
-        "RealTalk stills are identifiable and are not licensed for public redistribution. "
-        "Keep this plate in the bound dissertation only. Do not put it on a website.",
-        fontsize=7.4, color=ORANGE,
+        "RealTalk stills stay in the bound dissertation only. Do not put this plate on a website.",
+        color=ORANGE,
     )
-    fig.tight_layout(rect=(0, 0.05, 1, 0.90))
+    fig.subplots_adjust(left=0.02, right=0.98, top=0.84, bottom=0.08, hspace=0.35, wspace=0.08)
     save(fig, stem)
 
 
@@ -417,13 +400,18 @@ def main() -> None:
         ba, lo, hi = ci_of(one_thr)
         rows.append({"name": "VideoMAE 1.5 s, train-fold threshold", "ba": ba, "lo": lo, "hi": hi, "colour": ORANGE})
 
+    temporal = [
+        {"name": "3.0 s / 16 frames  (5.3 frames/s)", "ba": lba, "lo": llo, "hi": lhi, "colour": GREEN},
+    ]
+    if one is not None:
+        ba, lo, hi = ci_of(one)
+        temporal.append(
+            {"name": "1.5 s / 16 frames  (10.7 frames/s)", "ba": ba, "lo": lo, "hi": hi, "colour": ORANGE}
+        )
+
     OUT.mkdir(parents=True, exist_ok=True)
-    figure_a(rows, OUT / "figureA_model_comparison")
-    figure_b(
-        {"ba": lba, "lo": llo, "hi": lhi},
-        None if one is None else dict(zip(("ba", "lo", "hi"), ci_of(one))),
-        OUT / "figureB_temporal_sampling",
-    )
+    figure_a(rows, temporal, OUT / "figureA_model_comparison")
+    figure_b(temporal, OUT / "figureB_temporal_sampling")
     cms = [
         ("Frozen, 3.0 s", frozen["confusion"]),
         ("Last two blocks, 3.0 s", last2["confusion"]),

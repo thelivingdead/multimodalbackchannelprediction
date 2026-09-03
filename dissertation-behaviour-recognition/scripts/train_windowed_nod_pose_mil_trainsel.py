@@ -20,13 +20,14 @@ DEV therefore behaves as a held-out set: it is read after selection is closed,
 never during it. TEST is not loaded. The DEV-selected oracle is also reported,
 clearly labelled, so the cost of honest selection can be quantified.
 
-Otter::
+Otter, nod (already run)::
 
-    ssh otterdiv
-    cd ~/multimodalbackchannelprediction/dissertation-behaviour-recognition
-    nohup /scratch/db01550/venv/bin/python \\
-        scripts/train_windowed_nod_pose_mil_trainsel.py \\
-        > logs/pose_mil_trainsel.log 2>&1 &
+    /scratch/db01550/venv/bin/python scripts/train_windowed_nod_pose_mil_trainsel.py
+
+Otter, shake::
+
+    /scratch/db01550/venv/bin/python scripts/train_windowed_nod_pose_mil_trainsel.py --task shake
+    bash scripts/run_windowed_shake_3s_otter.sh
 """
 from __future__ import annotations
 
@@ -46,15 +47,28 @@ from src.clip_metrics import choose_dev_threshold, clip_binary_metrics  # noqa: 
 from src.utils import dump_json, set_seed  # noqa: E402
 from src.windowed_baselines import clip_bootstrap  # noqa: E402
 from train_windowed_nod_pose_mil_dev import (  # noqa: E402
-    PSEUDO_LABELS,
     TOP_K,
     WINDOW_STARTS,
     load_dev_windows,
     load_train_bags,
 )
 
-DEFAULT_OUT = ROOT / "results" / "windowed_nod" / "pose_mil_pseudo80_trainsel"
-DEFAULT_CHECKPOINT = ROOT / "models" / "windowed_nod_pose_mil_pseudo80_trainsel.pt"
+TASKS = {
+    "nod": {
+        "gold_csv": ROOT / "data" / "gold_annotations.csv",
+        "labels": ROOT / "results" / "pseudo_labels.csv",
+        "windows": ROOT / "data" / "windowed_annotations" / "nod_windows_dev.csv",
+        "out": ROOT / "results" / "windowed_nod" / "pose_mil_pseudo80_trainsel",
+        "checkpoint": ROOT / "models" / "windowed_nod_pose_mil_pseudo80_trainsel.pt",
+    },
+    "shake": {
+        "gold_csv": ROOT / "data" / "gold" / "shake_annotation_sheet.csv",
+        "labels": ROOT / "results" / "shake" / "pseudo_balanced" / "manifest_40_40.csv",
+        "windows": ROOT / "data" / "windowed_annotations" / "shake_windows_dev.csv",
+        "out": ROOT / "results" / "windowed_shake" / "pose_mil_balanced40_trainsel",
+        "checkpoint": ROOT / "models" / "windowed_shake_pose_mil_balanced40_trainsel.pt",
+    },
+}
 THRESHOLD_GRID = np.round(np.arange(0.05, 0.96, 0.05), 2)
 
 
@@ -79,32 +93,36 @@ def bag_balanced_accuracy(
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--out-dir", type=Path, default=DEFAULT_OUT)
-    parser.add_argument("--checkpoint", type=Path, default=DEFAULT_CHECKPOINT)
+    parser.add_argument("--task", choices=("nod", "shake"), default="nod")
+    parser.add_argument("--out-dir", type=Path, default=None)
+    parser.add_argument("--checkpoint", type=Path, default=None)
+    parser.add_argument("--labels", type=Path, default=None)
     parser.add_argument("--epochs", type=int, default=30)
     parser.add_argument("--folds", type=int, default=5)
     parser.add_argument("--batch-size", type=int, default=8)
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
-
-    out_dir = assert_unlocked_out_dir(args.out_dir)
+    spec = TASKS[args.task]
+    labels_path = (args.labels or spec["labels"]).resolve()
+    windows_path = spec["windows"]
+    out_dir = assert_unlocked_out_dir(args.out_dir or spec["out"])
     metrics_path = out_dir / "metrics_dev.json"
     if metrics_path.exists():
         raise SystemExit(
             f"STOP: {metrics_path} exists. Use a new out-dir for another experiment."
         )
-    checkpoint = args.checkpoint.resolve()
+    checkpoint = (args.checkpoint or spec["checkpoint"]).resolve()
     if checkpoint.parent != (ROOT / "models").resolve():
         raise SystemExit("STOP: checkpoint must be stored directly under models/")
 
     leakage_gate(
-        gold_csv=ROOT / "data" / "gold_annotations.csv",
-        pseudo_labels=PSEUDO_LABELS,
+        gold_csv=spec["gold_csv"],
+        pseudo_labels=labels_path,
         labelled_train_only=True,
     )
     set_seed(args.seed)
-    train_bags, y_train, train_ids = load_train_bags()
-    dev_windows, y_dev, dev_frame = load_dev_windows()
+    train_bags, y_train, train_ids = load_train_bags(labels_path)
+    dev_windows, y_dev, dev_frame = load_dev_windows(windows_path)
 
     # Normalisation is fitted on TRAIN bags only, never on DEV.
     mean = train_bags.mean(axis=(0, 1, 2))
@@ -273,7 +291,9 @@ def main() -> None:
     dump_json(
         metrics_path,
         {
-            "protocol": "windowed_nod_3s_pose_mil_train_selected",
+            "protocol": f"windowed_{args.task}_3s_pose_mil_train_selected",
+            "task": args.task,
+            "weak_labels": str(labels_path),
             "development_only": True,
             "test_scored": False,
             "training": (
@@ -327,7 +347,7 @@ def main() -> None:
 
     interval = boot["balanced_accuracy"]
     print("=====================================")
-    print("windowed nod pose MIL, TRAIN-selected — DEV scored once")
+    print(f"windowed {args.task} pose MIL, TRAIN selected. DEV scored once")
     print(
         f"TRAIN {len(train_ids)} weak bags ({n_pos} positive/{n_neg} negative); "
         f"{len(train_ids) * len(WINDOW_STARTS)} window instances"
@@ -342,7 +362,7 @@ def main() -> None:
     print(
         f"for reference, DEV-selected oracle would give "
         f"{oracle_metrics['balanced_accuracy']:.3f} at threshold "
-        f"{float(oracle_threshold):.2f} — not a result"
+        f"{float(oracle_threshold):.2f} (not a result)"
     )
     if interval["ci_lower_95"] <= 0.5:
         print(

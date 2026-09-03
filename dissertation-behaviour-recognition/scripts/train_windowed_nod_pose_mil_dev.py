@@ -39,6 +39,22 @@ DEV_IDS = {f"gold_{i:03d}" for i in range(1, 16)}
 WINDOW_STARTS = tuple(range(0, 1401, 50))
 WINDOW_FRAMES = 75
 TOP_K = 2
+TASKS = {
+    "nod": {
+        "gold_csv": ROOT / "data" / "gold_annotations.csv",
+        "labels": ROOT / "results" / "pseudo_labels.csv",
+        "windows": ROOT / "data" / "windowed_annotations" / "nod_windows_dev.csv",
+        "out": ROOT / "results" / "windowed_nod" / "pose_mil_pseudo80_dev_bacc",
+        "checkpoint": ROOT / "models" / "windowed_nod_pose_mil_pseudo80_dev_bacc.pt",
+    },
+    "shake": {
+        "gold_csv": ROOT / "data" / "gold" / "shake_annotation_sheet.csv",
+        "labels": ROOT / "results" / "shake" / "pseudo_balanced" / "manifest_40_40.csv",
+        "windows": ROOT / "data" / "windowed_annotations" / "shake_windows_dev.csv",
+        "out": ROOT / "results" / "windowed_shake" / "pose_mil_balanced40_dev_bacc",
+        "checkpoint": ROOT / "models" / "windowed_shake_pose_mil_balanced40_dev_bacc.pt",
+    },
+}
 
 
 def feature_windows(rotation: np.ndarray) -> np.ndarray:
@@ -56,27 +72,33 @@ def feature_windows(rotation: np.ndarray) -> np.ndarray:
     return np.stack(windows).astype(np.float32)
 
 
-def load_train_bags() -> tuple[np.ndarray, np.ndarray, list[str]]:
-    labels = pd.read_csv(PSEUDO_LABELS)
+def load_train_bags(
+    labels_path: Path | None = None,
+) -> tuple[np.ndarray, np.ndarray, list[str]]:
+    path = labels_path or PSEUDO_LABELS
+    labels = pd.read_csv(path)
     needed = {"sample_id", "pseudo_label"}
     missing = needed - set(labels.columns)
     if missing:
-        raise SystemExit(f"STOP: {PSEUDO_LABELS.name} missing {sorted(missing)}")
+        raise SystemExit(f"STOP: {path.name} missing {sorted(missing)}")
     labels["sample_id"] = labels["sample_id"].astype(str)
-    if set(labels["sample_id"]) != TRAIN_IDS or len(labels) != len(TRAIN_IDS):
-        raise SystemExit("STOP: expected exactly pseudo_00001–pseudo_00080")
+    ids = sorted(labels["sample_id"].unique())
+    if labels["sample_id"].duplicated().any():
+        raise SystemExit(f"STOP: {path.name} has duplicated sample_id rows")
+    extra = set(ids) - TRAIN_IDS
+    if extra:
+        raise SystemExit(f"STOP: {path.name} has ids outside pseudo_00001-pseudo_00080")
     labels = labels.set_index("sample_id")
     bags = []
-    ids = sorted(TRAIN_IDS)
     y = []
     for sid in ids:
-        path = PSEUDO_DIR / f"{sid}.npz"
-        if not path.exists():
-            raise SystemExit(f"STOP: missing TRAIN pose {path}")
-        pose = load_npz(path)
+        pose_path = PSEUDO_DIR / f"{sid}.npz"
+        if not pose_path.exists():
+            raise SystemExit(f"STOP: missing TRAIN pose {pose_path}")
+        pose = load_npz(pose_path)
         embedded = str(np.asarray(pose["sample_id"]).item())
         if embedded != sid:
-            raise SystemExit(f"STOP: {path.name} embeds sample_id {embedded}")
+            raise SystemExit(f"STOP: {pose_path.name} embeds sample_id {embedded}")
         bags.append(feature_windows(pose["rotation_xyz"]))
         y.append(int(labels.loc[sid, "pseudo_label"]))
     y_array = np.asarray(y, dtype=np.int64)
@@ -85,8 +107,11 @@ def load_train_bags() -> tuple[np.ndarray, np.ndarray, list[str]]:
     return np.stack(bags), y_array, ids
 
 
-def load_dev_windows() -> tuple[np.ndarray, np.ndarray, pd.DataFrame]:
-    frame = pd.read_csv(DEV_WINDOWS)
+def load_dev_windows(
+    windows_path: Path | None = None,
+) -> tuple[np.ndarray, np.ndarray, pd.DataFrame]:
+    path = windows_path or DEV_WINDOWS
+    frame = pd.read_csv(path)
     needed = {
         "window_id",
         "sample_id",
@@ -97,7 +122,7 @@ def load_dev_windows() -> tuple[np.ndarray, np.ndarray, pd.DataFrame]:
     }
     missing = needed - set(frame.columns)
     if missing:
-        raise SystemExit(f"STOP: {DEV_WINDOWS.name} missing {sorted(missing)}")
+        raise SystemExit(f"STOP: {path.name} missing {sorted(missing)}")
     frame["sample_id"] = frame["sample_id"].astype(str)
     frame["split"] = frame["split"].astype(str).str.upper()
     if (frame["split"] != "DEV").any() or set(frame["sample_id"]) != DEV_IDS:
@@ -140,8 +165,10 @@ def normalise(
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--out-dir", type=Path, default=DEFAULT_OUT)
-    parser.add_argument("--checkpoint", type=Path, default=DEFAULT_CHECKPOINT)
+    parser.add_argument("--task", choices=("nod", "shake"), default="nod")
+    parser.add_argument("--out-dir", type=Path, default=None)
+    parser.add_argument("--checkpoint", type=Path, default=None)
+    parser.add_argument("--labels", type=Path, default=None)
     parser.add_argument("--epochs", type=int, default=30)
     parser.add_argument("--patience", type=int, default=6)
     parser.add_argument("--batch-size", type=int, default=8)
@@ -153,25 +180,26 @@ def main() -> None:
         help="DEV selection criterion for epoch and probability threshold",
     )
     args = parser.parse_args()
-
-    out_dir = assert_unlocked_out_dir(args.out_dir)
+    spec = TASKS[args.task]
+    labels_path = (args.labels or spec["labels"]).resolve()
+    out_dir = assert_unlocked_out_dir(args.out_dir or spec["out"])
     metrics_path = out_dir / "metrics_dev.json"
     if metrics_path.exists():
         raise SystemExit(
             f"STOP: {metrics_path} exists. Use a new out-dir for another DEV experiment."
         )
-    checkpoint = args.checkpoint.resolve()
+    checkpoint = (args.checkpoint or spec["checkpoint"]).resolve()
     if checkpoint.parent != (ROOT / "models").resolve():
         raise SystemExit("STOP: pose MIL checkpoint must be stored directly under models/")
 
     leakage_gate(
-        gold_csv=ROOT / "data" / "gold_annotations.csv",
-        pseudo_labels=PSEUDO_LABELS,
+        gold_csv=spec["gold_csv"],
+        pseudo_labels=labels_path,
         labelled_train_only=True,
     )
     set_seed(args.seed)
-    train_bags, y_train, train_ids = load_train_bags()
-    dev_windows, y_dev, dev_frame = load_dev_windows()
+    train_bags, y_train, train_ids = load_train_bags(labels_path)
+    dev_windows, y_dev, dev_frame = load_dev_windows(spec["windows"])
     train_bags, dev_windows, mean, std = normalise(train_bags, dev_windows)
 
     try:
@@ -315,12 +343,15 @@ def main() -> None:
     dump_json(
         metrics_path,
         {
-            "protocol": "windowed_nod_3s_pose_mil",
+            "protocol": f"windowed_{args.task}_3s_pose_mil",
+            "task": args.task,
+            "weak_labels": str(labels_path),
             "development_only": True,
             "test_scored": False,
             "training": (
-                "80 weakly labelled 60 s TRAIN bags; 29 windows per bag; "
-                "top-2 multiple-instance pooling"
+                f"{len(train_ids)} weakly labelled 60 s TRAIN bags; "
+                f"{len(WINDOW_STARTS)} windows per bag; "
+                f"top-{TOP_K} multiple instance pooling"
             ),
             "selection": (
                 "human DEV windows only, for epoch and probability threshold"
@@ -353,7 +384,7 @@ def main() -> None:
         },
     )
     print("=====================================")
-    print("windowed nod pose MIL — DEV only")
+    print(f"windowed {args.task} pose MIL, DEV selected")
     print(
         f"TRAIN {len(train_ids)} weak bags ({n_pos} positive/{n_neg} negative); "
         f"{len(train_ids) * len(WINDOW_STARTS)} window instances"

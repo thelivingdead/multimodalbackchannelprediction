@@ -51,8 +51,8 @@ MAX_MISSING_FRAC = 0.10
 FIXED_THRESHOLD = 0.5
 
 
-def load_rgb(window_id: str) -> np.ndarray | None:
-    path = RGB_DIR / f"{window_id}.npz"
+def load_rgb(window_id: str, rgb_dir: Path) -> np.ndarray | None:
+    path = rgb_dir / f"{window_id}.npz"
     if not path.exists():
         return None
     with np.load(path, allow_pickle=True) as z:
@@ -62,11 +62,11 @@ def load_rgb(window_id: str) -> np.ndarray | None:
     return rgb
 
 
-def pack(df: pd.DataFrame):
+def pack(df: pd.DataFrame, rgb_dir: Path, max_missing_frac: float = MAX_MISSING_FRAC):
     clips, labels, keep = [], [], []
     missing: list[str] = []
     for i, row in enumerate(df.itertuples(index=False)):
-        rgb = load_rgb(str(row.window_id))
+        rgb = load_rgb(str(row.window_id), rgb_dir)
         if rgb is None:
             missing.append(str(row.window_id))
             continue
@@ -75,10 +75,10 @@ def pack(df: pd.DataFrame):
         keep.append(i)
     if missing:
         print(f"NOTE: {len(missing)} DEV windows missing rgb crops")
-    if len(df) and len(missing) / len(df) > MAX_MISSING_FRAC:
+    if len(df) and len(missing) / len(df) > max_missing_frac:
         raise SystemExit(
-            f"STOP: missing {len(missing)}/{len(df)} rgb crops. "
-            "Finish scripts/fetch_rgb_windows_nod3s.py first."
+            f"STOP: missing {len(missing)}/{len(df)} rgb crops "
+            f"(limit {max_missing_frac:.0%}). Finish the crop fetch first."
         )
     return clips, np.asarray(labels, dtype=np.int64), df.iloc[keep].reset_index(drop=True)
 
@@ -91,7 +91,21 @@ def main() -> None:
     ap.add_argument("--batch-size", type=int, default=8)
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--max-folds", type=int, default=0, help="0 = all 15 folds")
+    ap.add_argument("--rgb-dir", type=Path, default=RGB_DIR)
+    ap.add_argument(
+        "--max-missing-frac",
+        type=float,
+        default=MAX_MISSING_FRAC,
+        help="Allow this fraction of DEV windows to lack an rgb npz.",
+    )
     args = ap.parse_args()
+    rgb_dir = args.rgb_dir.resolve()
+    if not rgb_dir.is_dir():
+        raise SystemExit(f"STOP: no crop directory {rgb_dir}")
+    try:
+        crop_source = str(rgb_dir.relative_to(ROOT))
+    except ValueError:
+        crop_source = str(rgb_dir)
 
     out_dir = args.out_dir or (
         ROOT / "results" / f"windowed_{args.task}" / "videomae_loco_dev"
@@ -104,7 +118,7 @@ def main() -> None:
     frame = load_windows(DEV_WINDOWS[args.task], "DEV", DEV_IDS)
     if set(frame["sample_id"]) & TEST_IDS:
         raise SystemExit("STOP: TEST id present in a DEV-only script")
-    clips, labels, frame = pack(frame)
+    clips, labels, frame = pack(frame, rgb_dir, max_missing_frac=args.max_missing_frac)
     sample_ids = frame["sample_id"].to_numpy()
     fold_ids = sorted(set(sample_ids))
     if args.max_folds:
@@ -303,6 +317,7 @@ def main() -> None:
         metrics_path,
         {
             "protocol": f"windowed_{args.task}_3s_videomae_loco",
+            "crop_source": crop_source,
             "development_only": True,
             "test_scored": False,
             "cross_validation": "leave-one-clip-out over DEV clips",

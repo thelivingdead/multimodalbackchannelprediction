@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="524.9088pt" height="419.1904pt" viewBox="0 0 524.9088 419.1904" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-09-04T00:43:15.703578</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.1, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 419.1904 
+L 524.9088 419.1904 
+L 524.9088 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 189.76608 80.29216 
+L 335.14272 80.29216 
+L 335.14272 46.07776 
+L 189.76608 46.07776 
+z
+" style="fill: #f3f3f4; stroke: #1d1d1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 25.005888 141.87808 
+L 247.916736 141.87808 
+L 247.916736 97.39936 
+L 25.005888 97.39936 
+z
+" style="fill: #e8eef4; stroke: #2c5f8a; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 276.992064 141.87808 
+L 499.902912 141.87808 
+L 499.902912 97.39936 
+L 276.992064 97.39936 
+z
+" style="fill: #f4eee8; stroke: #c46a2d; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 233.379072 80.29216 
+Q 184.920192 88.84576 137.452224 97.224452 
+" style="fill: none; stroke: #1d1d1f; stroke-width: 0.9; stroke-linecap: round"/>
+    <path d="M 140.88163 98.243853 
+L 137.452224 97.224452 
+L 140.325388 95.092568 
+z
+" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.9; stroke-linecap: round"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 291.529728 80.29216 
+Q 339.988608 88.84576 387.456576 97.224452 
+" style="fill: none; stroke: #1d1d1f; stroke-width: 0.9; stroke-linecap: round"/>
+    <path d="M 384.583412 95.092568 
+L 387.456576 97.224452 
+L 384.02717 98.243853 
+z
+" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.9; stroke-linecap: round"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 25.005888 217.14976 
+L 170.382528 217.14976 
+L 170.382528 162.40672 
+L 25.005888 162.40672 
+z
+" style="fill: #f3f3f4; stroke: #1d1d1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 189.76608 217.14976 
+L 335.14272 217.14976 
+L 335.14272 162.40672 
+L 189.76608 162.40672 
+z
+" style="fill: #eef4ee; stroke: #2f6b45; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 354.526272 217.14976 
+L 499.902912 217.14976 
+L 499.902912 162.40672 
+L 354.526272 162.40672 
+z
+" style="fill: #f3f3f4; stroke: #1d1d1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 136.461312 141.87808 
+Q 117.07776 152.1424 98.583456 161.93583 
+" style="fill: none; stroke: #1d1d1f; stroke-width: 0.9; stroke-linecap: round"/>
+    <path d="M 102.16019 161.852298 
+L 98.583456 161.93583 
+L 100.662671 159.024324 
+z
+" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.9; stroke-linecap: round"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 388.447488 141.87808 
+Q 243.070848 152.1424 98.69794 162.335851 
+" style="fill: none; stroke: #1d1d1f; stroke-width: 0.9; stroke-linecap: round"/>
+    <path d="M 102.002681 163.706503 
+L 98.69794 162.335851 
+L 101.777306 160.51445 
+z
+" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.9; stroke-linecap: round"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 136.461312 141.87808 
+Q 199.457856 152.1424 261.461266 162.244904 
+" style="fill: none; stroke: #1d1d1f; stroke-width: 0.9; stroke-linecap: round"/>
+    <path d="M 258.560217 160.151124 
+L 261.461266 162.244904 
+L 258.045612 163.309475 
+z
+" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.9; stroke-linecap: round"/>
+   </g>
+   <g id="patch_13">
+    <path d="M 25.005888 275.31424 
+L 170.382528 275.31424 
+L 170.382528 237.6784 
+L 25.005888 237.6784 
+z
+" style="fill: #e8eef4; stroke: #2c5f8a; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_14">
+    <path d="M 189.76608 275.31424 
+L 335.14272 275.31424 
+L 335.14272 237.6784 
+L 189.76608 237.6784 
+z
+" style="fill: #eef4ee; stroke: #2f6b45; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_15">
+    <path d="M 354.526272 275.31424 
+L 499.902912 275.31424 
+L 499.902912 237.6784 
+L 354.526272 237.6784 
+z
+" style="fill: #f2f2f3; stroke: #8a8a90; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_16">
+    <path d="M 97.694208 217.14976 
+Q 97.694208 227.41408 97.694208 236.672169 
+" style="fill: none; stroke: #1d1d1f; stroke-width: 0.9; stroke-linecap: round"/>
+    <path d="M 99.294208 233.472169 
+L 97.694208 236.672169 
+L 96.094208 233.472169 
+z
+" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.9; stroke-linecap: round"/>
+   </g>
+   <g id="patch_17">
+    <path d="M 262.4544 217.14976 
+Q 262.4544 227.41408 262.4544 236.672169 
+" style="fill: none; stroke: #1d1d1f; stroke-width: 0.9; stroke-linecap: round"/>
+    <path d="M 264.0544 233.472169 
+L 262.4544 236.672169 
+L 260.8544 233.472169 
+z
+" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.9; stroke-linecap: round"/>
+   </g>
+   <g id="patch_18">
+    <path d="M 427.214592 217.14976 
+Q 427.214592 227.41408 427.214592 236.672169 
+" style="fill: none; stroke: #1d1d1f; stroke-width: 0.9; stroke-linecap: round"/>
+    <path d="M 428.814592 233.472169 
+L 427.214592 236.672169 
+L 425.614592 233.472169 
+z
+" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.9; stroke-linecap: round"/>
+   </g>
+   <g id="patch_19">
+    <path d="M 25.005888 360.85024 
+L 257.608512 360.85024 
+L 257.608512 295.84288 
+L 25.005888 295.84288 
+z
+" style="fill: #f3f3f4; stroke: #1d1d1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_20">
+    <path d="M 272.146176 360.85024 
+L 499.902912 360.85024 
+L 499.902912 295.84288 
+L 272.146176 295.84288 
+z
+" style="fill: #f3f3f4; stroke: #1d1d1f; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-weight: 700; font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1d1d1f" x="25.005888" y="44.58016" transform="rotate(-0 25.005888 44.58016)">A  Data and splits</text>
+   </g>
+   <g id="text_2">
+    <text style="font-weight: 700; font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1d1d1f" x="195.581146" y="58.608064" transform="rotate(-0 195.581146 58.608064)">Gold clips</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="195.581146" y="66.81952" transform="rotate(-0 195.581146 66.81952)">30 RealTalk conversations</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="195.581146" y="74.346688" transform="rotate(-0 195.581146 74.346688)">Nod and shake events, watch side</text>
+   </g>
+   <g id="text_5">
+    <text style="font-weight: 700; font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #2c5f8a" x="30.820954" y="109.929664" transform="rotate(-0 30.820954 109.929664)">DEV, gold 001 to gold 015</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="30.820954" y="118.14112" transform="rotate(-0 30.820954 118.14112)">Development and leave-one-clip-out.</text>
+   </g>
+   <g id="text_7">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="30.820954" y="125.668288" transform="rotate(-0 30.820954 125.668288)">Thresholds and the 1.5 s run live here.</text>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="30.820954" y="133.195456" transform="rotate(-0 30.820954 133.195456)">DEV-only scripts never read TEST.</text>
+   </g>
+   <g id="text_9">
+    <text style="font-weight: 700; font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #c46a2d" x="282.80713" y="109.929664" transform="rotate(-0 282.80713 109.929664)">TEST, gold 016 to gold 030</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="282.80713" y="118.14112" transform="rotate(-0 282.80713 118.14112)">Locked confirmation only.</text>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="282.80713" y="125.668288" transform="rotate(-0 282.80713 125.668288)">Scored after DEV is closed.</text>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="282.80713" y="133.195456" transform="rotate(-0 282.80713 133.195456)">Not used for the 1.5 s run.</text>
+   </g>
+   <g id="text_13">
+    <text style="font-weight: 700; font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1d1d1f" x="25.005888" y="160.90912" transform="rotate(-0 25.005888 160.90912)">B  Windowing and representations</text>
+   </g>
+   <g id="text_14">
+    <text style="font-weight: 700; font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1d1d1f" x="30.820954" y="174.937024" transform="rotate(-0 30.820954 174.937024)">3 s windows, 2 s stride</text>
+   </g>
+   <g id="text_15">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="30.820954" y="183.14848" transform="rotate(-0 30.820954 183.14848)">Both splits: 15 x 29 = 435.</text>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="30.820954" y="190.675648" transform="rotate(-0 30.820954 190.675648)">Nod DEV 52 positive.</text>
+   </g>
+   <g id="text_17">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="30.820954" y="198.202816" transform="rotate(-0 30.820954 198.202816)">Shake DEV 39 positive.</text>
+   </g>
+   <g id="text_18">
+    <text style="font-weight: 700; font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #2f6b45" x="195.581146" y="174.937024" transform="rotate(-0 195.581146 174.937024)">1.5 s windows, DEV only</text>
+   </g>
+   <g id="text_19">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="195.581146" y="183.14848" transform="rotate(-0 195.581146 183.14848)">Nod DEV: 885 windows.</text>
+   </g>
+   <g id="text_20">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="195.581146" y="190.675648" transform="rotate(-0 195.581146 190.675648)">16 RGB frames at 10.7 / s.</text>
+   </g>
+   <g id="text_21">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="195.581146" y="198.202816" transform="rotate(-0 195.581146 198.202816)">No TEST file is written.</text>
+   </g>
+   <g id="text_22">
+    <text style="font-weight: 700; font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1d1d1f" x="360.341338" y="174.937024" transform="rotate(-0 360.341338 174.937024)">Two representations</text>
+   </g>
+   <g id="text_23">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="360.341338" y="183.14848" transform="rotate(-0 360.341338 183.14848)">Pose: EMOCA xyz</text>
+   </g>
+   <g id="text_24">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="360.341338" y="190.675648" transform="rotate(-0 360.341338 190.675648)">(pitch 0, yaw 1).</text>
+   </g>
+   <g id="text_25">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="360.341338" y="198.202816" transform="rotate(-0 360.341338 198.202816)">RGB: annotator-side face.</text>
+   </g>
+   <g id="text_26">
+    <text style="font-weight: 700; font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1d1d1f" x="25.005888" y="236.1808" transform="rotate(-0 25.005888 236.1808)">C  Systems</text>
+   </g>
+   <g id="text_27">
+    <text style="font-weight: 700; font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #2c5f8a" x="30.820954" y="250.208704" transform="rotate(-0 30.820954 250.208704)">Pose systems</text>
+   </g>
+   <g id="text_28">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="30.820954" y="258.42016" transform="rotate(-0 30.820954 258.42016)">Amplitude rule (DEV threshold).</text>
+   </g>
+   <g id="text_29">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="30.820954" y="265.947328" transform="rotate(-0 30.820954 265.947328)">1-D CNN, leave-one-clip-out.</text>
+   </g>
+   <g id="text_30">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="30.820954" y="273.474496" transform="rotate(-0 30.820954 273.474496)">MIL on 80 weak TRAIN bags.</text>
+   </g>
+   <g id="text_31">
+    <text style="font-weight: 700; font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #2f6b45" x="195.581146" y="250.208704" transform="rotate(-0 195.581146 250.208704)">RGB, identity-fixed</text>
+   </g>
+   <g id="text_32">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="195.581146" y="258.42016" transform="rotate(-0 195.581146 258.42016)">VideoMAE last two blocks.</text>
+   </g>
+   <g id="text_33">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="195.581146" y="265.947328" transform="rotate(-0 195.581146 265.947328)">3 s 0.562; 1.5 s 0.528.</text>
+   </g>
+   <g id="text_34">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="195.581146" y="273.474496" transform="rotate(-0 195.581146 273.474496)">Train-only flip. Seed 42.</text>
+   </g>
+   <g id="text_35">
+    <text style="font-weight: 700; font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #8a8a90" x="360.341338" y="250.208704" transform="rotate(-0 360.341338 250.208704)">Withdrawn RGB</text>
+   </g>
+   <g id="text_36">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="360.341338" y="258.42016" transform="rotate(-0 360.341338 258.42016)">Largest-face Haar followed</text>
+   </g>
+   <g id="text_37">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="360.341338" y="265.947328" transform="rotate(-0 360.341338 265.947328)">the excluded speaker on 51%</text>
+   </g>
+   <g id="text_38">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="360.341338" y="273.474496" transform="rotate(-0 360.341338 273.474496)">of DEV nod windows.</text>
+   </g>
+   <g id="text_39">
+    <text style="font-weight: 700; font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1d1d1f" x="25.005888" y="294.34528" transform="rotate(-0 25.005888 294.34528)">D  Evaluation protocol</text>
+   </g>
+   <g id="text_40">
+    <text style="font-weight: 700; font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1d1d1f" x="30.820954" y="308.373184" transform="rotate(-0 30.820954 308.373184)">Headline metric</text>
+   </g>
+   <g id="text_41">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="30.820954" y="316.58464" transform="rotate(-0 30.820954 316.58464)">Balanced accuracy, chance = 0.500.</text>
+   </g>
+   <g id="text_42">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="30.820954" y="324.111808" transform="rotate(-0 30.820954 324.111808)">F1 was dropped: the 60 s nod rule had</text>
+   </g>
+   <g id="text_43">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="30.820954" y="331.638976" transform="rotate(-0 30.820954 331.638976)">TEST F1 0.667 and TEST balanced</text>
+   </g>
+   <g id="text_44">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="30.820954" y="339.166144" transform="rotate(-0 30.820954 339.166144)">accuracy 0.450.</text>
+   </g>
+   <g id="text_45">
+    <text style="font-weight: 700; font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1d1d1f" x="277.961242" y="308.373184" transform="rotate(-0 277.961242 308.373184)">Uncertainty</text>
+   </g>
+   <g id="text_46">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="277.961242" y="316.58464" transform="rotate(-0 277.961242 316.58464)">95% intervals resample 15 clips,</text>
+   </g>
+   <g id="text_47">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="277.961242" y="324.111808" transform="rotate(-0 277.961242 324.111808)">2000 times. An interval that includes</text>
+   </g>
+   <g id="text_48">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="277.961242" y="331.638976" transform="rotate(-0 277.961242 331.638976)">0.500 is not distinguished from chance.</text>
+   </g>
+   <g id="text_49">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="277.961242" y="339.166144" transform="rotate(-0 277.961242 339.166144)">DEV selection and TEST confirmation</text>
+   </g>
+   <g id="text_50">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="277.961242" y="346.693312" transform="rotate(-0 277.961242 346.693312)">are separate. No path from DEV to TEST.</text>
+   </g>
+   <g id="text_51">
+    <text style="font-size: 10.5px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1d1d1f" x="20.16" y="28.392" transform="rotate(-0 20.16 28.392)">Windowed nod and shake recognition: study design</text>
+   </g>
+  </g>
+  <g id="text_52">
+   <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5c5c63" x="20.16" y="397.0864" transform="rotate(-0 20.16 397.0864)">Gold forks to DEV and TEST. There is no arrow from DEV into TEST.</text>
+  </g>
+ </g>
+</svg>

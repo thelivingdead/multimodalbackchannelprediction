@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="488.0997pt" height="587.52pt" viewBox="0 0 488.0997 587.52" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-09-04T00:43:15.973121</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.1, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 587.52 
+L 488.0997 587.52 
+L 488.0997 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 153.4725 197.798227 
+L 467.9397 197.798227 
+L 467.9397 66.24 
+L 153.4725 66.24 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="line2d_1">
+    <path d="M 226.604407 197.798227 
+L 226.604407 66.24 
+" clip-path="url(#pf9e76361d1)" style="fill: none; stroke-dasharray: 3.7,1.6; stroke-dashoffset: 0; stroke: #1d1d1f"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_2">
+      <defs>
+       <path id="mec7f6ef814" d="M 0 0 
+L 0 3.5 
+" style="stroke: #1d1d1f; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#mec7f6ef814" x="190.038453" y="197.798227" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #1d1d1f" x="190.038453" y="211.070227" transform="rotate(-0 190.038453 211.070227)">0.4</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_3">
+      <g>
+       <use xlink:href="#mec7f6ef814" x="226.604407" y="197.798227" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #1d1d1f" x="226.604407" y="211.070227" transform="rotate(-0 226.604407 211.070227)">0.5</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_4">
+      <g>
+       <use xlink:href="#mec7f6ef814" x="263.17036" y="197.798227" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #1d1d1f" x="263.17036" y="211.070227" transform="rotate(-0 263.17036 211.070227)">0.6</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_5">
+      <g>
+       <use xlink:href="#mec7f6ef814" x="299.736314" y="197.798227" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_4">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #1d1d1f" x="299.736314" y="211.070227" transform="rotate(-0 299.736314 211.070227)">0.7</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_6">
+      <g>
+       <use xlink:href="#mec7f6ef814" x="336.302267" y="197.798227" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_5">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #1d1d1f" x="336.302267" y="211.070227" transform="rotate(-0 336.302267 211.070227)">0.8</text>
+     </g>
+    </g>
+    <g id="text_6">
+     <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #1d1d1f" x="310.7061" y="223.854227" transform="rotate(-0 310.7061 223.854227)">Balanced accuracy</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_7"/>
+     <g id="text_7">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: end; fill: #1d1d1f" x="146.4725" y="94.061983" transform="rotate(-0 146.4725 94.061983)">Yaw rule, locked TEST</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_8"/>
+     <g id="text_8">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: end; fill: #1d1d1f" x="146.4725" y="124.16684" transform="rotate(-0 146.4725 124.16684)">Yaw rule, DEV (selection only)</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_9"/>
+     <g id="text_9">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: end; fill: #1d1d1f" x="146.4725" y="154.271698" transform="rotate(-0 146.4725 154.271698)">Pose CNN, DEV leave-one-clip-out</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_10"/>
+     <g id="text_10">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: end; fill: #1d1d1f" x="146.4725" y="184.376555" transform="rotate(-0 146.4725 184.376555)">VideoMAE largest-face, withdrawn</text>
+     </g>
+    </g>
+   </g>
+   <g id="line2d_11">
+    <path d="M 235.745526 90.925983 
+L 334.044412 90.925983 
+" clip-path="url(#pf9e76361d1)" style="fill: none; stroke: #c46a2d; stroke-width: 1.8"/>
+   </g>
+   <g id="line2d_12">
+    <path d="M 267.205798 121.03084 
+L 333.595298 121.03084 
+" clip-path="url(#pf9e76361d1)" style="fill: none; stroke: #b0b0b4; stroke-width: 1.8"/>
+   </g>
+   <g id="line2d_13">
+    <path d="M 233.681939 151.135698 
+L 292.484314 151.135698 
+" clip-path="url(#pf9e76361d1)" style="fill: none; stroke: #2c5f8a; stroke-width: 1.8"/>
+   </g>
+   <g id="line2d_14">
+    <path d="M 209.974335 181.240555 
+L 267.055671 181.240555 
+" clip-path="url(#pf9e76361d1)" style="fill: none; stroke: #8a8a90; stroke-width: 1.8"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 153.4725 197.798227 
+L 467.9397 197.798227 
+" style="fill: none; stroke: #b0b0b4; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #5c5c63" x="226.604407" y="67.306486" transform="rotate(-0 226.604407 67.306486)">chance  0.500</text>
+   </g>
+   <g id="line2d_15">
+    <defs>
+     <path id="m82ea565794" d="M -0 4.949747 
+L 4.949747 0 
+L 0 -4.949747 
+L -4.949747 -0 
+z
+" style="stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+    </defs>
+    <g clip-path="url(#pf9e76361d1)">
+     <use xlink:href="#m82ea565794" x="282.841918" y="90.925983" style="fill: #c46a2d; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+    </g>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1d1d1f" x="350.928649" y="93.481983" transform="rotate(-0 350.928649 93.481983)">0.654  [0.525, 0.794]</text>
+   </g>
+   <g id="line2d_16">
+    <defs>
+     <path id="m094881515f" d="M 0 3.5 
+C 0.928211 3.5 1.81853 3.131218 2.474874 2.474874 
+C 3.131218 1.81853 3.5 0.928211 3.5 0 
+C 3.5 -0.928211 3.131218 -1.81853 2.474874 -2.474874 
+C 1.81853 -3.131218 0.928211 -3.5 0 -3.5 
+C -0.928211 -3.5 -1.81853 -3.131218 -2.474874 -2.474874 
+C -3.131218 -1.81853 -3.5 -0.928211 -3.5 0 
+C -3.5 0.928211 -3.131218 1.81853 -2.474874 2.474874 
+C -1.81853 3.131218 -0.928211 3.5 0 3.5 
+z
+" style="stroke: #ffffff; stroke-width: 0.5"/>
+    </defs>
+    <g clip-path="url(#pf9e76361d1)">
+     <use xlink:href="#m094881515f" x="301.220829" y="121.03084" style="fill: #b0b0b4; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1d1d1f" x="350.928649" y="123.58684" transform="rotate(-0 350.928649 123.58684)">0.704  [0.611, 0.793]</text>
+   </g>
+   <g id="line2d_17">
+    <defs>
+     <path id="m1f4aa31578" d="M 0 3.5 
+C 0.928211 3.5 1.81853 3.131218 2.474874 2.474874 
+C 3.131218 1.81853 3.5 0.928211 3.5 0 
+C 3.5 -0.928211 3.131218 -1.81853 2.474874 -2.474874 
+C 1.81853 -3.131218 0.928211 -3.5 0 -3.5 
+C -0.928211 -3.5 -1.81853 -3.131218 -2.474874 -2.474874 
+C -3.131218 -1.81853 -3.5 -0.928211 -3.5 0 
+C -3.5 0.928211 -3.131218 1.81853 -2.474874 2.474874 
+C -1.81853 3.131218 -0.928211 3.5 0 3.5 
+z
+" style="stroke: #ffffff; stroke-width: 0.5"/>
+    </defs>
+    <g clip-path="url(#pf9e76361d1)">
+     <use xlink:href="#m1f4aa31578" x="265.279935" y="151.135698" style="fill: #2c5f8a; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1d1d1f" x="350.928649" y="153.691698" transform="rotate(-0 350.928649 153.691698)">0.606  [0.519, 0.680]</text>
+   </g>
+   <g id="line2d_18">
+    <defs>
+     <path id="m8084d31a86" d="M 0 3.5 
+C 0.928211 3.5 1.81853 3.131218 2.474874 2.474874 
+C 3.131218 1.81853 3.5 0.928211 3.5 0 
+C 3.5 -0.928211 3.131218 -1.81853 2.474874 -2.474874 
+C 1.81853 -3.131218 0.928211 -3.5 0 -3.5 
+C -0.928211 -3.5 -1.81853 -3.131218 -2.474874 -2.474874 
+C -3.131218 -1.81853 -3.5 -0.928211 -3.5 0 
+C -3.5 0.928211 -3.131218 1.81853 -2.474874 2.474874 
+C -1.81853 3.131218 -0.928211 3.5 0 3.5 
+z
+" style="stroke: #ffffff; stroke-width: 0.5"/>
+    </defs>
+    <g clip-path="url(#pf9e76361d1)">
+     <use xlink:href="#m8084d31a86" x="237.294337" y="181.240555" style="fill: #8a8a90; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="text_15">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1d1d1f" x="350.928649" y="183.796555" transform="rotate(-0 350.928649 183.796555)">0.529  [0.455, 0.611]</text>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 10.5px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1d1d1f" x="153.4725" y="60.24" transform="rotate(-0 153.4725 60.24)">A   Shake. Yaw clears chance on locked TEST.</text>
+   </g>
+  </g>
+  <g id="axes_2">
+   <g id="patch_4">
+    <path d="M 153.4725 504 
+L 467.9397 504 
+L 467.9397 273.773103 
+L 153.4725 273.773103 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="line2d_19">
+    <path d="M 226.604407 504 
+L 226.604407 273.773103 
+" clip-path="url(#p532747f66b)" style="fill: none; stroke-dasharray: 3.7,1.6; stroke-dashoffset: 0; stroke: #1d1d1f"/>
+   </g>
+   <g id="matplotlib.axis_3">
+    <g id="xtick_6">
+     <g id="line2d_20">
+      <g>
+       <use xlink:href="#mec7f6ef814" x="190.038453" y="504" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_17">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #1d1d1f" x="190.038453" y="517.272" transform="rotate(-0 190.038453 517.272)">0.4</text>
+     </g>
+    </g>
+    <g id="xtick_7">
+     <g id="line2d_21">
+      <g>
+       <use xlink:href="#mec7f6ef814" x="226.604407" y="504" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_18">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #1d1d1f" x="226.604407" y="517.272" transform="rotate(-0 226.604407 517.272)">0.5</text>
+     </g>
+    </g>
+    <g id="xtick_8">
+     <g id="line2d_22">
+      <g>
+       <use xlink:href="#mec7f6ef814" x="263.17036" y="504" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_19">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #1d1d1f" x="263.17036" y="517.272" transform="rotate(-0 263.17036 517.272)">0.6</text>
+     </g>
+    </g>
+    <g id="xtick_9">
+     <g id="line2d_23">
+      <g>
+       <use xlink:href="#mec7f6ef814" x="299.736314" y="504" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_20">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #1d1d1f" x="299.736314" y="517.272" transform="rotate(-0 299.736314 517.272)">0.7</text>
+     </g>
+    </g>
+    <g id="xtick_10">
+     <g id="line2d_24">
+      <g>
+       <use xlink:href="#mec7f6ef814" x="336.302267" y="504" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_21">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #1d1d1f" x="336.302267" y="517.272" transform="rotate(-0 336.302267 517.272)">0.8</text>
+     </g>
+    </g>
+    <g id="text_22">
+     <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #1d1d1f" x="310.7061" y="530.056" transform="rotate(-0 310.7061 530.056)">Balanced accuracy</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_4">
+    <g id="ytick_5">
+     <g id="line2d_25"/>
+     <g id="text_23">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: end; fill: #1d1d1f" x="146.4725" y="302.524579" transform="rotate(-0 146.4725 302.524579)">Pitch rule, locked TEST</text>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_26"/>
+     <g id="text_24">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: end; fill: #1d1d1f" x="146.4725" y="333.762964" transform="rotate(-0 146.4725 333.762964)">Pose CNN, DEV leave-one-clip-out</text>
+     </g>
+    </g>
+    <g id="ytick_7">
+     <g id="line2d_27"/>
+     <g id="text_25">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: end; fill: #1d1d1f" x="146.4725" y="365.001348" transform="rotate(-0 146.4725 365.001348)">Pose MIL, TRAIN-selected, DEV</text>
+     </g>
+    </g>
+    <g id="ytick_8">
+     <g id="line2d_28"/>
+     <g id="text_26">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: end; fill: #1d1d1f" x="146.4725" y="396.239733" transform="rotate(-0 146.4725 396.239733)">VideoMAE frozen, identity-fixed, 3 s</text>
+     </g>
+    </g>
+    <g id="ytick_9">
+     <g id="line2d_29"/>
+     <g id="text_27">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: end; fill: #1d1d1f" x="146.4725" y="427.478118" transform="rotate(-0 146.4725 427.478118)">VideoMAE last two blocks, 3 s</text>
+     </g>
+    </g>
+    <g id="ytick_10">
+     <g id="line2d_30"/>
+     <g id="text_28">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: end; fill: #1d1d1f" x="146.4725" y="458.716503" transform="rotate(-0 146.4725 458.716503)">VideoMAE last two blocks, 1.5 s</text>
+     </g>
+    </g>
+    <g id="ytick_11">
+     <g id="line2d_31"/>
+     <g id="text_29">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: end; fill: #1d1d1f" x="146.4725" y="489.954888" transform="rotate(-0 146.4725 489.954888)">VideoMAE largest-face, withdrawn</text>
+     </g>
+    </g>
+   </g>
+   <g id="line2d_32">
+    <path d="M 219.387839 299.388579 
+L 270.169037 299.388579 
+" clip-path="url(#p532747f66b)" style="fill: none; stroke: #c46a2d; stroke-width: 1.8"/>
+   </g>
+   <g id="line2d_33">
+    <path d="M 215.100347 330.626964 
+L 257.024049 330.626964 
+" clip-path="url(#p532747f66b)" style="fill: none; stroke: #2c5f8a; stroke-width: 1.8"/>
+   </g>
+   <g id="line2d_34">
+    <path d="M 214.965377 361.865348 
+L 246.692442 361.865348 
+" clip-path="url(#p532747f66b)" style="fill: none; stroke: #2c5f8a; stroke-width: 1.8"/>
+   </g>
+   <g id="line2d_35">
+    <path d="M 184.438233 393.103733 
+L 255.944607 393.103733 
+" clip-path="url(#p532747f66b)" style="fill: none; stroke: #2f6b45; stroke-width: 1.8"/>
+   </g>
+   <g id="line2d_36">
+    <path d="M 210.439052 424.342118 
+L 286.609846 424.342118 
+" clip-path="url(#p532747f66b)" style="fill: none; stroke: #2f6b45; stroke-width: 1.8"/>
+   </g>
+   <g id="line2d_37">
+    <path d="M 213.288334 455.580503 
+L 270.100589 455.580503 
+" clip-path="url(#p532747f66b)" style="fill: none; stroke: #2f6b45; stroke-width: 1.8"/>
+   </g>
+   <g id="line2d_38">
+    <path d="M 194.371454 486.818888 
+L 253.455269 486.818888 
+" clip-path="url(#p532747f66b)" style="fill: none; stroke: #8a8a90; stroke-width: 1.8"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 153.4725 504 
+L 467.9397 504 
+" style="fill: none; stroke: #b0b0b4; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_30">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #5c5c63" x="226.604407" y="274.952941" transform="rotate(-0 226.604407 274.952941)">chance  0.500</text>
+   </g>
+   <g id="line2d_39">
+    <g clip-path="url(#p532747f66b)">
+     <use xlink:href="#m82ea565794" x="244.544225" y="299.388579" style="fill: #c46a2d; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+    </g>
+   </g>
+   <g id="text_31">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1d1d1f" x="350.928649" y="301.944579" transform="rotate(-0 350.928649 301.944579)">0.549  [0.480, 0.619]</text>
+   </g>
+   <g id="line2d_40">
+    <g clip-path="url(#p532747f66b)">
+     <use xlink:href="#m1f4aa31578" x="235.169389" y="330.626964" style="fill: #2c5f8a; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="text_32">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1d1d1f" x="350.928649" y="333.182964" transform="rotate(-0 350.928649 333.182964)">0.523  [0.469, 0.583]</text>
+   </g>
+   <g id="line2d_41">
+    <g clip-path="url(#p532747f66b)">
+     <use xlink:href="#m1f4aa31578" x="226.650307" y="361.865348" style="fill: #2c5f8a; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="text_33">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1d1d1f" x="350.928649" y="364.421348" transform="rotate(-0 350.928649 364.421348)">0.500  [0.468, 0.555]</text>
+   </g>
+   <g id="line2d_42">
+    <defs>
+     <path id="m4cc4c2af36" d="M 0 3.5 
+C 0.928211 3.5 1.81853 3.131218 2.474874 2.474874 
+C 3.131218 1.81853 3.5 0.928211 3.5 0 
+C 3.5 -0.928211 3.131218 -1.81853 2.474874 -2.474874 
+C 1.81853 -3.131218 0.928211 -3.5 0 -3.5 
+C -0.928211 -3.5 -1.81853 -3.131218 -2.474874 -2.474874 
+C -3.131218 -1.81853 -3.5 -0.928211 -3.5 0 
+C -3.5 0.928211 -3.131218 1.81853 -2.474874 2.474874 
+C -1.81853 3.131218 -0.928211 3.5 0 3.5 
+z
+" style="stroke: #ffffff; stroke-width: 0.5"/>
+    </defs>
+    <g clip-path="url(#p532747f66b)">
+     <use xlink:href="#m4cc4c2af36" x="219.969239" y="393.103733" style="fill: #2f6b45; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="text_34">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1d1d1f" x="350.928649" y="395.659733" transform="rotate(-0 350.928649 395.659733)">0.482  [0.385, 0.580]</text>
+   </g>
+   <g id="line2d_43">
+    <g clip-path="url(#p532747f66b)">
+     <use xlink:href="#m4cc4c2af36" x="249.317097" y="424.342118" style="fill: #2f6b45; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="text_35">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1d1d1f" x="350.928649" y="426.898118" transform="rotate(-0 350.928649 426.898118)">0.562  [0.456, 0.664]</text>
+   </g>
+   <g id="line2d_44">
+    <g clip-path="url(#p532747f66b)">
+     <use xlink:href="#m4cc4c2af36" x="236.993193" y="455.580503" style="fill: #2f6b45; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="text_36">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1d1d1f" x="350.928649" y="458.136503" transform="rotate(-0 350.928649 458.136503)">0.528  [0.464, 0.619]</text>
+   </g>
+   <g id="line2d_45">
+    <g clip-path="url(#p532747f66b)">
+     <use xlink:href="#m8084d31a86" x="223.14353" y="486.818888" style="fill: #8a8a90; stroke: #ffffff; stroke-width: 0.5"/>
+    </g>
+   </g>
+   <g id="text_37">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1d1d1f" x="350.928649" y="489.374888" transform="rotate(-0 350.928649 489.374888)">0.491  [0.412, 0.573]</text>
+   </g>
+   <g id="text_38">
+    <text style="font-size: 10.5px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1d1d1f" x="153.4725" y="267.773103" transform="rotate(-0 153.4725 267.773103)">B   Nod. Pitch does not.</text>
+   </g>
+  </g>
+  <g id="text_39">
+   <text style="font-size: 11px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1d1d1f" x="153.4725" y="28.784" transform="rotate(-0 153.4725 28.784)">Same protocol, opposite outcomes</text>
+  </g>
+  <g id="text_40">
+   <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; fill: #5c5c63" transform="translate(153.4725 542.862844)">Shake yaw rule TEST 0.654 [0.525, 0.794] and pose CNN 0.606 [0.519, 0.680]</text>
+   <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; fill: #5c5c63" transform="translate(153.4725 553.680562)">both exclude 0.500. Nod pitch rule TEST 0.549 [0.480, 0.619] includes it.</text>
+   <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; fill: #5c5c63" transform="translate(153.4725 564.498281)">Diamonds are locked TEST. Circles are DEV. 95% clip-level intervals, 15 clips.</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pf9e76361d1">
+   <rect x="153.4725" y="66.24" width="314.4672" height="131.558227"/>
+  </clipPath>
+  <clipPath id="p532747f66b">
+   <rect x="153.4725" y="273.773103" width="314.4672" height="230.226897"/>
+  </clipPath>
+ </defs>
+</svg>

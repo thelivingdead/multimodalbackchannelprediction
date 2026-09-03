@@ -60,10 +60,10 @@ def gold_people() -> dict[str, str]:
     return dict(zip(frame["sample_id"].astype(str), frame["person"].astype(str)))
 
 
-def load_dev_windows() -> pd.DataFrame:
-    if not WINDOWS_DEV.exists():
-        raise SystemExit(f"STOP: missing {WINDOWS_DEV}")
-    frame = pd.read_csv(WINDOWS_DEV)
+def load_dev_windows(path: Path) -> pd.DataFrame:
+    if not path.exists():
+        raise SystemExit(f"STOP: missing {path}")
+    frame = pd.read_csv(path)
     frame["sample_id"] = frame["sample_id"].astype(str)
     frame["split"] = frame["split"].astype(str).str.upper()
     if (frame["split"] != "DEV").any():
@@ -134,6 +134,7 @@ def downscale_preview(frame: np.ndarray, box: tuple | None, max_width: int = 480
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--out-dir", type=Path, default=DEFAULT_OUT)
+    parser.add_argument("--windows", type=Path, default=WINDOWS_DEV)
     parser.add_argument("--summary-json", type=Path, default=DEFAULT_SUMMARY)
     parser.add_argument("--ids", type=str, default=None)
     parser.add_argument("--limit-clips", type=int, default=None)
@@ -148,7 +149,13 @@ def main() -> None:
         )
     sides = watch_sides()
     people = gold_people()
-    win = load_dev_windows()
+    if args.windows.resolve() != WINDOWS_DEV.resolve():
+        if "identity_fixed" in str(args.summary_json) and "1p5" not in str(args.summary_json):
+            raise SystemExit(
+                "STOP: 1.5 s windows must write a new summary directory, "
+                "not results/windowed_dev/videomae_identity_fixed/"
+            )
+    win = load_dev_windows(args.windows)
     if args.ids:
         keep = {s.strip() for s in args.ids.split(",") if s.strip()}
         win = win[win["sample_id"].isin(keep)].copy()

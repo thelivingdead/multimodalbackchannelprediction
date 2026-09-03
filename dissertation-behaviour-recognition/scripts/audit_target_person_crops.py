@@ -105,12 +105,13 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--rgb-dir", type=Path, required=True)
     parser.add_argument("--out-dir", type=Path, default=FIXED)
+    parser.add_argument("--windows", type=Path, default=WINDOWS_DEV)
     args = parser.parse_args()
     rgb_dir = args.rgb_dir.resolve()
     out_dir = args.out_dir.resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    labels = pd.read_csv(WINDOWS_DEV)
+    labels = pd.read_csv(args.windows)
     labels["sample_id"] = labels["sample_id"].astype(str)
     if set(labels["sample_id"]) & TEST_IDS:
         raise SystemExit("STOP: TEST id in DEV window file")
@@ -122,7 +123,7 @@ def main() -> None:
     if "split" in manifest.columns and (manifest["split"].astype(str) != "DEV").any():
         raise SystemExit("STOP: fetch manifest contains a non-DEV row")
 
-    n_windows = 15 * 29
+    n_windows = int(len(labels))
     n_resolved = int((manifest["crop_status"] == "resolved").sum())
     n_unresolved = int((manifest["crop_status"] == "unresolved").sum())
     n_failed = int((manifest["crop_status"] == "failed").sum())

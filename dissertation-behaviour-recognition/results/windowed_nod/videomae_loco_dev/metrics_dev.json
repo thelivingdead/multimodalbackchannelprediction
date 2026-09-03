@@ -1,0 +1,92 @@
+{
+  "protocol": "windowed_nod_3s_videomae_loco",
+  "development_only": true,
+  "test_scored": false,
+  "cross_validation": "leave-one-clip-out over DEV clips",
+  "n_folds": 15,
+  "folds_complete": true,
+  "epochs_per_fold": 6,
+  "epoch_policy": "fixed a priori; no per-fold early stopping",
+  "headline_metric": "pr_auc_out_of_fold",
+  "pr_auc_out_of_fold": 0.11616052267210936,
+  "prevalence": 0.11954022988505747,
+  "at_fixed_threshold_0.5": {
+    "accuracy": 0.6735632183908046,
+    "balanced_accuracy": 0.49053524804177545,
+    "precision": 0.11206896551724138,
+    "recall": 0.25,
+    "f1": 0.15476190476190477,
+    "tp": 13,
+    "fp": 103,
+    "tn": 280,
+    "fn": 39
+  },
+  "best_threshold_upper_bound": {
+    "threshold": 0.6615906953811646,
+    "metrics": {
+      "accuracy": 0.8436781609195402,
+      "balanced_accuracy": 0.5206617794737899,
+      "precision": 0.19230769230769232,
+      "recall": 0.09615384615384616,
+      "f1": 0.1282051282051282,
+      "tp": 5,
+      "fp": 21,
+      "tn": 362,
+      "fn": 47
+    },
+    "caveat": "optimistic: threshold chosen on the scored predictions"
+  },
+  "always_no": {
+    "accuracy": 0.8804597701149425,
+    "balanced_accuracy": 0.5,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "tp": 0,
+    "fp": 0,
+    "tn": 383,
+    "fn": 52
+  },
+  "always_yes": {
+    "accuracy": 0.11954022988505747,
+    "balanced_accuracy": 0.5,
+    "precision": 0.11954022988505747,
+    "recall": 1.0,
+    "f1": 0.2135523613963039,
+    "tp": 52,
+    "fp": 383,
+    "tn": 0,
+    "fn": 0
+  },
+  "clip_bootstrap_at_0.5": {
+    "n_resamples": 2000,
+    "n_clips": 15,
+    "n_skipped_single_class_resamples": 0,
+    "resampling_unit": "clip",
+    "balanced_accuracy": {
+      "mean": 0.48980343009057,
+      "ci_lower_95": 0.4118498226539123,
+      "ci_upper_95": 0.5734313183708577
+    },
+    "f1": {
+      "mean": 0.1515056891881572,
+      "ci_lower_95": 0.057463054187192115,
+      "ci_upper_95": 0.2580735773831098
+    },
+    "precision": {
+      "mean": 0.11146326459776748,
+      "ci_lower_95": 0.04200805322128852,
+      "ci_upper_95": 0.19388135851355465
+    },
+    "recall": {
+      "mean": 0.24681248968844946,
+      "ci_lower_95": 0.08695652173913043,
+      "ci_upper_95": 0.42862103174603144
+    }
+  },
+  "n_windows_scored": 435,
+  "n_positive": 52,
+  "batch_size": 8,
+  "seed": 42,
+  "device": "cuda"
+}

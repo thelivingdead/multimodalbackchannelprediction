@@ -1,0 +1,14 @@
+{
+  "n_dev_windows": 435,
+  "n_successfully_cropped": 373,
+  "n_unresolved": 62,
+  "n_failed": 0,
+  "percent_successfully_cropped": 85.7,
+  "n_no_face_on_target_half": 13,
+  "n_resolved_on_wrong_half": 0,
+  "n_visually_audited": 50,
+  "automatic_half_check": "pass",
+  "audit_pass": true,
+  "test_touched": false,
+  "stop_training": false
+}

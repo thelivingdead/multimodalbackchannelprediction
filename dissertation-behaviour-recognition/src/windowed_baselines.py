@@ -1,14 +1,7 @@
 """Shared machinery for 3 s sliding-window baselines (nod and shake).
 
-Selection criterion. At the window prevalences of this protocol, roughly 9 to
-16 percent, F1 barely penalises false positives, so a sweep that maximises it
-can drift towards always-yes without the metric revealing the collapse.
-Balanced accuracy weights the negative class equally and has a fixed floor of
-0.5 for any constant predictor, so it is the selection criterion and the
-headline metric. PR AUC is reported as a threshold-free check on ranking.
-
-Intervals resample whole clips. Windows within a clip overlap by 1 s and are
-not independent, so window-level resampling would understate uncertainty.
+Balanced accuracy is the selection criterion and headline metric; intervals
+resample whole clips. Rationale is in reports/methods_chapter_draft.md.
 """
 from __future__ import annotations
 

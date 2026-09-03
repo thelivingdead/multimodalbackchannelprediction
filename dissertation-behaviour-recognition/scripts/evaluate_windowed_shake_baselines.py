@@ -1,15 +1,8 @@
 #!/usr/bin/env python3
 """Evaluate shake-only baselines on the human 3 s sliding-window protocol.
 
-Unlike the nod baselines, which inherited the pitch axis from the frozen 60 s
-configuration, no frozen shake axis exists. The repository deliberately does
-not assume that EMOCA rotation channel 0 is anatomical pitch (see the note in
-``results/rule_selected_config.json``), so the axis is selected here on shake
-DEV together with the amplitude threshold, and the full three-axis DEV table
-is reported. That is one extra disclosed DEV decision relative to nod.
-
-Selection criterion is balanced accuracy, fixed before TEST was scored, for
-the reason set out in ``src/windowed_baselines``. Intervals resample clips.
+No frozen shake axis exists, so the axis is selected on shake DEV alongside
+the amplitude threshold and the full three-axis DEV table is reported.
 """
 from __future__ import annotations
 

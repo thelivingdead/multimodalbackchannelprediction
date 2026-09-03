@@ -276,8 +276,8 @@ def _pick_contact_sheet(resolved: pd.DataFrame, rgb_dir: Path | None) -> pd.Data
                     "watch_side": "",
                     "crop_centre_x": np.nan,
                     "frame_width": np.nan,
-                    "_two_shot": False,
-                    "_missing": True,
+                    "two_shot": False,
+                    "missing_clip": True,
                 }
             )
             continue
@@ -285,20 +285,20 @@ def _pick_contact_sheet(resolved: pd.DataFrame, rgb_dir: Path | None) -> pd.Data
         width = g["frame_width"].astype(float)
         cx = g["crop_centre_x"].astype(float)
         toward = [_watch_toward(float(a), float(b), side) for a, b in zip(cx, width)]
-        g = g.assign(_toward=toward, _frac=np.array(toward) / width.to_numpy())
-        tight = g[g["_frac"] >= MIDLINE_FRAC]
+        g = g.assign(toward=toward, side_frac=np.array(toward) / width.to_numpy())
+        tight = g[g["side_frac"] >= MIDLINE_FRAC]
         pool = tight if not tight.empty else g
-        pool = pool.sort_values(["_toward", "window_id"], ascending=[False, True])
+        pool = pool.sort_values(["toward", "window_id"], ascending=[False, True])
         rec = pool.iloc[0].copy()
-        rec["_two_shot"] = bool(tight.empty)
-        rec["_missing"] = False
+        rec["two_shot"] = bool(tight.empty)
+        rec["missing_clip"] = False
         picked.append(rec)
     out = pd.DataFrame(picked)
     print("figure F picks:")
     for rec in out.itertuples(index=False):
         print(
             f"  {rec.sample_id}  {rec.window_id}  cx={rec.crop_centre_x}  "
-            f"two_shot={rec._two_shot}  missing={rec._missing}"
+            f"two_shot={rec.two_shot}  missing={rec.missing_clip}"
         )
     return out
 
@@ -336,7 +336,7 @@ def figure_f(rgb_dir: Path | None, manifest_path: Path, stem: Path) -> None:
         ax.set_xticks([])
         ax.set_yticks([])
         label = str(rec.sample_id).replace("gold_", "gold ")
-        if bool(rec._missing) or not rec.window_id:
+        if bool(rec.missing_clip) or not rec.window_id:
             ax.text(0.5, 0.5, "no resolved crop", ha="center", va="center", color=MUTED)
             ax.set_title(label)
             continue
@@ -348,7 +348,7 @@ def figure_f(rgb_dir: Path | None, manifest_path: Path, stem: Path) -> None:
         else:
             ax.text(0.5, 0.5, "crop file missing", ha="center", va="center", color=MUTED)
             side = rec.watch_side
-        note = "  two-shot" if bool(rec._two_shot) else ""
+        note = "  two-shot" if bool(rec.two_shot) else ""
         ax.set_title(f"{label}  {side}{note}")
     for ax in axes.ravel()[len(picked):]:
         ax.axis("off")

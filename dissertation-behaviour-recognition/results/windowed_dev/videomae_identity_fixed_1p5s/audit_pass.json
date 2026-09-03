@@ -1,0 +1,16 @@
+{
+  "pass": true,
+  "note": "Automatic check only: every resolved crop centre is on the annotated half, unresolved fraction is at most 25 percent, and at least 30 contact sheets were written. Look at crop_audit/ before trusting VideoMAE. Delete this file if any sheet shows the excluded person.",
+  "n_dev_windows": 885,
+  "n_successfully_cropped": 774,
+  "n_unresolved": 111,
+  "n_failed": 0,
+  "percent_successfully_cropped": 87.5,
+  "n_no_face_on_target_half": 39,
+  "n_resolved_on_wrong_half": 0,
+  "n_visually_audited": 50,
+  "automatic_half_check": "pass",
+  "audit_pass": true,
+  "test_touched": false,
+  "stop_training": false
+}

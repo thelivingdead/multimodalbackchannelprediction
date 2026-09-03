@@ -1,0 +1,14 @@
+{
+  "script": "fetch_rgb_windows_identity_dev.py",
+  "split": "DEV",
+  "test_touched": false,
+  "out_dir": "/scratch/db01550/rgb16_windowed_identity_dev_1p5s",
+  "out_dir_note": "may live on /scratch, outside the repo",
+  "n_windows_selected": 885,
+  "n_resolved_this_run": 774,
+  "n_unresolved_this_run": 111,
+  "n_failed_this_run": 0,
+  "n_skipped": 0,
+  "http_requests": 15,
+  "bytes_ranged": 23938915094
+}

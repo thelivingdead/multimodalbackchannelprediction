@@ -1,0 +1,38 @@
+{
+  "protocol": "identity_fixed_3s_crop_drop_bias_dev",
+  "development_only": true,
+  "test_touched": false,
+  "n_windows": 435,
+  "n_positive": 52,
+  "n_negative": 383,
+  "retained_positive": 41,
+  "retained_negative": 332,
+  "dropped_positive": 11,
+  "dropped_negative": 51,
+  "drop_rate_positive": 0.21153846153846154,
+  "drop_rate_negative": 0.13315926892950392,
+  "relative_risk_drop_positive": 1.5886123680241326,
+  "fisher_odds_ratio": 1.7465327594452416,
+  "fisher_p_two_sided": 0.13954942302842238,
+  "pose_available": true,
+  "pitch_axis": 0,
+  "axis_note": "Channel 0 of rotation_xyz, the axis used by the 3 s nod rule.",
+  "motion_comparison": {
+    "peak_abs_pitch_velocity": {
+      "retained_median": 48.8566130399704,
+      "dropped_median": 56.17668628692627,
+      "mannwhitney_p": 0.2136225235060799
+    },
+    "mean_abs_pitch_velocity": {
+      "retained_median": 10.34209985990782,
+      "dropped_median": 10.969124291394207,
+      "mannwhitney_p": 0.19375584400614043
+    },
+    "max_pitch_excursion": {
+      "retained_median": 6.327244877815247,
+      "dropped_median": 5.529280185699463,
+      "mannwhitney_p": 0.292303316594412
+    }
+  },
+  "inference_note": "A higher drop rate among positives does not by itself show that nodding caused the cropper to fail."
+}

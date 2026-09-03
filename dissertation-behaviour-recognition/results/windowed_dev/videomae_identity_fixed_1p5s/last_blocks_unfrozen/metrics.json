@@ -1,0 +1,100 @@
+{
+  "protocol": "windowed_nod_1p5s_videomae_identity_fixed_last_blocks",
+  "development_only": true,
+  "test_scored": false,
+  "test_touched": false,
+  "window_sec": 1.5,
+  "stride_sec": 1.0,
+  "n_rgb_frames": 16,
+  "effective_fps": 10.666666666666666,
+  "crop_source": "/scratch/db01550/rgb16_windowed_identity_dev_1p5s",
+  "audit": {
+    "pass": true,
+    "note": "Automatic check only: every resolved crop centre is on the annotated half, unresolved fraction is at most 25 percent, and at least 30 contact sheets were written. Look at crop_audit/ before trusting VideoMAE. Delete this file if any sheet shows the excluded person.",
+    "n_dev_windows": 885,
+    "n_successfully_cropped": 774,
+    "n_unresolved": 111,
+    "n_failed": 0,
+    "percent_successfully_cropped": 87.5,
+    "n_no_face_on_target_half": 39,
+    "n_resolved_on_wrong_half": 0,
+    "n_visually_audited": 50,
+    "automatic_half_check": "pass",
+    "audit_pass": true,
+    "test_touched": false,
+    "stop_training": false
+  },
+  "hflip_train_only": true,
+  "threshold": 0.5,
+  "threshold_note": "fixed at 0.5 before any fold was scored",
+  "n_dev_windows": 885,
+  "n_excluded_unresolved": 111,
+  "n_windows_scored": 774,
+  "n_positive": 64,
+  "n_negative": 710,
+  "prevalence": 0.082687338501292,
+  "balanced_accuracy": 0.5284110915492958,
+  "precision": 0.09541984732824428,
+  "recall": 0.390625,
+  "f1": 0.15337423312883436,
+  "pr_auc": 0.11022753475537407,
+  "confusion": {
+    "tp": 25,
+    "fp": 237,
+    "tn": 473,
+    "fn": 39
+  },
+  "clip_bootstrap": {
+    "n_resamples": 2000,
+    "n_clips": 15,
+    "n_skipped_single_class_resamples": 0,
+    "resampling_unit": "clip",
+    "balanced_accuracy": {
+      "mean": 0.5298991883775127,
+      "ci_lower_95": 0.463583411170766,
+      "ci_upper_95": 0.6189526808183268
+    },
+    "f1": {
+      "mean": 0.14982781323932806,
+      "ci_lower_95": 0.0906003184216277,
+      "ci_upper_95": 0.20796062691131492
+    },
+    "precision": {
+      "mean": 0.09439268680289556,
+      "ci_lower_95": 0.058823529411764705,
+      "ci_upper_95": 0.1341473155146887
+    },
+    "recall": {
+      "mean": 0.3917007500570586,
+      "ci_lower_95": 0.15714285714285714,
+      "ci_upper_95": 0.639344262295082
+    }
+  },
+  "always_no": {
+    "accuracy": 0.917312661498708,
+    "balanced_accuracy": 0.5,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "tp": 0,
+    "fp": 0,
+    "tn": 710,
+    "fn": 64
+  },
+  "always_yes": {
+    "accuracy": 0.082687338501292,
+    "balanced_accuracy": 0.5,
+    "precision": 0.082687338501292,
+    "recall": 1.0,
+    "f1": 0.15274463007159905,
+    "tp": 64,
+    "fp": 710,
+    "tn": 0,
+    "fn": 0
+  },
+  "epochs_per_fold": 6,
+  "seed": 42,
+  "device": "cuda",
+  "unfreeze_blocks": 2,
+  "mode": "last_blocks"
+}

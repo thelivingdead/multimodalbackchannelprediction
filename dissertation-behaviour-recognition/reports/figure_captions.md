@@ -1,6 +1,6 @@
 # Figure captions (copy into Word)
 
-All paths are relative to `dissertation-behaviour-recognition/`. Prefer **JPG** for Word. PNG duplicates exist for some gold plots. VideoMAE figures must use only the locked TEST scores (frozen 0.57, fine-tuned 0.82) — no other VideoMAE numbers exist.
+All paths are relative to `dissertation-behaviour-recognition/`. Prefer **JPG** for Word. PNG duplicates exist for some gold plots. The GitHub README lead is Figure 15b (`figures/paper/teaser_windowed_heads`). The 60 s VideoMAE TEST scores (frozen 0.57, fine-tuned 0.82) belong to the earlier clip protocol, not the 3 s GitHub headline.
 
 Insert **after** the paragraph that first mentions the result. Keep DEV plots out of the Results headline section.
 
@@ -36,7 +36,9 @@ Insert **after** the paragraph that first mentions the result. Keep DEV plots ou
 
 **Figure 14.** TEST F1 for the four systems with saved TEST predictions (\(n=15\), scored once): frozen pose rule 0.67, pose 1D CNN (xyz + derivatives) 0.70, frozen VideoMAE head 0.57, fine-tuned VideoMAE 0.82 (highlighted). Error bars are 95% bootstrap CIs (1000 resamples, seed 42). The intervals overlap widely; the differences are not statistically significant — 0.82 is the highest point estimate, not a proven win. File: `figures/model_comparison_f1.png` (four-model version; distinct from the two-model `model_comparison_f1.jpg`).
 
-**Figure 15.** Defining qualitative figure. Two locked TEST windows where the two people sit left and right of the frame. Top: `gold_020` (human **clear nod**, partner speaks the whole minute). Bottom: `gold_024` (human **unclear**). Blue box = labelled listener, orange = partner. Pose is EMOCA rotation \(x\) with \(\tau=16.35^\circ\). Speaker lanes are official RealTalk TalkNet. File: `figures/paper/teaser_backchannel.jpg`.
+**Figure 15.** Locked TEST 3 s yaw rule on `gold_028` (shake-only). Yaw trace and per-window amplitude against τ = 4.091°. Orange = annotated shake; green = rule positive. TEST balanced accuracy 0.654 [0.525, 0.794] is the 15-clip score. Pose only. File: `figures/paper/teaser_shake_windowed.jpg`. The old face teaser `teaser_backchannel.jpg` is the superseded 60 s nod protocol.
+
+**Figure 15b.** Listener heads in labelled 3 s TEST windows: shake `gold_023` 15.0 to 18.0 s (watch RIGHT, yaw) and nod `gold_030` 21.0 to 24.0 s (watch RIGHT, pitch). Grey band = annotated gesture; dashed vertical = annotated onset; frames sampled inside the annotated interval. Yaw and Pitch here are EMOCA rotation channels y and x; the anatomical mapping was verified in the methods (Chapter 4), not assumed from the channel names. On the nod panel the annotator marked the trough and the return (the descent begins just before onset), which is why the frozen rule uses return ratio rather than amplitude alone. Shake dashed lines: yaw amplitude threshold 4.091°. Nod bracket: Savitzky-Golay peak-to-peak (amplitude >= 1.49°) with return ratio <= 0.21. Official RealTalk listener boxes; not withdrawn largest-face Haar. Clip ids in this caption only. File: `figures/paper/teaser_windowed_heads.jpg`. Distinct from Figure 15 (pose chart, no faces). RealTalk stills stay in the bound dissertation only.
 
 **Figure 16.** Executed architecture (binary nod only): EMOCA pose → rule + 1D CNN; RGB 16-frame crops → VideoMAE. No BERT/HuBERT/LMF. File: `figures/paper/architecture.png`.
 
@@ -70,7 +72,7 @@ Insert **after** the paragraph that first mentions the result. Keep DEV plots ou
 
 | Chapter | Figures |
 | --- | --- |
-| Intro / data | **15** (teaser: faces + pose + who speaks), 1, 2, 3, 4 |
+| Intro / data | **15** (pose-only 3 s yaw teaser), **15b** (3 s listener faces: nod + shake), 1, 2, 3, 4 |
 | Methods | 5, 6, 7, 8, 9 |
 | Results | 10, 11, 12, 14 (+13 beside §5.6 and 15 beside §5.7, with caution captions) |
 | Appendix | training loss, DEV F1 by epoch, VideoMAE DEV curves |

@@ -6,6 +6,26 @@ Print width ~12–14 cm. Files are PNG (300 dpi) and PDF under `dissertation-beh
 
 ---
 
+## README teaser (GitHub lead): 3 s listener heads
+
+**Files:** `teaser_windowed_heads.png` / `.jpg` / `.svg`
+
+**Caption.** Two labelled 3 s TEST windows: a strip of listener faces and the matching Euler trace. Grey band = annotated gesture; dashed vertical = annotated onset; frames are sampled inside the annotated interval and placed at their true times on the 0-3 s axis. Yaw and Pitch here are EMOCA rotation channels y and x; the anatomical mapping was verified in the methods (Chapter 4), not assumed from the channel names. (a) Head shake, `gold_023`, 15.0 to 18.0 s, watch RIGHT; annotated shake 16.0 to 17.0 s. Dashed horizontal lines mark the frozen yaw amplitude threshold (peak-to-peak vs 4.091°). (b) Head nod, `gold_030`, 21.0 to 24.0 s, watch RIGHT; annotated nod 22.0 to 23.0 s. The vertical bracket is the Savitzky-Golay peak-to-peak the return-ratio rule uses (amplitude >= 1.49°); the callout is return ratio <= 0.21. Pose slicing matches `start_frame_relative` at 25 fps; there is no one-second index error. The annotator marked the trough and the return (the descent begins just before onset), which is why the frozen nod rule uses return ratio rather than amplitude alone. Listener crops use the official RealTalk box for the gold person (p0 = LEFT, p1 = RIGHT), one box held for the window. Clip ids are in this caption only, not on the figure. Withdrawn largest-face Haar is not used. This figure does not rescore TEST. Distinct from `teaser_shake_windowed` (pose chart, no faces) and from `teaser_backchannel` (superseded 60 s nod protocol). RealTalk stills follow the RealTalk terms.
+
+**Source.** `data/windowed_annotations/shake_events_windowed_test.csv` (`gold_023` shake 16.0 to 17.0 s); `data/windowed_annotations/nod_events_windowed_test.csv` (`gold_030` nod 22.0 to 23.0 s); `features/gold/gold_023.npz`, `features/gold/gold_030.npz`. Frozen shake tau from `results/windowed_shake/baselines_bacc/metrics.json` (axis y, 4.091°). Frozen nod thresholds from `scripts/evaluate_windowed_nod_return_ratio_test.py` (1.492°, 0.213). Script: `scripts/plot_teaser_windowed_heads.py`. This is the GitHub README lead. Distinct from `teaser_shake_windowed` (pose chart, no faces) and from `teaser_backchannel` (superseded 60 s nod protocol).
+
+---
+
+## Pose-only 3 s shake yaw chart (not the GitHub lead)
+
+**Files:** `teaser_shake_windowed.png` / `.jpg` / `.svg`
+
+**Caption.** Locked TEST 3 s yaw rule on `gold_028` (shake-only). Top: EMOCA yaw (axis y). Bottom: per-window peak-to-peak amplitude against the DEV-selected threshold τ = 4.091°. Orange = annotated shake; green = rule positive. The printed interval 0.654 [0.525, 0.794] is the 15-clip TEST balanced accuracy, not this clip alone. Pose only; no face crops. Do not caption this figure as showing a moving head. The old face teaser `teaser_backchannel.jpg` is the superseded 60 s nod protocol (pitch, τ = 16.35°) and is not the README lead.
+
+**Source.** `results/windowed_shake/baselines_bacc/metrics.json` (axis 1 = y, `dev_selected_window_threshold` = 4.091°); `predictions.csv` TEST rows for `gold_028`; `data/windowed_annotations/shake_events_windowed_test.csv`; `features/gold/gold_028.npz`.
+
+---
+
 ## Fig. A — Nod TEST F1
 
 **Files:** `nod_test_f1.png` / `nod_test_f1.pdf`
@@ -223,6 +243,8 @@ These files exist under `figures/paper/`. They are locked TEST plots (or TEST-wi
 
 | Stem | Files present | Role in thesis |
 | --- | --- | --- |
+| `teaser_windowed_heads` | `.png` `.jpg` `.svg` | GitHub README lead. 3 s face figure: TEST shake `gold_023` 15 to 18 s and nod `gold_030` 21 to 24 s |
+| `teaser_shake_windowed` | `.png` `.jpg` `.svg` | Pose-only 3 s yaw rule on TEST `gold_028`. Not the GitHub lead |
 | `nod_test_f1` | `.png` `.pdf` | Fig. A — nod GOLD TEST F1 (n = 15, scored once) |
 | `nod_test_confusion` | `.png` `.pdf` | Fig. B — nod GOLD TEST confusion counts |
 | `shake_test_f1` | `.png` `.pdf` | Fig. C — shake GOLD TEST F1 (n = 15, scored once) |

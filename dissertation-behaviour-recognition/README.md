@@ -4,17 +4,19 @@ MSc dissertation package, Divya Bisht, Centre for Vision, Speech and Signal Proc
 
 The GitHub front page is the repository root [`README.md`](../README.md).
 
-This package recognises listener head nods and head shakes on 30 Columbia RealTalk gold clips. The approved title says prediction. The executed task is recognition inside an observed window. An earlier study used one 60 s label per clip. The thesis results are the 3 s windowed protocol.
+This package recognises two listener backchannels on 30 Columbia RealTalk gold clips: **head shake** (yaw) and **head nod** (pitch). The approved title says prediction. The executed task is recognition inside an observed window. An earlier study used one 60 s nod label per clip. The thesis results are the 3 s windowed protocol for both behaviours.
 
 ![Listener heads in labelled 3 s TEST windows](figures/paper/teaser_windowed_heads.png)
 
-Two labelled 3 s TEST windows (official RealTalk listener boxes plus Euler). Shake: `gold_023`, 15 to 18 s. Nod: `gold_025`, 41 to 44 s. This is a face figure, not a pose-only chart. The TEST scores below are 15-clip balanced accuracies.
+Two labelled 3 s TEST windows (official RealTalk listener boxes plus Euler). Top: **head shake**, `gold_023`, 15 to 18 s, yaw. Bottom: **head nod**, `gold_030`, 21 to 24 s, pitch. This is a face figure, not a pose-only chart. The TEST scores below are 15-clip balanced accuracies.
 
 The protocol uses 3 s windows, a 2 s stride, 29 windows per clip, and 435 windows per split. DEV is `gold_001` to `gold_015`. TEST is `gold_016` to `gold_030`. The headline metric is balanced accuracy. Chance is 0.500. The 95% intervals are clip-level bootstrap (15 clips, 2000 resamples). An interval that includes 0.500 is not distinguished from chance.
 
-Locked TEST: the shake yaw rule (axis y, τ about 4.091°) scores **0.654 [0.525, 0.794]**. That is the first result that clears chance on locked TEST. The nod return-ratio rule (amplitude plus return) scores **0.634 [0.576, 0.685]**. Amplitude-only nod TEST is 0.549 [0.480, 0.619] and includes chance.
+Locked TEST, head shake: the yaw amplitude rule (axis y, τ = 4.091°) scores **0.654 [0.525, 0.794]**. That is the first result that clears chance on locked TEST.
 
-DEV only, not TEST: nod Pose CNN 0.523, and that interval includes chance. Identity-fixed VideoMAE, 1.5 s, last two blocks, no horizontal flip, scores 0.571. TEST was not scored for that run. Largest-face Haar RGB crops are withdrawn because they showed the wrong person. Later RGB work uses identity-fixed crops only. A DEV fusion search did not beat the return-ratio rule. Fusion and the nod CNN/VideoMAE runs that stay at chance were not scored on TEST.
+Locked TEST, head nod: the return-ratio rule (amplitude plus return) scores **0.634 [0.576, 0.685]**. Amplitude-only nod TEST is 0.549 [0.480, 0.619] and includes chance.
+
+DEV only, not TEST: shake Pose CNN 0.606 [0.519, 0.680]; nod Pose CNN 0.523 (interval includes chance). Identity-fixed nod VideoMAE, 1.5 s, last two blocks, no horizontal flip, scores 0.571. TEST was not scored for those CNN or VideoMAE runs. Largest-face Haar RGB crops are withdrawn because they showed the wrong person. Later RGB work uses identity-fixed crops only. A DEV nod fusion search did not beat the return-ratio rule. Fusion and the nod CNN/VideoMAE runs that stay at chance were not scored on TEST.
 
 Pose and RGB are two encodings of the same camera.
 

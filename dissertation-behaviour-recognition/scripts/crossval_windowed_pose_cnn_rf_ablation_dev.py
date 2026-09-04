@@ -38,15 +38,7 @@ from check_split_leakage import (  # noqa: E402
 )
 from crossval_windowed_pose_cnn_dev import WINDOW_FRAMES, window_tensor  # noqa: E402
 from src.clip_metrics import always_predict, clip_binary_metrics  # noqa: E402
-from src.pose_cnn import (  # noqa: E402
-    DEFAULT_KERNELS,
-    WINDOWED_FPS,
-    _build_cnn,
-    conv_paddings,
-    conv_receptive_field,
-    receptive_field_seconds,
-)
-from src.utils import dump_json, set_seed  # noqa: E402
+from src.utils import dump_json, load_json, set_seed  # noqa: E402
 from src.windowed_baselines import (  # noqa: E402
     average_precision,
     clip_bootstrap,
@@ -61,6 +53,8 @@ OUT_DIR = ROOT / "results" / "windowed_nod" / "pose_cnn_loco_dev_rf_ablation"
 DEV_IDS = {f"gold_{i:03d}" for i in range(1, 16)}
 TEST_IDS = {f"gold_{i:03d}" for i in range(16, 31)}
 FIXED_THRESHOLD = 0.5
+DEFAULT_KERNELS = (5, 5, 3)
+WINDOWED_FPS = 25.0
 FPS = WINDOWED_FPS
 LOCKED_CNN_BA = 0.5234233781883912
 LOCKED_CNN_CI = (0.46853887717234227, 0.5831911636045494)
@@ -71,6 +65,67 @@ CONFIGS = (
     {"name": "k11_9_7", "kernels": (11, 9, 7), "role": "proposed"},
     {"name": "k21_15_13", "kernels": (21, 15, 13), "role": "larger"},
 )
+
+
+def conv_receptive_field(kernels) -> int:
+    """Stride-1 stacked Conv1d receptive field: 1 + sum(k_i - 1)."""
+    ks = tuple(int(k) for k in kernels)
+    if not ks:
+        raise ValueError("kernels must not be empty")
+    return 1 + sum(k - 1 for k in ks)
+
+
+def conv_paddings(kernels) -> tuple[int, ...]:
+    """Same-length padding for odd kernels: padding = kernel // 2."""
+    return tuple(int(k) // 2 for k in kernels)
+
+
+def receptive_field_seconds(kernels, fps: float = WINDOWED_FPS) -> float:
+    return conv_receptive_field(kernels) / float(fps)
+
+
+def _build_cnn(nn, d: int, kernels):
+    """Locked 3-layer 1D stack; only kernel size and matching padding change.
+
+    Copied from the published src.pose_cnn._build_cnn (Conv1d 32/64/64,
+    BatchNorm, ReLU, Dropout 0.2, AdaptiveAvgPool1d, Linear 64→1) so this
+    script does not need a newer pose_cnn.py on Otter.
+    """
+    resolved = tuple(int(k) for k in kernels)
+    if len(resolved) != 3:
+        raise ValueError(f"expected 3 kernels, got {resolved}")
+    if any(k < 1 or k % 2 == 0 for k in resolved):
+        raise ValueError(
+            f"kernels must be positive odd integers so padding keeps length, got {resolved}"
+        )
+    pads = conv_paddings(resolved)
+    k1, k2, k3 = resolved
+    p1, p2, p3 = pads
+
+    class PoseCNN1D(nn.Module):
+        def __init__(self, d: int):
+            super().__init__()
+            self.kernels = resolved
+            self.net = nn.Sequential(
+                nn.Conv1d(d, 32, k1, padding=p1),
+                nn.BatchNorm1d(32),
+                nn.ReLU(),
+                nn.Dropout(0.2),
+                nn.Conv1d(32, 64, k2, padding=p2),
+                nn.BatchNorm1d(64),
+                nn.ReLU(),
+                nn.Dropout(0.2),
+                nn.Conv1d(64, 64, k3, padding=p3),
+                nn.ReLU(),
+                nn.AdaptiveAvgPool1d(1),
+            )
+            self.fc = nn.Linear(64, 1)
+
+        def forward(self, x):
+            h = self.net(x)
+            return self.fc(h.squeeze(-1)).squeeze(-1)
+
+    return PoseCNN1D(d)
 
 
 def refuse_test_ids(sample_ids) -> None:
@@ -420,56 +475,67 @@ def main() -> None:
     comparison_path = out_dir / "comparison.json"
     if comparison_path.exists():
         raise SystemExit(f"STOP: {comparison_path} exists.")
-    for cfg in CONFIGS:
-        metrics_path = out_dir / cfg["name"] / "metrics_dev.json"
-        if metrics_path.exists():
-            raise SystemExit(f"STOP: {metrics_path} exists.")
 
-    try:
-        import torch
-        from torch import nn
-        from torch.utils.data import DataLoader, TensorDataset
-    except ImportError as exc:
-        raise SystemExit(
-            "STOP: torch missing. On otter use /scratch/db01550/venv/bin/python"
-        ) from exc
-
-    frame = load_windows(WINDOWS, "DEV", DEV_IDS)
-    refuse_test_ids(frame["sample_id"])
-    features = window_tensor(frame, return_ratio_channel=False)
-    if features.shape != (len(frame), WINDOW_FRAMES, 6):
-        raise SystemExit(f"STOP: expected (N, {WINDOW_FRAMES}, 6), got {features.shape}")
-    labels = frame["label"].to_numpy(dtype=np.int64)
-    sample_ids = frame["sample_id"].to_numpy()
-    window_ids = frame["window_id"].astype(str).to_numpy()
-    refuse_test_ids(sample_ids)
-
-    rows = []
     for cfg in CONFIGS:
         info = describe_config(cfg)
         print(
             f"{info['name']} kernels {','.join(str(k) for k in info['kernels'])}  "
             f"RF {info['rf_steps']} steps = {info['rf_seconds']:.2f} s at {FPS:.0f} fps  "
-            f"(padding {','.join(str(p) for p in info['paddings'])})",
+            f"(padding {','.join(str(p) for p in info['paddings'])})  "
+            f"on {WINDOW_FRAMES} frames / {WINDOW_FRAMES / FPS:.1f} s",
             flush=True,
         )
-        payload = run_loco(
-            features=features,
-            labels=labels,
-            sample_ids=sample_ids,
-            window_ids=window_ids,
-            kernels=tuple(cfg["kernels"]),
-            out_dir=out_dir / cfg["name"],
-            epochs=args.epochs,
-            batch_size=args.batch_size,
-            seed=args.seed,
-            nn=nn,
-            torch=torch,
-            DataLoader=DataLoader,
-            TensorDataset=TensorDataset,
-        )
-        rows.append(comparison_row(cfg, payload))
 
+    cached: dict[str, dict] = {}
+    pending: list[dict] = []
+    for cfg in CONFIGS:
+        metrics_path = out_dir / cfg["name"] / "metrics_dev.json"
+        if metrics_path.exists():
+            print(f"already written; not retraining {metrics_path}")
+            cached[cfg["name"]] = load_json(metrics_path)
+        else:
+            pending.append(cfg)
+
+    if pending:
+        try:
+            import torch
+            from torch import nn
+            from torch.utils.data import DataLoader, TensorDataset
+        except ImportError as exc:
+            raise SystemExit(
+                "STOP: torch missing. On otter use /scratch/db01550/venv/bin/python"
+            ) from exc
+
+        frame = load_windows(WINDOWS, "DEV", DEV_IDS)
+        refuse_test_ids(frame["sample_id"])
+        features = window_tensor(frame, return_ratio_channel=False)
+        if features.shape != (len(frame), WINDOW_FRAMES, 6):
+            raise SystemExit(
+                f"STOP: expected (N, {WINDOW_FRAMES}, 6), got {features.shape}"
+            )
+        labels = frame["label"].to_numpy(dtype=np.int64)
+        sample_ids = frame["sample_id"].to_numpy()
+        window_ids = frame["window_id"].astype(str).to_numpy()
+        refuse_test_ids(sample_ids)
+
+        for cfg in pending:
+            cached[cfg["name"]] = run_loco(
+                features=features,
+                labels=labels,
+                sample_ids=sample_ids,
+                window_ids=window_ids,
+                kernels=tuple(cfg["kernels"]),
+                out_dir=out_dir / cfg["name"],
+                epochs=args.epochs,
+                batch_size=args.batch_size,
+                seed=args.seed,
+                nn=nn,
+                torch=torch,
+                DataLoader=DataLoader,
+                TensorDataset=TensorDataset,
+            )
+
+    rows = [comparison_row(cfg, cached[cfg["name"]]) for cfg in CONFIGS]
     summary = write_comparison(out_dir, rows)
     print("=====================================")
     for row in rows:

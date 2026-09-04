@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="557.192664pt" height="384.005719pt" viewBox="0 0 557.192664 384.005719" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-09-04T11:23:42.216383</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.1, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 384.005719 
+L 557.192664 384.005719 
+L 557.192664 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 51.296469 298.776 
+L 494.643669 298.776 
+L 494.643669 34.392 
+L 51.296469 34.392 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="line2d_1">
+    <path d="M 51.296469 143.256 
+L 494.643669 143.256 
+" clip-path="url(#p2fc0962116)" style="fill: none; stroke-dasharray: 3.7,1.6; stroke-dashoffset: 0; stroke: #1d1d1f"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_2">
+      <defs>
+       <path id="m925ee2a303" d="M 0 0 
+L 0 3.5 
+" style="stroke: #1d1d1f; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#m925ee2a303" x="133.989755" y="298.776" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #1d1d1f" x="133.989755" y="312.048" transform="rotate(-0 133.989755 312.048)">Pose CNN</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_3">
+      <g>
+       <use xlink:href="#m925ee2a303" x="411.950382" y="298.776" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; fill: #1d1d1f" transform="translate(393.158507 312.848)">Pose CNN</text>
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; fill: #1d1d1f" transform="translate(389.264132 322.448)">+ return ratio</text>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_4">
+      <defs>
+       <path id="m0a53f6bc58" d="M 0 0 
+L -3.5 0 
+" style="stroke: #1d1d1f; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#m0a53f6bc58" x="51.296469" y="298.776" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: end; fill: #1d1d1f" x="44.296469" y="301.912" transform="rotate(-0 44.296469 301.912)">0.0</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_5">
+      <g>
+       <use xlink:href="#m0a53f6bc58" x="51.296469" y="267.672" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_4">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: end; fill: #1d1d1f" x="44.296469" y="270.808" transform="rotate(-0 44.296469 270.808)">0.1</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_6">
+      <g>
+       <use xlink:href="#m0a53f6bc58" x="51.296469" y="236.568" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_5">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: end; fill: #1d1d1f" x="44.296469" y="239.704" transform="rotate(-0 44.296469 239.704)">0.2</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_7">
+      <g>
+       <use xlink:href="#m0a53f6bc58" x="51.296469" y="205.464" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_6">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: end; fill: #1d1d1f" x="44.296469" y="208.6" transform="rotate(-0 44.296469 208.6)">0.3</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_8">
+      <g>
+       <use xlink:href="#m0a53f6bc58" x="51.296469" y="174.36" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_7">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: end; fill: #1d1d1f" x="44.296469" y="177.496" transform="rotate(-0 44.296469 177.496)">0.4</text>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_9">
+      <g>
+       <use xlink:href="#m0a53f6bc58" x="51.296469" y="143.256" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_8">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: end; fill: #1d1d1f" x="44.296469" y="146.392" transform="rotate(-0 44.296469 146.392)">0.5</text>
+     </g>
+    </g>
+    <g id="ytick_7">
+     <g id="line2d_10">
+      <g>
+       <use xlink:href="#m0a53f6bc58" x="51.296469" y="112.152" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_9">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: end; fill: #1d1d1f" x="44.296469" y="115.288" transform="rotate(-0 44.296469 115.288)">0.6</text>
+     </g>
+    </g>
+    <g id="ytick_8">
+     <g id="line2d_11">
+      <g>
+       <use xlink:href="#m0a53f6bc58" x="51.296469" y="81.048" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_10">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: end; fill: #1d1d1f" x="44.296469" y="84.184" transform="rotate(-0 44.296469 84.184)">0.7</text>
+     </g>
+    </g>
+    <g id="ytick_9">
+     <g id="line2d_12">
+      <g>
+       <use xlink:href="#m0a53f6bc58" x="51.296469" y="49.944" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_11">
+      <text style="font-size: 8px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: end; fill: #1d1d1f" x="44.296469" y="53.08" transform="rotate(-0 44.296469 53.08)">0.8</text>
+     </g>
+    </g>
+    <g id="text_12">
+     <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #1d1d1f" x="27.216" y="166.584" transform="rotate(-90 27.216 166.584)">Balanced accuracy</text>
+    </g>
+   </g>
+   <g id="patch_3">
+    <path d="M 71.448614 298.776 
+L 196.530896 298.776 
+L 196.530896 135.970392 
+L 71.448614 135.970392 
+z
+" clip-path="url(#p2fc0962116)" style="fill: #b0b0b4; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 349.409241 298.776 
+L 474.491523 298.776 
+L 474.491523 142.02221 
+L 349.409241 142.02221 
+z
+" clip-path="url(#p2fc0962116)" style="fill: #2c5f8a; stroke: #ffffff; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 51.296469 298.776 
+L 51.296469 34.392 
+" style="fill: none; stroke: #b0b0b4; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 51.296469 298.776 
+L 494.643669 298.776 
+" style="fill: none; stroke: #b0b0b4; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="LineCollection_1">
+    <path d="M 133.989755 153.041668 
+L 133.989755 117.38022 
+" clip-path="url(#p2fc0962116)" style="fill: none; stroke: #1d1d1f; stroke-width: 1.6"/>
+    <path d="M 411.950382 168.624018 
+L 411.950382 118.575621 
+" clip-path="url(#p2fc0962116)" style="fill: none; stroke: #1d1d1f; stroke-width: 1.6"/>
+   </g>
+   <g id="line2d_13">
+    <defs>
+     <path id="m0254a849d7" d="M 3 0 
+L -3 -0 
+" style="stroke: #1d1d1f"/>
+    </defs>
+    <g clip-path="url(#p2fc0962116)">
+     <use xlink:href="#m0254a849d7" x="133.989755" y="153.041668" style="fill: #1f77b4; stroke: #1d1d1f"/>
+     <use xlink:href="#m0254a849d7" x="411.950382" y="168.624018" style="fill: #1f77b4; stroke: #1d1d1f"/>
+    </g>
+   </g>
+   <g id="line2d_14">
+    <g clip-path="url(#p2fc0962116)">
+     <use xlink:href="#m0254a849d7" x="133.989755" y="117.38022" style="fill: #1f77b4; stroke: #1d1d1f"/>
+     <use xlink:href="#m0254a849d7" x="411.950382" y="118.575621" style="fill: #1f77b4; stroke: #1d1d1f"/>
+    </g>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: end; fill: #5c5c63" x="537.032664" y="138.2016" transform="rotate(-0 537.032664 138.2016)">chance  0.500</text>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 10.5px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #1d1d1f" x="272.970069" y="28.392" transform="rotate(-0 272.970069 28.392)">DEV leave-one-clip-out. Same folds. Threshold 0.5.</text>
+   </g>
+  </g>
+  <g id="text_15">
+   <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; fill: #5c5c63" transform="translate(51.296469 350.166281)">Original CNN is locked. Return-ratio is a 7th channel, broadcast over the 3 s window.</text>
+   <text style="font-size: 9px; font-family: 'TeX Gyre Heros', 'DejaVu Sans', sans-serif; fill: #5c5c63" transform="translate(51.296469 360.984)">Zero crossings were not added. Whiskers are 95% clip-level intervals. TEST was not scored.</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p2fc0962116">
+   <rect x="51.296469" y="34.392" width="443.3472" height="264.384"/>
+  </clipPath>
+ </defs>
+</svg>

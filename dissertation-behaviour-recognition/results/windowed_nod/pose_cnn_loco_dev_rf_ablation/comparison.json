@@ -1,0 +1,136 @@
+{
+  "protocol": "windowed_nod_3s_pose_cnn_loco_rf_ablation",
+  "development_only": true,
+  "test_scored": false,
+  "test_authorised": false,
+  "fusion_search_untouched": true,
+  "test_return_ratio_rule_untouched": true,
+  "input_protocol": {
+    "sequence_length": 75,
+    "fps": 25.0,
+    "window_seconds": 3.0,
+    "not_128_resampled_steps": true,
+    "note": "128-step resampling is the 60 s clip CNN in src/pose_cnn.py, not this windowed LOCO protocol. RF 47 steps is 1.88 s at 25 fps, not 1.1 s."
+  },
+  "locked_cnn": {
+    "path": "results/windowed_nod/pose_cnn_loco_dev/metrics_dev.json",
+    "balanced_accuracy": 0.5234233781883912,
+    "ci_95": [
+      0.46853887717234227,
+      0.5831911636045494
+    ],
+    "kernels": [
+      5,
+      5,
+      3
+    ],
+    "receptive_field_steps": 11,
+    "receptive_field_seconds": 0.44
+  },
+  "configs": [
+    {
+      "name": "k5_5_3",
+      "role": "baseline",
+      "kernels": [
+        5,
+        5,
+        3
+      ],
+      "paddings": [
+        2,
+        2,
+        1
+      ],
+      "rf_steps": 11,
+      "rf_seconds": 0.44,
+      "fps": 25.0,
+      "input_frames": 75,
+      "input_seconds": 3.0,
+      "balanced_accuracy": 0.5234233781883912,
+      "precision": 0.1347517730496454,
+      "recall": 0.36538461538461536,
+      "f1": 0.19689119170984454,
+      "pr_auc": 0.13074383603131023,
+      "tp": 19,
+      "fp": 122,
+      "tn": 261,
+      "fn": 33,
+      "ci_lower": 0.46853887717234227,
+      "ci_upper": 0.5831911636045494
+    },
+    {
+      "name": "k11_9_7",
+      "role": "proposed",
+      "kernels": [
+        11,
+        9,
+        7
+      ],
+      "paddings": [
+        5,
+        4,
+        3
+      ],
+      "rf_steps": 25,
+      "rf_seconds": 1.0,
+      "fps": 25.0,
+      "input_frames": 75,
+      "input_seconds": 3.0,
+      "balanced_accuracy": 0.516544486844748,
+      "precision": 0.12883435582822086,
+      "recall": 0.40384615384615385,
+      "f1": 0.19534883720930232,
+      "pr_auc": 0.12898073710513658,
+      "tp": 21,
+      "fp": 142,
+      "tn": 241,
+      "fn": 31,
+      "ci_lower": 0.4482590892351223,
+      "ci_upper": 0.5876111663639769
+    },
+    {
+      "name": "k21_15_13",
+      "role": "larger",
+      "kernels": [
+        21,
+        15,
+        13
+      ],
+      "paddings": [
+        10,
+        7,
+        6
+      ],
+      "rf_steps": 47,
+      "rf_seconds": 1.88,
+      "fps": 25.0,
+      "input_frames": 75,
+      "input_seconds": 3.0,
+      "balanced_accuracy": 0.4581492267523599,
+      "precision": 0.09947643979057591,
+      "recall": 0.36538461538461536,
+      "f1": 0.15637860082304525,
+      "pr_auc": 0.11231700756931098,
+      "tp": 19,
+      "fp": 172,
+      "tn": 211,
+      "fn": 33,
+      "ci_lower": 0.36472200272154315,
+      "ci_upper": 0.5470764808786109
+    }
+  ],
+  "decision": {
+    "locked_cnn_ba": 0.5234233781883912,
+    "locked_cnn_ba_ci": [
+      0.46853887717234227,
+      0.5831911636045494
+    ],
+    "margin_required": 0.03,
+    "best_larger_kernel": "k11_9_7",
+    "best_larger_kernel_ba": 0.516544486844748,
+    "delta_vs_locked": -0.006878891343643279,
+    "clear_improvement": false,
+    "test_authorised": false,
+    "text": "Do not score TEST. No larger-kernel config beats the locked CNN 0.523 by 0.03 BA."
+  }
+}

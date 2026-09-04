@@ -485,7 +485,7 @@ def main() -> None:
         "No dyad column exists on gold/pseudo; disjointness is by `video_id`.",
         "",
         "Train with `--dev-only` / `--no-test` into `results/shake/dev_balanced/<config>/`.",
-        "Do not score GOLD TEST. Student git-pushes themselves.",
+        "Do not score GOLD TEST.",
         "",
     ]
     (OUT / "README.md").write_text("\n".join(lines) + "\n")

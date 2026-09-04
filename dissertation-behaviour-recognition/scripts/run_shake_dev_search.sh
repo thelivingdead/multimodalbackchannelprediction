@@ -41,4 +41,4 @@ fi
 "$PY" scripts/compare_shake_dev_search.py
 echo "DEV search finished. BEST is DEV-only; do not print a winner TEST F1."
 echo "Next: label 10–15 new videos never in the gold 30."
-echo "Student git-pushes themselves."
+echo "Do not score GOLD TEST."

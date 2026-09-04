@@ -6,7 +6,7 @@ Chapter drafts (paste into Word) and **current** audits. Superseded preflight/pl
 | --- | --- |
 | `abstract_intro_lit_draft.md` | Abstract, Ch. 1–2 |
 | `methods_chapter_draft.md` | Methods |
-| `results_chapter_draft.md` | Results (TEST headlines; n=200 ablation) |
+| `results_chapter_draft.md` | Results chapter draft (3 s headlines; earlier 60 s clip table is background) |
 | `discussion_conclusion_draft.md` | Discussion, limitations, conclusion |
 | `figure_captions.md` | Figure captions |
 | `references_harvard.md` | References |

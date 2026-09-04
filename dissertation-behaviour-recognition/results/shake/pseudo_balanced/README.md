@@ -43,5 +43,5 @@ Leakage: `python scripts/check_split_leakage.py --gold-csv data/gold/shake_annot
 No dyad column exists on gold/pseudo; disjointness is by `video_id`.
 
 Train with `--dev-only` / `--no-test` into `results/shake/dev_balanced/<config>/`.
-Do not score GOLD TEST. Student git-pushes themselves.
+Do not score GOLD TEST.
 

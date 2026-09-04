@@ -1,49 +1,37 @@
 # Predicting Backchannel Events from Multimodal Conversational Signals
 
-MSc dissertation package — Divya Bisht, Centre for Vision, Speech and Signal Processing (CVSSP), University of Surrey, 2026.
+MSc dissertation package, Divya Bisht, Centre for Vision, Speech and Signal Processing (CVSSP), University of Surrey, 2026.
 
 The GitHub front page is the repository root [`README.md`](../README.md).
 
-![Listener backchannel teaser](figures/paper/teaser_backchannel.jpg)
+This package recognises listener head nods and head shakes on 30 Columbia RealTalk gold clips. The approved title says prediction. The executed task is recognition inside an observed window. An earlier study used one 60 s label per clip. The thesis results are the 3 s windowed protocol.
 
-**Task:** clip-level **listener head-nod / head-shake recognition** on Columbia RealTalk, not anticipatory forecasting. Pose and RGB are two encodings of the **same camera**. Audio is **GOLD DEV only**.
+![Listener heads in labelled 3 s TEST windows](figures/paper/teaser_windowed_heads.png)
 
-**Nod headline (TEST n = 15, once):** fine-tuned VideoMAE last 4 blocks, 80 TRAIN, **F1 0.82**.
+Two labelled 3 s TEST windows (official RealTalk listener boxes plus Euler). Shake: `gold_023`, 15 to 18 s. Nod: `gold_025`, 41 to 44 s. This is a face figure, not a pose-only chart. The TEST scores below are 15-clip balanced accuracies.
 
-![Nod TEST F1](figures/paper/nod_test_f1.png)
+The protocol uses 3 s windows, a 2 s stride, 29 windows per clip, and 435 windows per split. DEV is `gold_001` to `gold_015`. TEST is `gold_016` to `gold_030`. The headline metric is balanced accuracy. Chance is 0.500. The 95% intervals are clip-level bootstrap (15 clips, 2000 resamples). An interval that includes 0.500 is not distinguished from chance.
 
-| Model | TEST F1 |
-| --- | ---: |
-| Pose rule | 0.67 |
-| Pose CNN | 0.70 |
-| Frozen VideoMAE | 0.57 |
-| Fine-tuned VideoMAE | **0.82** |
+Locked TEST: the shake yaw rule (axis y, τ about 4.091°) scores **0.654 [0.525, 0.794]**. That is the first result that clears chance on locked TEST. The nod return-ratio rule (amplitude plus return) scores **0.634 [0.576, 0.685]**. Amplitude-only nod TEST is 0.549 [0.480, 0.619] and includes chance.
 
-n=200 fine-tune TEST F1 **0.63** is a scaling ablation, not the headline. CIs overlap; no significance claims. Master table: `results/tables/main_results.md`.
+DEV only, not TEST: nod Pose CNN 0.523, and that interval includes chance. Identity-fixed VideoMAE, 1.5 s, last two blocks, no horizontal flip, scores 0.571. TEST was not scored for that run. Largest-face Haar RGB crops are withdrawn because they showed the wrong person. Later RGB work uses identity-fixed crops only. A DEV fusion search did not beat the return-ratio rule. Fusion and the nod CNN/VideoMAE runs that stay at chance were not scored on TEST.
 
-**Shake headline (TEST n = 15, once):** pose rule axis **z**, **F1 0.70**. Geometric shake is **y** (yaw); TEST was not rescored after that audit.
+Pose and RGB are two encodings of the same camera.
 
-Scripts: [`scripts/README.md`](scripts/README.md). Validation: [`reports/repository_validation.md`](reports/repository_validation.md). Captions: [`figures/paper/CAPTIONS.md`](figures/paper/CAPTIONS.md).
-
-## Protocol
-
-- 30 gold windows: 15 DEV / 15 TEST, scored **once**.
-- TRAIN = frozen-rule **pseudo-labels**.
-- Metric: clip-level P/R/F1.
-- RealTalk: p0 = LEFT, p1 = RIGHT, 25 fps.
-- New DEV work (in progress): mark nod *events* inside each 60 s clip (`data/windowed_annotations/`; `python scripts/annotate_nod_events_dev.py`). 3 s window labels are not generated yet. Original gold CSVs stay frozen.
+Scripts: [`scripts/README.md`](scripts/README.md). Captions: [`figures/paper/CAPTIONS.md`](figures/paper/CAPTIONS.md).
 
 ## Layout
 
 ```
-configs/     rule YAML
-data/gold/   human labels
-scripts/     canonical entry points — scripts/README.md
-src/         metrics, pose_cnn, audio_io
-results/     locked json/csv — do not overwrite TEST dirs
-figures/     dissertation figures
-reports/     audits and chapter drafts
-tests/       invariants and TEST-lock checks
+configs/                   rule YAML
+data/gold/                 human clip labels
+data/windowed_annotations/ 3 s window labels
+scripts/                   canonical entry points, see scripts/README.md
+src/                       metrics, pose_cnn, audio_io
+results/                   locked json/csv; do not overwrite TEST dirs
+figures/                   dissertation figures
+reports/                   audits and chapter drafts
+tests/                     invariants and TEST-lock checks
 ```
 
 ## Setup
@@ -55,7 +43,7 @@ pip install -r requirements.txt
 pytest -q
 ```
 
-VideoMAE: `pip install -r requirements-video.txt`. Audio DEV: `pip install -r requirements-audio.txt`. GPU fine-tune used otter95 `/scratch` CUDA; do not `--force` locked out-dirs.
+VideoMAE extras: `pip install -r requirements-video.txt`. Audio DEV extras: `pip install -r requirements-audio.txt`. Do not overwrite locked TEST directories.
 
 ## Citation
 

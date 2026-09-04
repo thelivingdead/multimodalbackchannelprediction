@@ -1,6 +1,6 @@
 # Head-shake DEV-only improvement — parent report
 
-Do **not** score GOLD TEST. Student git-pushes themselves. This agent did not `git add` / commit / push.
+Do not score GOLD TEST.
 
 ## Verified shake rotation axis
 

@@ -1,5 +1,8 @@
 # Figures
 
+The GitHub README lead figure is `paper/teaser_windowed_heads.png` (3 s listener
+faces on locked TEST). The 60 s clip F1 figures below are from an earlier protocol.
+
 Dissertation figures from the executed pipeline. PNG at 300 DPI for the dissertation,
 JPG at 300 DPI for GitHub. Producers: `scripts/run_full_experiment.py`,
 `scripts/plot_gold_visuals.py`, and `scripts/make_figures.py` (which skips gracefully

@@ -44,5 +44,5 @@ Locked TEST numbers from the 75/5 protocol are already known and are **not** a s
 
 Footnote (already-known locked TEST, not for selection): shake rule TEST F1 0.70; 75/5 CNN TEST F1 0.64 with TN=0; 75/5 VideoMAE TEST F1 0.60. Ignore these when picking the best new run.
 
-Student git-pushes themselves. Do not score GOLD TEST yet.
+Do not score GOLD TEST yet.
 

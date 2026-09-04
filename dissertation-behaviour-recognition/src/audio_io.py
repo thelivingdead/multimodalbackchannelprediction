@@ -355,7 +355,7 @@ def _curl_range(
     shard: str,
     last_exc: Exception | None,
 ) -> dict[str, Any]:
-    """Fallback when Python requests is proxied (Cursor sandbox) but curl is not."""
+    """Fallback when Python requests is proxied but curl is not."""
     curl = shutil.which("curl")
     if not curl:
         raise SystemExit(

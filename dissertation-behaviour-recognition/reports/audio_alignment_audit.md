@@ -8,7 +8,7 @@ The task remains **supervised prediction of the backchannel label associated wit
 
 ## Stop rule
 
-Step 1 wall-clock budget is **20 minutes**. Hugging Face Range reads of RealTalk members **do work** from this Mac when the Cursor sandbox proxy is not used (HTTP 206). One 452 MB member (`6RDkdbgzeAI`) was downloaded and one 60.000 s WAV was extracted. Clips 2–5 were not fetched before the budget was exhausted. **Training stops here.**
+Step 1 wall-clock budget is **20 minutes**. Hugging Face Range reads of RealTalk members work from this Mac when the local HTTP proxy is not used (HTTP 206). One 452 MB member (`6RDkdbgzeAI`) was downloaded and one 60.000 s WAV was extracted. Clips 2–5 were not fetched before the budget was exhausted. **Training stops here.**
 
 ## Audio source
 
@@ -53,7 +53,7 @@ The temporary AVI was deleted after probing to free disk (~452 MB). Re-fetch wit
 
 1. Need **≥ 3** passing clips. Only one WAV exists.
 2. Remaining members are large (WrWFSBLjWZU 777 MB, jg6y3LABwTs 1034 MB, f6aNo5Mod9I 813 MB, GJtqigeWHV8 1491 MB). Sequential Range download at ~2.7 MB/s is several minutes per file; the 20-minute stop fired after clip 1.
-3. No local `REALTALK_VIDEO_DIR` of `{video_id}.mp4`. No `HF_TOKEN`. Earlier Cursor-sandbox `requests` calls hit **ProxyError 403**; **curl without that proxy returns HTTP 206** and valid AVI bytes.
+3. No local `REALTALK_VIDEO_DIR` of `{video_id}.mp4`. No `HF_TOKEN`. Earlier proxied `requests` calls hit **ProxyError 403**; **curl without that proxy returns HTTP 206** and valid AVI bytes.
 4. Otter SSH (`otterdiv` → otter48) works, but **`/scratch/db01550/venv` and `~/multimodalbackchannelprediction/.venv` are missing**. Frozen VideoMAE embeddings **are** on otter (`data/features/videomae/`, 110 npz, 3.1 MB). They were **not** copied or used, because fusion is forbidden until alignment PASS.
 
 ## Otter commands (do not invent F1; DEV only)

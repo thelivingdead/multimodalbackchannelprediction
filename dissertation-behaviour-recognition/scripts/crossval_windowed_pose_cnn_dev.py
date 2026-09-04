@@ -6,12 +6,15 @@ so the pose CNN and the amplitude rule are compared on identical windows.
 Feature set C (rotation xyz + first differences). Normalisation statistics
 are fitted on the 14 training clips of each fold, never on the held-out clip.
 
+``--return-ratio`` adds pitch return-ratio as a constant 7th channel. That
+run writes a new directory and must not overwrite pose_cnn_loco_dev.
+
 DEV only: no TEST input, writes metrics_dev.json.
 
 Otter::
 
     OMP_NUM_THREADS=1 /scratch/db01550/venv/bin/python \\
-        scripts/crossval_windowed_pose_cnn_dev.py --task nod
+        scripts/crossval_windowed_pose_cnn_dev.py --task nod --return-ratio
 """
 from __future__ import annotations
 
@@ -36,6 +39,7 @@ from src.windowed_baselines import (  # noqa: E402
     load_windows,
     select_dev_threshold,
 )
+from evaluate_windowed_nod_motion_ablation import return_ratio as pitch_return_ratio  # noqa: E402
 
 DEV_WINDOWS = {
     "nod": ROOT / "data" / "windowed_annotations" / "nod_windows_dev.csv",
@@ -48,7 +52,22 @@ WINDOW_FRAMES = 75
 FIXED_THRESHOLD = 0.5
 
 
-def window_tensor(frame: pd.DataFrame) -> np.ndarray:
+def channels_for_window(
+    chunk: np.ndarray, *, return_ratio_channel: bool = False
+) -> np.ndarray:
+    """Feature set C, optionally with pitch return-ratio broadcast over time."""
+    chunk = np.asarray(chunk, dtype=np.float32)
+    if chunk.ndim != 2 or chunk.shape[1] != 3:
+        raise SystemExit(f"STOP: expected (T, 3) rotation, got {chunk.shape}")
+    diff = np.vstack([np.zeros((1, 3), dtype=np.float32), np.diff(chunk, axis=0)])
+    feat = np.concatenate([chunk, diff], axis=1)
+    if return_ratio_channel:
+        rr = np.full((len(chunk), 1), pitch_return_ratio(chunk), dtype=np.float32)
+        feat = np.concatenate([feat, rr], axis=1)
+    return feat.astype(np.float32)
+
+
+def window_tensor(frame: pd.DataFrame, *, return_ratio_channel: bool = False) -> np.ndarray:
     cache: dict[str, dict] = {}
     rows = []
     for r in frame.itertuples(index=False):
@@ -65,10 +84,12 @@ def window_tensor(frame: pd.DataFrame) -> np.ndarray:
         chunk = rot[i0:i1]
         if len(chunk) != WINDOW_FRAMES:
             chunk = resample_seq(chunk, t=WINDOW_FRAMES)
-        chunk = chunk.astype(np.float32)
-        diff = np.vstack([np.zeros((1, 3), dtype=np.float32), np.diff(chunk, axis=0)])
-        rows.append(np.concatenate([chunk, diff], axis=1))
-    return np.stack(rows).astype(np.float32)
+        rows.append(channels_for_window(chunk, return_ratio_channel=return_ratio_channel))
+    stacked = np.stack(rows).astype(np.float32)
+    expected = 7 if return_ratio_channel else 6
+    if stacked.shape[-1] != expected:
+        raise SystemExit(f"STOP: expected {expected} channels, got {stacked.shape}")
+    return stacked
 
 
 def main() -> None:
@@ -79,11 +100,24 @@ def main() -> None:
     ap.add_argument("--batch-size", type=int, default=16)
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--max-folds", type=int, default=0, help="0 = all 15 folds")
+    ap.add_argument(
+        "--return-ratio",
+        action="store_true",
+        help="Add pitch return-ratio as a 7th channel. Writes a new out-dir.",
+    )
     args = ap.parse_args()
 
-    out_dir = args.out_dir or (
-        ROOT / "results" / f"windowed_{args.task}" / "pose_cnn_loco_dev"
-    )
+    if args.out_dir is not None:
+        out_dir = args.out_dir
+    elif args.return_ratio:
+        out_dir = (
+            ROOT / "results" / f"windowed_{args.task}" / "pose_cnn_loco_dev_return_ratio"
+        )
+    else:
+        out_dir = ROOT / "results" / f"windowed_{args.task}" / "pose_cnn_loco_dev"
+    original_loco = ROOT / "results" / f"windowed_{args.task}" / "pose_cnn_loco_dev"
+    if args.return_ratio and Path(out_dir).resolve() == original_loco.resolve():
+        raise SystemExit("STOP: return-ratio run must not overwrite the original CNN dir")
     out_dir = assert_unlocked_out_dir(out_dir)
     metrics_path = out_dir / "metrics_dev.json"
     if metrics_path.exists():
@@ -101,7 +135,7 @@ def main() -> None:
     frame = load_windows(DEV_WINDOWS[args.task], "DEV", DEV_IDS)
     if set(frame["sample_id"]) & TEST_IDS:
         raise SystemExit("STOP: TEST id present in a DEV-only script")
-    features = window_tensor(frame)
+    features = window_tensor(frame, return_ratio_channel=args.return_ratio)
     labels = frame["label"].to_numpy(dtype=np.int64)
     sample_ids = frame["sample_id"].to_numpy()
     fold_ids = sorted(set(sample_ids))
@@ -110,8 +144,12 @@ def main() -> None:
 
     set_seed(args.seed)
     torch.manual_seed(args.seed)
-    print(f"task {args.task} | {len(labels)} windows ({int(labels.sum())} positive) "
-          f"from {len(set(sample_ids))} clips | {len(fold_ids)} folds")
+    print(
+        f"task {args.task} | {len(labels)} windows ({int(labels.sum())} positive) "
+        f"from {len(set(sample_ids))} clips | {len(fold_ids)} folds | "
+        f"channels {features.shape[-1]}"
+        f"{' + return_ratio' if args.return_ratio else ''}"
+    )
 
     oof = np.full(len(labels), np.nan, dtype=float)
     fold_rows: list[dict] = []
@@ -206,8 +244,16 @@ def main() -> None:
     dump_json(
         metrics_path,
         {
-            "protocol": f"windowed_{args.task}_3s_pose_cnn_loco",
-            "feature_set": "C_xyz_deriv",
+            "protocol": (
+                f"windowed_{args.task}_3s_pose_cnn_loco"
+                + ("_return_ratio" if args.return_ratio else "")
+            ),
+            "feature_set": (
+                "C_xyz_deriv_return_ratio" if args.return_ratio else "C_xyz_deriv"
+            ),
+            "return_ratio_channel": bool(args.return_ratio),
+            "zero_crossings_used": False,
+            "n_channels": int(features.shape[-1]),
             "development_only": True,
             "test_scored": False,
             "cross_validation": "leave-one-clip-out over DEV clips",

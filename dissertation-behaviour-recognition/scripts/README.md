@@ -24,13 +24,14 @@ New exploratory work should write under `results/dev/`, `results/experiments/`, 
 | Script | Purpose |
 | --- | --- |
 | `10_evaluate_rule.py` | Older event-level pilot evaluator (not the 30-window clip protocol) |
+| `evaluate_windowed_nod_return_ratio_test.py` | Frozen DEV return-ratio rule on TEST once. Does not retune |
 | `19_error_analysis.py` | TEST clip error table from saved predictions |
 | `20_annotation_efficiency.py` | Annotation-time summary |
 | `majority_baseline.py` | Always-positive clip baseline |
 
 ## Analysis / visualisation
 
-`make_figures.py`, `make_dissertation_figures.py`, `make_main_results.py`, `plot_paper_style_figures.py`, `plot_videomae_results.py`, `plot_audio_dev_figures.py`, `make_hubert_figures.py`, `plot_spectral_euler.py`, `plot_teaser_figure.py`, `plot_pipeline_diagram.py`, `plot_gold_visuals.py`, `plot_rgb_frame_strips.py`.
+`make_figures.py`, `make_dissertation_figures.py`, `make_main_results.py`, `plot_paper_style_figures.py`, `plot_videomae_results.py`, `plot_audio_dev_figures.py`, `make_hubert_figures.py`, `plot_spectral_euler.py`, `plot_teaser_figure.py` (old 60 s nod faces; not the README lead), `plot_teaser_shake_windowed.py` (3 s yaw TEST teaser, pose only), `plot_pipeline_diagram.py`, `plot_gold_visuals.py`, `plot_rgb_frame_strips.py`.
 
 These read existing csv/json/npz. They must not rescore GOLD TEST.
 
@@ -55,6 +56,10 @@ These read existing csv/json/npz. They must not rescore GOLD TEST.
 | `hubert_train_label_permutation.py` | TRAIN-label permutation on DEV |
 | `audit_nod_onsets.py` | Onset audit for temporal correspondence |
 | `evaluate_temporal_correspondence_dev.py` | Rule vs annotated nod onsets (DEV) |
+| `evaluate_windowed_nod_motion_ablation.py` | DEV-only pitch-rule motion features (zero crossings, return ratio). No TEST |
+| `crossval_windowed_pose_cnn_dev.py` | DEV leave-one-clip-out pose CNN. `--return-ratio` writes a new dir. No TEST |
+| `plot_pose_cnn_return_ratio_ablation.py` | Original vs +return-ratio CNN figures. Reads locked metrics only |
+| `run_pose_cnn_return_ratio_otter.sh` | Otter: train +return-ratio CNN, then plot. Does not rerun original or TEST |
 | `run_shake_dev_search.py` / `*_dev.py` shake wrappers | Shake search with `test_scored: false` |
 | `compare_shake_dev_search.py`, `compare_shake_v2_dev.py` | DEV-only shake comparison |
 

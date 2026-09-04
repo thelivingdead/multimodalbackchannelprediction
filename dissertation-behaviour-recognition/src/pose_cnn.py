@@ -33,7 +33,26 @@ import pandas as pd
 from .metrics import binary_metrics
 from .utils import dump_json
 
-SEQ_LEN = 128
+SEQ_LEN = 128  # 60 s clip CNN only. Windowed 3 s LOCO uses 75 frames at 25 fps.
+DEFAULT_KERNELS = (5, 5, 3)
+WINDOWED_FPS = 25.0
+
+
+def conv_receptive_field(kernels) -> int:
+    """Stride-1 stacked Conv1d receptive field: 1 + sum(k_i - 1)."""
+    ks = tuple(int(k) for k in kernels)
+    if not ks:
+        raise ValueError("kernels must not be empty")
+    return 1 + sum(k - 1 for k in ks)
+
+
+def conv_paddings(kernels) -> tuple[int, ...]:
+    """Same-length padding for odd kernels: padding = kernel // 2."""
+    return tuple(int(k) // 2 for k in kernels)
+
+
+def receptive_field_seconds(kernels, fps: float = WINDOWED_FPS) -> float:
+    return conv_receptive_field(kernels) / float(fps)
 
 
 def load_npz(path: Path) -> dict:
@@ -96,20 +115,38 @@ def _torch():
     return torch, nn, DataLoader, TensorDataset
 
 
-def _build_cnn(nn, d: int):
+def _build_cnn(nn, d: int, kernels=None):
+    """1D pose CNN. Default kernels (5, 5, 3) match the locked windowed LOCO CNN.
+
+    ``kernels`` is an optional length-3 tuple of odd sizes. Padding is
+    kernel // 2 so the temporal length is unchanged. Existing callers that
+    omit ``kernels`` keep the original 5, 5, 3 stack.
+    """
+    resolved = tuple(int(k) for k in (DEFAULT_KERNELS if kernels is None else kernels))
+    if len(resolved) != 3:
+        raise ValueError(f"expected 3 kernels, got {resolved}")
+    if any(k < 1 or k % 2 == 0 for k in resolved):
+        raise ValueError(
+            f"kernels must be positive odd integers so padding keeps length, got {resolved}"
+        )
+    pads = conv_paddings(resolved)
+    k1, k2, k3 = resolved
+    p1, p2, p3 = pads
+
     class PoseCNN1D(nn.Module):
         def __init__(self, d: int):
             super().__init__()
+            self.kernels = resolved
             self.net = nn.Sequential(
-                nn.Conv1d(d, 32, 5, padding=2),
+                nn.Conv1d(d, 32, k1, padding=p1),
                 nn.BatchNorm1d(32),
                 nn.ReLU(),
                 nn.Dropout(0.2),
-                nn.Conv1d(32, 64, 5, padding=2),
+                nn.Conv1d(32, 64, k2, padding=p2),
                 nn.BatchNorm1d(64),
                 nn.ReLU(),
                 nn.Dropout(0.2),
-                nn.Conv1d(64, 64, 3, padding=1),
+                nn.Conv1d(64, 64, k3, padding=p3),
                 nn.ReLU(),
                 nn.AdaptiveAvgPool1d(1),
             )

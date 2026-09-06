@@ -15,6 +15,7 @@ Otter::
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 from pathlib import Path
 
@@ -48,7 +49,8 @@ from src.windowed_baselines import (  # noqa: E402
 
 WINDOWS = ROOT / "data" / "windowed_annotations" / "nod_windows_dev.csv"
 OUT = ROOT / "results" / "windowed_dev" / "audio_3s"
-CACHE = ROOT / "data" / "features" / "audio_windowed_dev"
+_CACHE_ENV = os.environ.get("AUDIO_WINDOWED_CACHE", "").strip()
+CACHE = Path(_CACHE_ENV).expanduser() if _CACHE_ENV else ROOT / "data" / "features" / "audio_windowed_dev"
 DEV_IDS = {f"gold_{i:03d}" for i in range(1, 16)}
 TEST_IDS = {f"gold_{i:03d}" for i in range(16, 31)}
 SEED = 42
@@ -187,7 +189,8 @@ def extract_features(frame: pd.DataFrame, keep_video: bool) -> list[str]:
     CACHE.mkdir(parents=True, exist_ok=True)
     index = load_shard_index()
     statuses = ["not_extracted"] * len(frame)
-    tmp_dir = CACHE / "tmp_video"
+    video_root = os.environ.get("REALTALK_VIDEO_DIR", "").strip()
+    tmp_dir = Path(video_root).expanduser() if video_root else (CACHE / "tmp_video")
     tmp_dir.mkdir(parents=True, exist_ok=True)
     clip_cache: dict[str, tuple[np.ndarray, int, dict]] = {}
     for i, rec in enumerate(frame.itertuples(index=False)):

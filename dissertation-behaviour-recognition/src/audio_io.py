@@ -406,14 +406,16 @@ def resolve_video_file(
     local = local_video_path(video_id)
     if local is not None:
         return local, {"source": "local", "path": str(local)}, False
+    tmp_dir = Path(tmp_dir)
+    tmp_dir.mkdir(parents=True, exist_ok=True)
     size = int(index[video_id]["size"])
-    free = shutil.disk_usage(Path.home()).free
+    free = shutil.disk_usage(tmp_dir).free
     need = size + 512 * 1024 * 1024
     if free < need:
         raise SystemExit(
             f"BLOCKED: {video_id} member is {size / 1024**2:.0f} MB but free "
-            f"disk is {free / 1024**3:.2f} GB (need member + 0.5 GB). "
-            "Run on otter with REALTALK_VIDEO_DIR or more free space. "
+            f"disk on {tmp_dir} is {free / 1024**3:.2f} GB (need member + 0.5 GB). "
+            "Set REALTALK_VIDEO_DIR to a folder on /scratch and rerun. "
             "No F1 invented."
         )
     dest = tmp_dir / f"{video_id}.mp4"

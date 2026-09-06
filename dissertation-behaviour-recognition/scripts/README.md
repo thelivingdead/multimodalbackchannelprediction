@@ -31,7 +31,7 @@ New exploratory work should write under `results/dev/`, `results/experiments/`, 
 
 ## Analysis / visualisation
 
-`make_figures.py`, `make_dissertation_figures.py`, `make_main_results.py`, `plot_paper_style_figures.py`, `plot_videomae_results.py`, `plot_audio_dev_figures.py`, `make_hubert_figures.py`, `plot_spectral_euler.py`, `plot_teaser_figure.py` (old 60 s nod faces; not the README lead), `plot_teaser_shake_windowed.py` (3 s yaw TEST teaser, pose only), `plot_pipeline_diagram.py`, `plot_gold_visuals.py`, `plot_rgb_frame_strips.py`.
+`make_figures.py`, `make_dissertation_figures.py`, `make_main_results.py`, `plot_paper_style_figures.py`, `plot_videomae_results.py`, `plot_audio_dev_figures.py`, `make_hubert_figures.py`, `plot_spectral_euler.py`, `plot_teaser_figure.py` (old 60 s nod faces; not the README lead), `plot_teaser_shake_windowed.py` (3 s yaw TEST teaser, pose only), `plot_teaser_windowed_heads.py` (3 s windowed face teaser: nod + shake listener strips; not the 60 s teaser), `plot_pipeline_diagram.py`, `plot_gold_visuals.py`, `plot_rgb_frame_strips.py`.
 
 These read existing csv/json/npz. They must not rescore GOLD TEST.
 
@@ -51,12 +51,23 @@ These read existing csv/json/npz. They must not rescore GOLD TEST.
 | `plot_annotated_dev_windows.py` | Clear sliding-window figures for the 15 annotated DEV clips |
 | `audio_alignment_check.py` | DEV audio/video alignment |
 | `train_audio_baseline_dev.py` | MFCC LR on DEV |
+| `run_windowed_audio_3s_dev.py` | 3 s windowed MFCC LR, DEV LOCO. No TEST |
+| `plot_windowed_audio_3s_dev.py` | DEV audio figures A to D. No TEST |
+| `run_windowed_audio_3s_otter.sh` | Otter: extract, train, figures. No TEST |
 | `train_av_fusion_dev.py` | RGB+audio concat on DEV |
 | `run_hubert_dev.py` | Frozen HuBERT + 50/50 fusion on DEV |
 | `hubert_train_label_permutation.py` | TRAIN-label permutation on DEV |
 | `audit_nod_onsets.py` | Onset audit for temporal correspondence |
 | `evaluate_temporal_correspondence_dev.py` | Rule vs annotated nod onsets (DEV) |
 | `evaluate_windowed_nod_motion_ablation.py` | DEV-only pitch-rule motion features (zero crossings, return ratio). No TEST |
+| `evaluate_windowed_late_fusion_logreg_dev.py` | DEV late fusion: VideoMAE 1.5 s OOF + amplitude + return ratio. No TEST |
+| `run_late_fusion_logreg_otter.sh` | Otter wrapper for the late-fusion logreg. CPU. No TEST |
+| `audit_pose_cnn_inputs_dev.py` | Print locked Pose CNN channels and DEV feature statistics. No TEST |
+| `crossval_windowed_pose_cnn_scalar_branch_dev.py` | Two-branch Pose CNN (temporal + amp/RR MLP). Otter. No TEST |
+| `run_pose_cnn_scalar_branch_otter.sh` | Otter wrapper for the two-branch CNN |
+| `crossval_windowed_pose_cnn_rf_ablation_dev.py` | DEV LOCO Pose CNN kernel / RF ablation (75-frame input). No TEST. Fusion search / TEST return-ratio rule untouched |
+| `run_pose_cnn_rf_ablation_otter.sh` | Otter wrapper for the RF ablation. CPU. No TEST |
+| `evaluate_windowed_final_fusion_search_dev.py` | DEV decision-level fusion search. No TEST |
 | `crossval_windowed_pose_cnn_dev.py` | DEV leave-one-clip-out pose CNN. `--return-ratio` writes a new dir. No TEST |
 | `plot_pose_cnn_return_ratio_ablation.py` | Original vs +return-ratio CNN figures. Reads locked metrics only |
 | `run_pose_cnn_return_ratio_otter.sh` | Otter: train +return-ratio CNN, then plot. Does not rerun original or TEST |

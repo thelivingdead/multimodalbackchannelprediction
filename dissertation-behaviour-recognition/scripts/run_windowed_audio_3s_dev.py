@@ -15,7 +15,6 @@ Otter::
 from __future__ import annotations
 
 import argparse
-import json
 import sys
 from pathlib import Path
 
@@ -27,11 +26,6 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from check_split_leakage import assert_unlocked_out_dir  # noqa: E402
-from evaluate_windowed_late_fusion_logreg_dev import (  # noqa: E402
-    fit_logreg,
-    scale_train_only,
-    sigmoid,
-)
 from src.audio_io import (  # noqa: E402
     FEATURE_DIM,
     TARGET_SR,
@@ -59,11 +53,49 @@ DEV_IDS = {f"gold_{i:03d}" for i in range(1, 16)}
 TEST_IDS = {f"gold_{i:03d}" for i in range(16, 31)}
 SEED = 42
 FIXED_THRESHOLD = 0.5
+L2 = 1e-2
+NEWTON_STEPS = 40
 FEATURE_NAMES = (
     [f"mfcc{i}_mean" for i in range(13)]
     + [f"mfcc{i}_std" for i in range(13)]
     + ["rms_mean", "rms_std", "centroid_mean", "centroid_std"]
 )
+
+
+def sigmoid(z: np.ndarray) -> np.ndarray:
+    z = np.clip(np.asarray(z, dtype=float), -30.0, 30.0)
+    return 1.0 / (1.0 + np.exp(-z))
+
+
+def fit_logreg(x: np.ndarray, y: np.ndarray, pos_weight: float, l2: float = L2) -> np.ndarray:
+    y = np.asarray(y, dtype=float)
+    xb = np.column_stack([np.ones(len(x)), np.asarray(x, dtype=float)])
+    n, d = xb.shape
+    w = np.zeros(d, dtype=float)
+    sw = np.where(y == 1.0, float(pos_weight), 1.0)
+    sw = sw / max(float(sw.mean()), 1e-8)
+    eye = np.eye(d)
+    eye[0, 0] = 0.0
+    for _ in range(NEWTON_STEPS):
+        p = sigmoid(xb @ w)
+        resid = sw * (p - y)
+        grad = xb.T @ resid / n
+        grad[1:] += l2 * w[1:]
+        s = sw * p * (1.0 - p)
+        hess = (xb.T * s) @ xb / n
+        hess = hess + l2 * eye + 1e-8 * np.eye(d)
+        try:
+            w = w - np.linalg.solve(hess, grad)
+        except np.linalg.LinAlgError:
+            w = w - 0.1 * grad
+    return w
+
+
+def scale_train_only(train: np.ndarray, held: np.ndarray):
+    mean = train.mean(axis=0)
+    std = train.std(axis=0)
+    std = np.where(std < 1e-8, 1.0, std)
+    return (train - mean) / std, (held - mean) / std, mean, std
 
 
 def _refuse_test_frame(frame: pd.DataFrame) -> None:

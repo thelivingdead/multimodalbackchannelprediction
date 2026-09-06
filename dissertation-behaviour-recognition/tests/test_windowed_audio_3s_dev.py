@@ -14,6 +14,7 @@ def test_audio_3s_does_not_bind_test() -> None:
     assert "TEST will not be loaded" in sh
     assert "FEATURE_DIM" in train
     assert "windowed_dev" in train and "audio_3s" in train
+    assert "evaluate_windowed_late_fusion_logreg_dev" not in train
 
 
 def test_audio_3s_reuses_existing_mfcc() -> None:

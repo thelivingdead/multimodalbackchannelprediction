@@ -1,0 +1,183 @@
+{
+  "protocol": "windowed_nod_3s_audio_hubert_frozen_loco",
+  "development_only": true,
+  "test_scored": false,
+  "test_read": false,
+  "fine_tuned": false,
+  "seed": 42,
+  "threshold": 0.5,
+  "threshold_selection": "fixed 0.5; not chosen on held-out clips",
+  "encoder": "facebook/hubert-base-ls960",
+  "encoder_trainable": false,
+  "pooling": "mean over HuBERT time steps in the 3 s window",
+  "feature_dim": 768,
+  "sample_rate_hz": 16000,
+  "normalisation": "train-fold z-score over windows",
+  "model": "weighted logistic regression, L2=1e-2, no sklearn required",
+  "input_shape": "(n_windows, 768)",
+  "representation": "frozen facebook/hubert-base-ls960 last_hidden_state, mean-pooled, container soundtrack, 16 kHz mono",
+  "n_windows_scored": 435,
+  "at_fixed_threshold_0.5": {
+    "accuracy": 0.8022988505747126,
+    "balanced_accuracy": 0.5387125928901386,
+    "precision": 0.18518518518518517,
+    "recall": 0.19230769230769232,
+    "f1": 0.18867924528301885,
+    "tp": 10,
+    "fp": 44,
+    "tn": 339,
+    "fn": 42
+  },
+  "pr_auc_out_of_fold": 0.15345627530965214,
+  "clip_bootstrap_at_0.5": {
+    "n_resamples": 2000,
+    "n_clips": 15,
+    "n_skipped_single_class_resamples": 0,
+    "resampling_unit": "clip",
+    "balanced_accuracy": {
+      "mean": 0.5388939078755006,
+      "ci_lower_95": 0.47911417748917745,
+      "ci_upper_95": 0.6072066474520978
+    },
+    "f1": {
+      "mean": 0.18607347312570224,
+      "ci_lower_95": 0.07998019801980198,
+      "ci_upper_95": 0.29923228346456676
+    },
+    "precision": {
+      "mean": 0.18686620595665496,
+      "ci_lower_95": 0.07692307692307693,
+      "ci_upper_95": 0.31582156611039774
+    },
+    "recall": {
+      "mean": 0.19232073794416538,
+      "ci_lower_95": 0.0784313725490196,
+      "ci_upper_95": 0.3333333333333333
+    }
+  },
+  "always_no": {
+    "accuracy": 0.8804597701149425,
+    "balanced_accuracy": 0.5,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "tp": 0,
+    "fp": 0,
+    "tn": 383,
+    "fn": 52
+  },
+  "always_yes": {
+    "accuracy": 0.11954022988505747,
+    "balanced_accuracy": 0.5,
+    "precision": 0.11954022988505747,
+    "recall": 1.0,
+    "f1": 0.2135523613963039,
+    "tp": 52,
+    "fp": 383,
+    "tn": 0,
+    "fn": 0
+  },
+  "folds": [
+    {
+      "held_out_clip": "gold_001",
+      "skipped": false,
+      "n_train": 406,
+      "n_held": 29
+    },
+    {
+      "held_out_clip": "gold_002",
+      "skipped": false,
+      "n_train": 406,
+      "n_held": 29
+    },
+    {
+      "held_out_clip": "gold_003",
+      "skipped": false,
+      "n_train": 406,
+      "n_held": 29
+    },
+    {
+      "held_out_clip": "gold_004",
+      "skipped": false,
+      "n_train": 406,
+      "n_held": 29
+    },
+    {
+      "held_out_clip": "gold_005",
+      "skipped": false,
+      "n_train": 406,
+      "n_held": 29
+    },
+    {
+      "held_out_clip": "gold_006",
+      "skipped": false,
+      "n_train": 406,
+      "n_held": 29
+    },
+    {
+      "held_out_clip": "gold_007",
+      "skipped": false,
+      "n_train": 406,
+      "n_held": 29
+    },
+    {
+      "held_out_clip": "gold_008",
+      "skipped": false,
+      "n_train": 406,
+      "n_held": 29
+    },
+    {
+      "held_out_clip": "gold_009",
+      "skipped": false,
+      "n_train": 406,
+      "n_held": 29
+    },
+    {
+      "held_out_clip": "gold_010",
+      "skipped": false,
+      "n_train": 406,
+      "n_held": 29
+    },
+    {
+      "held_out_clip": "gold_011",
+      "skipped": false,
+      "n_train": 406,
+      "n_held": 29
+    },
+    {
+      "held_out_clip": "gold_012",
+      "skipped": false,
+      "n_train": 406,
+      "n_held": 29
+    },
+    {
+      "held_out_clip": "gold_013",
+      "skipped": false,
+      "n_train": 406,
+      "n_held": 29
+    },
+    {
+      "held_out_clip": "gold_014",
+      "skipped": false,
+      "n_train": 406,
+      "n_held": 29
+    },
+    {
+      "held_out_clip": "gold_015",
+      "skipped": false,
+      "n_train": 406,
+      "n_held": 29
+    }
+  ],
+  "chance_balanced_accuracy": 0.5,
+  "mfcc_comparison": {
+    "mfcc": {
+      "balanced_accuracy": 0.5339927696324563,
+      "ci_lower_95": 0.4702353861629596,
+      "ci_upper_95": 0.6012570264677177,
+      "source": "results/windowed_dev/audio_3s/metrics.json"
+    },
+    "hubert_minus_mfcc": 0.004719823257682276,
+    "clearly_improves_on_mfcc": false
+  }
+}

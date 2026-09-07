@@ -1,0 +1,9 @@
+{
+  "development_only": true,
+  "test_read": false,
+  "n_clips": 15,
+  "total_windows": 435,
+  "positive_windows": 52,
+  "negative_windows": 383,
+  "missing_or_failed_windows": 0
+}

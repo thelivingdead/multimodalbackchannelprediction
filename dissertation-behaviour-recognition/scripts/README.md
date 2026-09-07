@@ -54,8 +54,11 @@ These read existing csv/json/npz. They must not rescore GOLD TEST.
 | `run_windowed_audio_3s_dev.py` | 3 s windowed MFCC LR, DEV LOCO. No TEST |
 | `plot_windowed_audio_3s_dev.py` | DEV audio figures A to D. No TEST |
 | `run_windowed_audio_3s_otter.sh` | Otter: extract, train, figures. No TEST |
+| `run_windowed_hubert_3s_dev.py` | 3 s frozen HuBERT-base + LR, DEV LOCO. Same windows as MFCC. No TEST |
+| `plot_windowed_hubert_3s_dev.py` | DEV HuBERT confusion and MFCC vs HuBERT BA. No TEST |
+| `run_windowed_hubert_3s_otter.sh` | Otter: embed, train, figures. Frozen encoder. No TEST |
 | `train_av_fusion_dev.py` | RGB+audio concat on DEV |
-| `run_hubert_dev.py` | Frozen HuBERT + 50/50 fusion on DEV |
+| `run_hubert_dev.py` | Old 60 s frozen HuBERT on DEV. Not the 3 s windowed run |
 | `hubert_train_label_permutation.py` | TRAIN-label permutation on DEV |
 | `audit_nod_onsets.py` | Onset audit for temporal correspondence |
 | `evaluate_temporal_correspondence_dev.py` | Rule vs annotated nod onsets (DEV) |

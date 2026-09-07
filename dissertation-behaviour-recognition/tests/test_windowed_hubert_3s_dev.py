@@ -16,7 +16,8 @@ def test_hubert_3s_does_not_bind_test() -> None:
     assert "requires_grad = False" in train
     assert "fine_tune" in train
     assert "windowed_dev" in train and "audio_3s_hubert" in train
-    assert "scale_train_only" in (ROOT / "scripts" / "run_windowed_audio_3s_dev.py").read_text()
+    assert "from run_windowed_audio_3s_dev import" not in train
+    assert "existing_clip_wav" not in train
     assert "train_loco" in train
 
 

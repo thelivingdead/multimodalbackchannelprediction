@@ -28,19 +28,19 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from check_split_leakage import assert_unlocked_out_dir  # noqa: E402
-from run_windowed_audio_3s_dev import (  # noqa: E402
-    existing_clip_wav,
-    load_dev_windows,
-    train_loco,
-    write_audit,
-)
 from src.audio_io import (  # noqa: E402
     TARGET_SR,
     load_wav_mono,
     refuse_test_scoring,
     resample_mono,
 )
+from src.clip_metrics import always_predict, clip_binary_metrics  # noqa: E402
 from src.utils import dump_json, set_seed  # noqa: E402
+from src.windowed_baselines import (  # noqa: E402
+    average_precision,
+    clip_bootstrap,
+    load_windows,
+)
 
 WINDOWS = ROOT / "data" / "windowed_annotations" / "nod_windows_dev.csv"
 OUT = ROOT / "results" / "windowed_dev" / "audio_3s_hubert"
@@ -61,7 +61,155 @@ HUBERT_MODEL = "facebook/hubert-base-ls960"
 HUBERT_DIM = 768
 SEED = 42
 FIXED_THRESHOLD = 0.5
+L2 = 1e-2
+NEWTON_STEPS = 40
+DEV_IDS = {f"gold_{i:03d}" for i in range(1, 16)}
 TEST_IDS = {f"gold_{i:03d}" for i in range(16, 31)}
+
+
+def sigmoid(z: np.ndarray) -> np.ndarray:
+    z = np.clip(np.asarray(z, dtype=float), -30.0, 30.0)
+    return 1.0 / (1.0 + np.exp(-z))
+
+
+def fit_logreg(x: np.ndarray, y: np.ndarray, pos_weight: float, l2: float = L2) -> np.ndarray:
+    y = np.asarray(y, dtype=float)
+    xb = np.column_stack([np.ones(len(x)), np.asarray(x, dtype=float)])
+    n, d = xb.shape
+    w = np.zeros(d, dtype=float)
+    sw = np.where(y == 1.0, float(pos_weight), 1.0)
+    sw = sw / max(float(sw.mean()), 1e-8)
+    eye = np.eye(d)
+    eye[0, 0] = 0.0
+    for _ in range(NEWTON_STEPS):
+        p = sigmoid(xb @ w)
+        resid = sw * (p - y)
+        grad = xb.T @ resid / n
+        grad[1:] += l2 * w[1:]
+        s = sw * p * (1.0 - p)
+        hess = (xb.T * s) @ xb / n
+        hess = hess + l2 * eye + 1e-8 * np.eye(d)
+        try:
+            w = w - np.linalg.solve(hess, grad)
+        except np.linalg.LinAlgError:
+            w = w - 0.1 * grad
+    return w
+
+
+def scale_train_only(train: np.ndarray, held: np.ndarray):
+    mean = train.mean(axis=0)
+    std = train.std(axis=0)
+    std = np.where(std < 1e-8, 1.0, std)
+    return (train - mean) / std, (held - mean) / std, mean, std
+
+
+def load_dev_windows() -> pd.DataFrame:
+    if "test" in WINDOWS.name.lower():
+        raise SystemExit("STOP: refused TEST window file")
+    frame = load_windows(WINDOWS, "DEV", DEV_IDS)
+    ids = set(frame["sample_id"].astype(str))
+    if ids & TEST_IDS:
+        raise SystemExit("STOP: TEST id in DEV audio table")
+    if ids != DEV_IDS:
+        raise SystemExit("STOP: audio table is not the 15 DEV clips")
+    return frame.reset_index(drop=True)
+
+
+def write_audit(frame: pd.DataFrame, statuses: list[str], out_dir: Path) -> pd.DataFrame:
+    audit = pd.DataFrame(
+        {
+            "clip_id": frame["sample_id"].astype(str),
+            "window_id": frame["window_id"].astype(str),
+            "window_start": frame["start_sec"].astype(float),
+            "window_end": frame["end_sec"].astype(float),
+            "human_nod_label": frame["label"].astype(int),
+            "split": "DEV",
+            "audio_status": statuses,
+        }
+    )
+    if set(audit["clip_id"]) & TEST_IDS:
+        raise SystemExit("STOP: TEST id leaked into HuBERT audit")
+    pos = int(audit["human_nod_label"].sum())
+    n = len(audit)
+    n_fail = int((audit["audio_status"] != "ok").sum())
+    dump_json(
+        out_dir / "dataset_audit.json",
+        {
+            "development_only": True,
+            "test_read": False,
+            "n_clips": int(audit["clip_id"].nunique()),
+            "total_windows": n,
+            "positive_windows": pos,
+            "negative_windows": n - pos,
+            "missing_or_failed_windows": n_fail,
+        },
+    )
+    audit.to_csv(out_dir / "dataset_audit.csv", index=False)
+    print(
+        f"AUDIT DEV clips={audit['clip_id'].nunique()} windows={n} "
+        f"pos={pos} failed_or_missing={n_fail}"
+    )
+    return audit
+
+
+def train_loco(frame: pd.DataFrame, x: np.ndarray, keep: np.ndarray) -> dict:
+    y = frame["label"].to_numpy(dtype=int)
+    ids = frame["sample_id"].astype(str).to_numpy()
+    if set(ids) & TEST_IDS:
+        raise SystemExit("STOP: TEST id at train time")
+    usable = keep & np.isfinite(x).all(axis=1)
+    oof = np.full(len(y), np.nan)
+    folds = []
+    for held in sorted(set(ids)):
+        train = usable & (ids != held)
+        held_m = usable & (ids == held)
+        if train.sum() < 8 or held_m.sum() == 0 or len(set(y[train])) < 2:
+            folds.append({"held_out_clip": held, "skipped": True})
+            continue
+        x_tr, x_h, _mean, _std = scale_train_only(x[train], x[held_m])
+        n_pos = max(int((y[train] == 1).sum()), 1)
+        n_neg = max(int((y[train] == 0).sum()), 1)
+        w = fit_logreg(x_tr, y[train], n_neg / n_pos)
+        xb = np.column_stack([np.ones(x_h.shape[0]), x_h])
+        oof[held_m] = sigmoid(xb @ w)
+        folds.append(
+            {
+                "held_out_clip": held,
+                "skipped": False,
+                "n_train": int(train.sum()),
+                "n_held": int(held_m.sum()),
+            }
+        )
+        print(f"fold {held} train={train.sum()} held={held_m.sum()}", flush=True)
+    scored = np.isfinite(oof)
+    if scored.sum() < 30:
+        raise SystemExit("STOP: too few OOF HuBERT windows")
+    pred = np.zeros(len(y), dtype=int)
+    pred[scored] = (oof[scored] >= FIXED_THRESHOLD).astype(int)
+    metrics = clip_binary_metrics(y[scored], pred[scored])
+    boot = clip_bootstrap(ids[scored], y[scored], pred[scored])
+    pr_auc = average_precision(y[scored], oof[scored])
+    pred_df = pd.DataFrame(
+        {
+            "window_id": frame["window_id"].astype(str),
+            "sample_id": ids,
+            "split": "DEV",
+            "label": y,
+            "audio_ok": usable.astype(int),
+            "oof_probability": oof,
+            "pred_at_0.5": pred,
+        }
+    )
+    return {
+        "pred_df": pred_df,
+        "metrics": metrics,
+        "boot": boot,
+        "pr_auc": pr_auc,
+        "folds": folds,
+        "n_scored": int(scored.sum()),
+        "always_no": always_predict(y[scored], 0),
+        "always_yes": always_predict(y[scored], 1),
+    }
 
 
 def _device() -> str:
@@ -122,10 +270,21 @@ def embed_window(y16: np.ndarray, extractor, model, torch, device: str) -> np.nd
 
 
 def clip_wav_path(sample_id: str) -> Path | None:
-    named = WAV_CACHE / f"{sample_id}_clip.wav"
-    if named.is_file() and named.stat().st_size > 64:
-        return named
-    return existing_clip_wav(sample_id, "")
+    candidates = [
+        WAV_CACHE / f"{sample_id}_clip.wav",
+        Path("/scratch/db01550/audio_windowed_dev") / f"{sample_id}_clip.wav",
+        ROOT / "data" / "features" / "audio_windowed_dev" / f"{sample_id}_clip.wav",
+        ROOT / "data" / "features" / "audio" / f"{sample_id}.wav",
+    ]
+    for path in candidates:
+        if path.is_file() and path.stat().st_size > 64:
+            return path
+    hubert_dir = Path("/scratch/db01550/hubert_wav")
+    if hubert_dir.is_dir():
+        for path in sorted(hubert_dir.glob(f"{sample_id}_*.wav")):
+            if path.is_file() and path.stat().st_size > 64:
+                return path
+    return None
 
 
 def extract_embeddings(frame: pd.DataFrame) -> list[str]:

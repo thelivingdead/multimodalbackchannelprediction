@@ -45,13 +45,20 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 
+from matplotlib.font_manager import FontProperties
+
 from src.paper_figure_style import (  # noqa: E402
+    FONT_NAME,
     GREY,
     INK,
     MUTED,
     PAPER,
     save,
 )
+
+FACE = dict(family=FONT_NAME, weight="normal")
+FP_HEAD = FontProperties(size=10.5, **FACE)
+FP_VERDICT = FontProperties(size=8.5, **FACE)
 
 RED = "#c0392b"
 OOF_CNN = (
@@ -699,7 +706,7 @@ def draw_panel(fig, gs, data: dict) -> None:
     axh.set_facecolor(PAPER)
     axh.text(
         0.0, 0.52, data["headline"],
-        fontsize=10.5, color=INK, va="center", ha="left", transform=axh.transAxes,
+        fontproperties=FP_HEAD, color=INK, va="center", ha="left", transform=axh.transAxes,
     )
 
     axf = fig.add_subplot(gs[1, 0])
@@ -788,7 +795,7 @@ def draw_panel(fig, gs, data: dict) -> None:
         f"Gold {data['gold_verdict']}    "
         f"Rule {data['rule_verdict']}    "
         f"CNN {data['cnn_verdict']}",
-        fontsize=8.5, color=INK, va="center", ha="left", transform=axv.transAxes,
+        fontproperties=FP_VERDICT, color=INK, va="center", ha="left", transform=axv.transAxes,
     )
     axm.set_axis_off()
     axm.set_facecolor(PAPER)

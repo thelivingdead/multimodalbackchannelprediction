@@ -30,10 +30,12 @@ SIZE_FULL = (7.16, 5.40)
 SIZE_FULL_TALL = (7.16, 8.00)
 SIZE_HALF = (3.50, 3.50)
 
+# Avenir Next.ttc lists Bold as face 0, so matplotlib paints every
+# label heavy if that family is preferred. Helvetica Neue.ttc starts
+# with Regular.
 _SANS = (
-    "Avenir Next",
-    "Avenir",
     "Helvetica Neue",
+    "Helvetica",
     "TeX Gyre Heros",
     "Nimbus Sans",
     "Liberation Sans",
@@ -58,10 +60,11 @@ def apply_style() -> str:
             "font.family": "sans-serif",
             "font.sans-serif": [FONT_NAME, "DejaVu Sans"],
             "font.size": 9,
+            "font.weight": "normal",
             "axes.titlesize": 10.5,
             "axes.labelsize": 9,
-            "axes.titleweight": "regular",
-            "axes.labelweight": "regular",
+            "axes.titleweight": "normal",
+            "axes.labelweight": "normal",
             "xtick.labelsize": 8,
             "ytick.labelsize": 8,
             "legend.fontsize": 8,

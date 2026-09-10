@@ -1,10 +1,22 @@
 # Figures
 
-The GitHub README lead figure is `paper/teaser_windowed_heads.png` (3 s listener
-faces on locked TEST). The 60 s clip F1 figures below are from an earlier protocol.
+Thesis plates use **Helvetica Neue Regular** via `src/paper_figure_style.py`
+(not Avenir Next, whose first face is Bold). PNG at 300 DPI.
 
-Dissertation figures from the executed pipeline. PNG at 300 DPI for the dissertation,
-JPG at 300 DPI for GitHub. Producers: `scripts/run_full_experiment.py`,
+## Current 3 s protocol
+
+| file | role |
+| --- | --- |
+| `paper/teaser_windowed_heads.png` | GitHub README lead. Listener faces plus Euler on two locked TEST windows |
+| `paper/teaser_shake_windowed.png` | Pose-only 3 s yaw chart. Not the GitHub lead |
+| `../results/windowed_dev/overleaf_polish/` | Thesis body plates (study design, both gestures, windows, weak supervision, CNN ablations) |
+| `../results/windowed_dev/final_figures/figureF_identity_crops.png` | Identity-corrected face crops |
+
+Regenerate body plates with `scripts/plot_overleaf_polish.py`. Regenerate the GitHub lead with `scripts/plot_teaser_windowed_heads.py`. Captions: `paper/CAPTIONS.md`.
+
+The 60 s clip F1 figures below are from an earlier protocol.
+
+Dissertation figures from the executed pipeline. Producers: `scripts/run_full_experiment.py`,
 `scripts/plot_gold_visuals.py`, and `scripts/make_figures.py` (which skips gracefully
 when a proposal-era pilot input is absent, and creates subfolders on demand).
 

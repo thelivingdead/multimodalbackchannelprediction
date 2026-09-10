@@ -31,7 +31,7 @@ New exploratory work should write under `results/dev/`, `results/experiments/`, 
 
 ## Analysis / visualisation
 
-`make_figures.py`, `make_dissertation_figures.py`, `make_main_results.py`, `plot_paper_style_figures.py`, `plot_videomae_results.py`, `plot_audio_dev_figures.py`, `make_hubert_figures.py`, `plot_spectral_euler.py`, `plot_teaser_figure.py` (old 60 s nod faces; not the README lead), `plot_teaser_shake_windowed.py` (3 s yaw TEST teaser, pose only), `plot_teaser_windowed_heads.py` (3 s windowed face teaser: nod + shake listener strips; not the 60 s teaser), `plot_pipeline_diagram.py`, `plot_gold_visuals.py`, `plot_rgb_frame_strips.py`.
+`make_figures.py`, `make_dissertation_figures.py`, `make_main_results.py`, `plot_paper_style_figures.py`, `plot_videomae_results.py`, `plot_audio_dev_figures.py`, `make_hubert_figures.py`, `plot_spectral_euler.py`, `plot_teaser_figure.py` (old 60 s nod faces; not the README lead), `plot_teaser_shake_windowed.py` (3 s yaw TEST teaser, pose only), `plot_teaser_windowed_heads.py` (3 s windowed face teaser: nod + shake listener strips; not the 60 s teaser), `plot_overleaf_polish.py` (Helvetica Neue thesis plates in `results/windowed_dev/overleaf_polish/`), `plot_pipeline_diagram.py`, `plot_gold_visuals.py`, `plot_rgb_frame_strips.py`. Shared type: `src/paper_figure_style.py`.
 
 These read existing csv/json/npz. They must not rescore GOLD TEST.
 
@@ -64,6 +64,7 @@ These read existing csv/json/npz. They must not rescore GOLD TEST.
 | `evaluate_temporal_correspondence_dev.py` | Rule vs annotated nod onsets (DEV) |
 | `evaluate_windowed_nod_motion_ablation.py` | DEV-only pitch-rule motion features (zero crossings, return ratio). No TEST |
 | `evaluate_windowed_late_fusion_logreg_dev.py` | DEV late fusion: VideoMAE 1.5 s OOF + amplitude + return ratio. No TEST |
+| `evaluate_windowed_audio_video_fusion_3s_dev.py` | DEV late fusion of frozen HuBERT 3 s and identity-fixed VideoMAE 3 s OOF. Common windows only. No TEST |
 | `run_late_fusion_logreg_otter.sh` | Otter wrapper for the late-fusion logreg. CPU. No TEST |
 | `audit_pose_cnn_inputs_dev.py` | Print locked Pose CNN channels and DEV feature statistics. No TEST |
 | `crossval_windowed_pose_cnn_scalar_branch_dev.py` | Two-branch Pose CNN (temporal + amp/RR MLP). Otter. No TEST |

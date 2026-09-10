@@ -14,9 +14,11 @@ The protocol uses 3 s windows, a 2 s stride, 29 windows per clip, and 435 window
 
 Locked TEST, head shake: the yaw amplitude rule (axis y, τ = 4.091°) scores **0.654 [0.525, 0.794]**. That is the first result that clears chance on locked TEST.
 
-Locked TEST, head nod: the return-ratio rule (amplitude plus return) scores **0.634 [0.576, 0.685]**. Amplitude-only nod TEST is 0.549 [0.480, 0.619] and includes chance.
+Locked TEST, head nod: the two-feature rule (amplitude plus return) scores **0.634 [0.576, 0.685]**. Amplitude-only nod TEST is 0.549 [0.480, 0.619] and includes chance.
 
-DEV only, not TEST: shake Pose CNN 0.606 [0.519, 0.680]; nod Pose CNN 0.523 (interval includes chance). Identity-fixed nod VideoMAE, 1.5 s, last two blocks, no horizontal flip, scores 0.571. TEST was not scored for those CNN or VideoMAE runs. Largest-face Haar RGB crops are withdrawn because they showed the wrong person. Later RGB work uses identity-fixed crops only. A DEV nod fusion search did not beat the return-ratio rule. Fusion and the nod CNN/VideoMAE runs that stay at chance were not scored on TEST.
+DEV only, not TEST: shake Pose CNN 0.606 [0.519, 0.680]; nod Pose CNN 0.523 (interval includes chance). Identity-fixed nod VideoMAE, 1.5 s, last two blocks, no horizontal flip, scores 0.571. That is one development configuration among several and was not scored on TEST. Largest-face Haar RGB crops are withdrawn because they showed the wrong person. Later RGB work uses identity-fixed crops only. A DEV nod fusion search did not beat the two-feature rule. Fusion and the nod CNN/VideoMAE runs that stay at chance were not scored on TEST.
+
+Thesis plates use Helvetica Neue Regular (`src/paper_figure_style.py`). Body figures: [`results/windowed_dev/overleaf_polish/`](results/windowed_dev/overleaf_polish/).
 
 Pose and RGB are two encodings of the same camera.
 

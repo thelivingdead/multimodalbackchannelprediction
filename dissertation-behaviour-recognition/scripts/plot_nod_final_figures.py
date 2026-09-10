@@ -357,12 +357,7 @@ def figure_f(rgb_dir: Path | None, manifest_path: Path, stem: Path) -> None:
         "centre furthest onto the annotator side. Wrong-half is a midline test,\n"
         "not a tight-head test. A two-shot on the annotated half still counts as 0.",
     )
-    fig.text(
-        0.01, 0.01,
-        "RealTalk stills stay in the bound dissertation only. Do not put this plate on a website.",
-        color=ORANGE,
-    )
-    fig.subplots_adjust(left=0.02, right=0.98, top=0.84, bottom=0.08, hspace=0.35, wspace=0.08)
+    fig.subplots_adjust(left=0.02, right=0.98, top=0.84, bottom=0.04, hspace=0.35, wspace=0.08)
     save(fig, stem)
 
 

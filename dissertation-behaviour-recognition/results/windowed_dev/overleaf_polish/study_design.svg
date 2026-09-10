@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="537.198797pt" height="478.54268pt" viewBox="0 0 537.198797 478.54268" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-09-08T11:13:44.641844</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.9.4, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 478.54268 
+L 537.198797 478.54268 
+L 537.198797 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 267.6096 115.265384 
+Q 240.493638 122.968964 214.238056 130.428112 
+" style="fill: none; stroke: #1d1d1f; stroke-width: 0.8; stroke-linecap: round"/>
+    <path d="M 217.753497 131.0927 
+L 214.238056 130.428112 
+L 216.878991 128.014512 
+z
+" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.8; stroke-linecap: round"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 366.58944 115.265384 
+Q 393.705402 122.968964 419.960984 130.428112 
+" style="fill: none; stroke: #1d1d1f; stroke-width: 0.8; stroke-linecap: round"/>
+    <path d="M 417.320049 128.014512 
+L 419.960984 130.428112 
+L 416.445543 131.0927 
+z
+" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.8; stroke-linecap: round"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 211.93344 184.61888 
+Q 211.93344 194.008222 211.93344 202.503137 
+" style="fill: none; stroke: #1d1d1f; stroke-width: 0.8; stroke-linecap: round"/>
+    <path d="M 213.53344 199.303137 
+L 211.93344 202.503137 
+L 210.33344 199.303137 
+z
+" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.8; stroke-linecap: round"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 422.2656 184.61888 
+Q 422.2656 194.008222 422.2656 202.503137 
+" style="fill: none; stroke: #1d1d1f; stroke-width: 0.8; stroke-linecap: round"/>
+    <path d="M 423.8656 199.303137 
+L 422.2656 202.503137 
+L 420.6656 199.303137 
+z
+" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.8; stroke-linecap: round"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 211.93344 264.517352 
+Q 211.93344 275.123521 211.93344 284.835263 
+" style="fill: none; stroke: #1d1d1f; stroke-width: 0.8; stroke-linecap: round"/>
+    <path d="M 213.53344 281.635263 
+L 211.93344 284.835263 
+L 210.33344 281.635263 
+z
+" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.8; stroke-linecap: round"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 422.2656 264.517352 
+Q 422.2656 275.123521 422.2656 284.835263 
+" style="fill: none; stroke: #1d1d1f; stroke-width: 0.8; stroke-linecap: round"/>
+    <path d="M 423.8656 281.635263 
+L 422.2656 284.835263 
+L 420.6656 281.635263 
+z
+" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.8; stroke-linecap: round"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 211.93344 354.9608 
+Q 211.93344 364.350142 211.93344 372.845057 
+" style="fill: none; stroke: #1d1d1f; stroke-width: 0.8; stroke-linecap: round"/>
+    <path d="M 213.53344 369.645057 
+L 211.93344 372.845057 
+L 210.33344 369.645057 
+z
+" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.8; stroke-linecap: round"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 422.2656 354.9608 
+Q 422.2656 364.350142 422.2656 372.845057 
+" style="fill: none; stroke: #1d1d1f; stroke-width: 0.8; stroke-linecap: round"/>
+    <path d="M 423.8656 369.645057 
+L 422.2656 372.845057 
+L 420.6656 369.645057 
+z
+" style="fill: #1d1d1f; stroke: #1d1d1f; stroke-width: 0.8; stroke-linecap: round"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 221.089075 115.265384 
+L 413.109965 115.265384 
+Q 418.058957 115.265384 418.058957 111.209624 
+L 418.058957 71.463176 
+Q 418.058957 67.407416 413.109965 67.407416 
+L 221.089075 67.407416 
+Q 216.140083 67.407416 216.140083 71.463176 
+L 216.140083 111.209624 
+Q 216.140083 115.265384 221.089075 115.265384 
+z
+" style="fill: #f3f3f4; stroke: #1d1d1f; stroke-width: 0.85; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 122.109235 186.241184 
+L 301.757645 186.241184 
+Q 306.706637 186.241184 306.706637 182.185424 
+L 306.706637 134.327456 
+Q 306.706637 130.271696 301.757645 130.271696 
+L 122.109235 130.271696 
+Q 117.160243 130.271696 117.160243 134.327456 
+L 117.160243 182.185424 
+Q 117.160243 186.241184 122.109235 186.241184 
+z
+" style="fill: #e8eef4; stroke: #2c5f8a; stroke-width: 0.85; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 332.441395 186.241184 
+L 512.089805 186.241184 
+Q 517.038797 186.241184 517.038797 182.185424 
+L 517.038797 134.327456 
+Q 517.038797 130.271696 512.089805 130.271696 
+L 332.441395 130.271696 
+Q 327.492403 130.271696 327.492403 134.327456 
+L 327.492403 182.185424 
+Q 327.492403 186.241184 332.441395 186.241184 
+z
+" style="fill: #f4eee8; stroke: #c46a2d; stroke-width: 0.85; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_13">
+    <path d="M 122.109235 266.139656 
+L 512.089805 266.139656 
+Q 517.038797 266.139656 517.038797 262.083896 
+L 517.038797 208.142288 
+Q 517.038797 204.086528 512.089805 204.086528 
+L 122.109235 204.086528 
+Q 117.160243 204.086528 117.160243 208.142288 
+L 117.160243 262.083896 
+Q 117.160243 266.139656 122.109235 266.139656 
+z
+" style="fill: #f3f3f4; stroke: #1d1d1f; stroke-width: 0.85; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_14">
+    <path d="M 122.109235 356.583104 
+L 301.757645 356.583104 
+Q 306.706637 356.583104 306.706637 352.527344 
+L 306.706637 290.474216 
+Q 306.706637 286.418456 301.757645 286.418456 
+L 122.109235 286.418456 
+Q 117.160243 286.418456 117.160243 290.474216 
+L 117.160243 352.527344 
+Q 117.160243 356.583104 122.109235 356.583104 
+z
+" style="fill: #e8eef4; stroke: #2c5f8a; stroke-width: 0.85; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_15">
+    <path d="M 332.441395 356.583104 
+L 512.089805 356.583104 
+Q 517.038797 356.583104 517.038797 352.527344 
+L 517.038797 290.474216 
+Q 517.038797 286.418456 512.089805 286.418456 
+L 332.441395 286.418456 
+Q 327.492403 286.418456 327.492403 290.474216 
+L 327.492403 352.527344 
+Q 327.492403 356.583104 332.441395 356.583104 
+z
+" style="fill: #eef4ee; stroke: #2f6b45; stroke-width: 0.85; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_16">
+    <path d="M 122.109235 452.704616 
+L 512.089805 452.704616 
+Q 517.038797 452.704616 517.038797 448.648856 
+L 517.038797 378.484208 
+Q 517.038797 374.428448 512.089805 374.428448 
+L 122.109235 374.428448 
+Q 117.160243 374.428448 117.160243 378.484208 
+L 117.160243 448.648856 
+Q 117.160243 452.704616 122.109235 452.704616 
+z
+" style="fill: #f3f3f4; stroke: #1d1d1f; stroke-width: 0.85; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="fill: #1d1d1f; font: 11px 'Helvetica Neue'; text-anchor: start" x="119.13984" y="28.200312" transform="rotate(-0 119.13984 28.200312)">Study design</text>
+   </g>
+   <g id="text_2">
+    <text style="fill: #5c5c63; font: 10px 'Helvetica Neue'; text-anchor: start" x="20.16" y="68.869977" transform="rotate(-0 20.16 68.869977)">A</text>
+   </g>
+   <g id="text_3">
+    <text style="fill: #5c5c63; font: 7.5px 'Helvetica Neue'; text-anchor: start" x="20.16" y="80.063253" transform="rotate(-0 20.16 80.063253)">Data and splits</text>
+   </g>
+   <g id="text_4">
+    <text style="fill: #1d1d1f; font: 9px 'Helvetica Neue'; text-anchor: start" x="227.027866" y="90.057018" transform="rotate(-0 227.027866 90.057018)">Thirty annotated clips</text>
+   </g>
+   <g id="text_5">
+    <text style="fill: #5c5c63; font: 8px 'Helvetica Neue'; text-anchor: start" x="227.027866" y="102.321388" transform="rotate(-0 227.027866 102.321388)">RealTalk. Listener nods and head shakes.</text>
+   </g>
+   <g id="text_6">
+    <text style="fill: #2c5f8a; font: 9px 'Helvetica Neue'; text-anchor: start" x="128.048026" y="152.921298" transform="rotate(-0 128.048026 152.921298)">Development, gold 001–015</text>
+   </g>
+   <g id="text_7">
+    <text style="fill: #5c5c63; font: 8px 'Helvetica Neue'; text-anchor: start" x="128.048026" y="165.185668" transform="rotate(-0 128.048026 165.185668)">Thresholds and model selection.</text>
+   </g>
+   <g id="text_8">
+    <text style="fill: #5c5c63; font: 8px 'Helvetica Neue'; text-anchor: start" x="128.048026" y="175.730644" transform="rotate(-0 128.048026 175.730644)">Leave-one-clip-out where needed.</text>
+   </g>
+   <g id="text_9">
+    <text style="fill: #c46a2d; font: 9px 'Helvetica Neue'; text-anchor: start" x="338.380186" y="152.921298" transform="rotate(-0 338.380186 152.921298)">Test, gold 016–030</text>
+   </g>
+   <g id="text_10">
+    <text style="fill: #5c5c63; font: 8px 'Helvetica Neue'; text-anchor: start" x="338.380186" y="165.320668" transform="rotate(-0 338.380186 165.320668)">Scored once after development</text>
+   </g>
+   <g id="text_11">
+    <text style="fill: #5c5c63; font: 8px 'Helvetica Neue'; text-anchor: start" x="338.380186" y="175.730644" transform="rotate(-0 338.380186 175.730644)">choices are frozen.</text>
+   </g>
+   <g id="text_12">
+    <text style="fill: #5c5c63; font: 10px 'Helvetica Neue'; text-anchor: start" x="20.16" y="206.765817" transform="rotate(-0 20.16 206.765817)">B</text>
+   </g>
+   <g id="text_13">
+    <text style="fill: #5c5c63; font: 7.5px 'Helvetica Neue'; text-anchor: start" x="20.16" y="218.085655" transform="rotate(-0 20.16 218.085655)">Shared protocol</text>
+   </g>
+   <g id="text_14">
+    <text style="fill: #1d1d1f; font: 9px 'Helvetica Neue'; text-anchor: middle" x="317.09952" y="226.73613" transform="rotate(-0 317.09952 226.73613)">3 s windows, 2 s stride, on both splits</text>
+   </g>
+   <g id="text_15">
+    <text style="fill: #5c5c63; font: 8px 'Helvetica Neue'; text-anchor: middle" x="317.09952" y="239.0005" transform="rotate(-0 317.09952 239.0005)">15 × 29 = 435 windows per split. Nod DEV 52 positive; shake DEV 39.</text>
+   </g>
+   <g id="text_16">
+    <text style="fill: #5c5c63; font: 8px 'Helvetica Neue'; text-anchor: middle" x="317.09952" y="249.680476" transform="rotate(-0 317.09952 249.680476)">EMOCA head rotation. RGB face crops of the listener.</text>
+   </g>
+   <g id="text_17">
+    <text style="fill: #5c5c63; font: 10px 'Helvetica Neue'; text-anchor: start" x="20.16" y="285.041985" transform="rotate(-0 20.16 285.041985)">C</text>
+   </g>
+   <g id="text_18">
+    <text style="fill: #5c5c63; font: 7.5px 'Helvetica Neue'; text-anchor: start" x="20.16" y="296.361823" transform="rotate(-0 20.16 296.361823)">Systems</text>
+   </g>
+   <g id="text_19">
+    <text style="fill: #2c5f8a; font: 9px 'Helvetica Neue'; text-anchor: start" x="128.048026" y="309.068058" transform="rotate(-0 128.048026 309.068058)">Pose</text>
+   </g>
+   <g id="text_20">
+    <text style="fill: #5c5c63; font: 8px 'Helvetica Neue'; text-anchor: start" x="128.048026" y="321.332428" transform="rotate(-0 128.048026 321.332428)">Amplitude and return-ratio rules.</text>
+   </g>
+   <g id="text_21">
+    <text style="fill: #5c5c63; font: 8px 'Helvetica Neue'; text-anchor: start" x="128.048026" y="332.012404" transform="rotate(-0 128.048026 332.012404)">1-D CNN; multiple-instance model.</text>
+   </g>
+   <g id="text_22">
+    <text style="fill: #2f6b45; font: 9px 'Helvetica Neue'; text-anchor: start" x="338.380186" y="309.068058" transform="rotate(-0 338.380186 309.068058)">Video</text>
+   </g>
+   <g id="text_23">
+    <text style="fill: #5c5c63; font: 8px 'Helvetica Neue'; text-anchor: start" x="338.380186" y="321.396178" transform="rotate(-0 338.380186 321.396178)">VideoMAE on identity-fixed crops.</text>
+   </g>
+   <g id="text_24">
+    <text style="fill: #5c5c63; font: 8px 'Helvetica Neue'; text-anchor: start" x="338.380186" y="331.877404" transform="rotate(-0 338.380186 331.877404)">Development only; test not opened.</text>
+   </g>
+   <g id="text_25">
+    <text style="fill: #5c5c63; font: 10px 'Helvetica Neue'; text-anchor: start" x="20.16" y="375.485433" transform="rotate(-0 20.16 375.485433)">D</text>
+   </g>
+   <g id="text_26">
+    <text style="fill: #5c5c63; font: 7.5px 'Helvetica Neue'; text-anchor: start" x="20.16" y="386.678709" transform="rotate(-0 20.16 386.678709)">Evaluation</text>
+   </g>
+   <g id="text_27">
+    <text style="fill: #1d1d1f; font: 9px 'Helvetica Neue'; text-anchor: middle" x="211.93344" y="403.972842" transform="rotate(-0 211.93344 403.972842)">Headline metric</text>
+   </g>
+   <g id="text_28">
+    <text style="fill: #5c5c63; font: 8px 'Helvetica Neue'; text-anchor: middle" x="211.93344" y="415.42606" transform="rotate(-0 211.93344 415.42606)">Balanced accuracy.</text>
+   </g>
+   <g id="text_29">
+    <text style="fill: #5c5c63; font: 8px 'Helvetica Neue'; text-anchor: middle" x="211.93344" y="425.971036" transform="rotate(-0 211.93344 425.971036)">A constant predictor scores 0.500.</text>
+   </g>
+   <g id="text_30">
+    <text style="fill: #1d1d1f; font: 9px 'Helvetica Neue'; text-anchor: middle" x="422.2656" y="403.972842" transform="rotate(-0 422.2656 403.972842)">Uncertainty</text>
+   </g>
+   <g id="text_31">
+    <text style="fill: #5c5c63; font: 8px 'Helvetica Neue'; text-anchor: middle" x="422.2656" y="415.48981" transform="rotate(-0 422.2656 415.48981)">95% intervals resample 15 clips.</text>
+   </g>
+   <g id="text_32">
+    <text style="fill: #5c5c63; font: 8px 'Helvetica Neue'; text-anchor: middle" x="422.2656" y="425.971036" transform="rotate(-0 422.2656 425.971036)">An interval containing 0.500 is</text>
+   </g>
+   <g id="text_33">
+    <text style="fill: #5c5c63; font: 8px 'Helvetica Neue'; text-anchor: middle" x="422.2656" y="436.579762" transform="rotate(-0 422.2656 436.579762)">not distinguished from chance.</text>
+   </g>
+  </g>
+ </g>
+</svg>

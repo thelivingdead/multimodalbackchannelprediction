@@ -13,6 +13,8 @@ An earlier study gave each clip one 60 s nod label. The thesis results use a 3 s
 
 Two labelled 3 s TEST windows: listener faces plus the matching Euler trace. Top: **head shake**, `gold_023`, 15 to 18 s, yaw (EMOCA y). Bottom: **head nod**, `gold_030`, 21 to 24 s, pitch (EMOCA x). Listener crops are the official RealTalk box for the gold person. Withdrawn largest-face Haar crops are not used. The TEST numbers below are 15-clip balanced accuracies, not these two windows alone.
 
+Thesis plates use Helvetica Neue Regular (`src/paper_figure_style.py`). Body figures live in `results/windowed_dev/overleaf_polish/`. Captions: [`figures/paper/CAPTIONS.md`](dissertation-behaviour-recognition/figures/paper/CAPTIONS.md).
+
 ## Locked TEST headlines
 
 Protocol: 3 s windows, 2 s stride, 29 windows per clip, 435 windows per split. DEV is `gold_001` to `gold_015`. TEST is `gold_016` to `gold_030`. The headline metric is balanced accuracy. Chance is 0.500. The 95% intervals are clip-level bootstrap (15 clips, 2000 resamples). An interval that includes 0.500 is not distinguished from chance.
@@ -29,10 +31,10 @@ Shake is a larger left to right rotation. The yaw rule is the first result that 
 
 | System | Axis | TEST balanced accuracy | 95% CI |
 | --- | --- | ---: | --- |
-| Return-ratio rule (amplitude plus return) | x | **0.634** | [0.576, 0.685] |
+| Two-feature rule (amplitude plus return) | x | **0.634** | [0.576, 0.685] |
 | Amplitude only | x | 0.549 | [0.480, 0.619] |
 
-Nod is a small up and down motion. The return-ratio rule requires the head to come back after the pitch excursion. Amplitude only includes chance. Sources: `results/windowed_test/rule_return_ratio_final/metrics.json` and `results/windowed_nod/baselines_bacc/metrics.json`.
+Nod is a small up and down motion. The two-feature rule requires the head to come back after the pitch excursion. Amplitude only includes chance. Sources: `results/windowed_test/rule_return_ratio_final/metrics.json` and `results/windowed_nod/baselines_bacc/metrics.json`.
 
 ## DEV only (TEST not implied)
 
@@ -40,10 +42,10 @@ These numbers are DEV (`gold_001` to `gold_015`) only.
 
 - Shake Pose CNN balanced accuracy 0.606 [0.519, 0.680]. TEST was not scored.
 - Nod Pose CNN balanced accuracy 0.523. The clip-level interval includes 0.500.
-- Identity-fixed nod VideoMAE, 1.5 s windows, last two blocks, no horizontal flip: balanced accuracy 0.571. TEST was not scored.
+- Identity-fixed nod VideoMAE, 1.5 s windows, last two blocks, no horizontal flip: balanced accuracy 0.571. One development configuration among several, not corrected for multiplicity, and not scored on TEST. The VideoMAE configurations treated as main systems all have intervals containing 0.500.
 - Largest-face Haar RGB crops were withdrawn because they often showed the wrong person. Later RGB work uses identity-fixed crops only.
 
-A DEV nod fusion search (return-ratio rule, Pose CNN, and 1.5 s VideoMAE) did not beat the return-ratio rule. Fusion, the nod Pose CNN, and the nod VideoMAE runs that stay at chance were not scored on TEST. The shake Pose CNN was also not scored on TEST.
+A DEV nod fusion search (two-feature rule, Pose CNN, and 1.5 s VideoMAE) did not beat the two-feature rule. Fusion, the nod Pose CNN, and the nod VideoMAE runs that stay at chance were not scored on TEST. The shake Pose CNN was also not scored on TEST.
 
 ## Dataset and annotation
 

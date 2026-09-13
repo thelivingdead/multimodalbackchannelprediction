@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>multimodalbackchannelprediction</title>
-  <meta name="description" content="Listener head-nod recognition from multimodal conversational signals. MSc Artificial Intelligence research, University of Surrey, 2026.">
+  <meta name="description" content="Listener head-nod and head-shake recognition on 3 s windows from Columbia RealTalk. MSc Artificial Intelligence, University of Surrey, 2026.">
   <script>
     try {
       var t = localStorage.getItem("mbp-theme");
       if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
     } catch (e) {}
   </script>
-  <link rel="stylesheet" href="styles.css?v=13">
+  <link rel="stylesheet" href="styles.css?v=14">
 </head>
 <body>
   <header class="mast">
@@ -20,10 +20,10 @@
       <a href="#question">Question</a>
       <a href="#signal">Signal</a>
       <a href="#method">Method</a>
-      <a href="#results">Nod</a>
+      <a href="#results">Results</a>
       <a href="#shake">Shake</a>
       <a href="#inspect">Instrument</a>
-      <a href="#future">Future</a>
+      <a href="#future">Directions</a>
       <a href="#artefacts">Research</a>
     </nav>
     <div class="theme" role="group" aria-label="Colour mode">
@@ -40,16 +40,16 @@
           <p class="meta">multimodalbackchannelprediction</p>
           <h1>Multimodal<br>Backchannel<br>Recognition</h1>
           <p class="standfirst">Recognising listener head nods and head shakes from head pose and video in natural conversation.</p>
-          <p class="meta" style="margin-top:2rem">MSc Artificial Intelligence · University of Surrey · CVSSP · 2026<br>Columbia RealTalk · 25 fps · locked TEST n = 15</p>
+          <p class="meta" style="margin-top:2rem">MSc Artificial Intelligence · University of Surrey · CVSSP · 2026<br>Columbia RealTalk · 3 s windows · locked TEST 15 clips, 435 windows</p>
         </div>
-        <aside class="living" id="living" aria-label="Interactive listener pose from a locked TEST window">
+        <aside class="living" id="living" aria-label="Interactive listener pose from a locked TEST excerpt">
           <p class="meta">Interactive · stored TEST pose · drag the line</p>
           <div class="axis-row">
             <div class="meta">Pitch / x<b id="v-pitch">—</b></div>
             <div class="meta">Yaw / y<b id="v-yaw">—</b></div>
             <div class="meta">Roll / z<b id="v-roll">—</b></div>
           </div>
-          <p class="meta">Pitch is the nod axis, yaw the turn, roll the tilt. Degrees from the EMOCA reference pose. The rule reads pitch only.</p>
+          <p class="meta">Pitch is the nod axis, yaw the shake axis. This panel is one stored excerpt. The thesis scores 3 s windows, not the whole minute.</p>
           <div class="head-stage" id="head-fallback">
             <svg class="head-svg" viewBox="-40 -48 80 96" aria-hidden="true">
               <g id="head-rot">
@@ -82,11 +82,11 @@
     <section class="chapter" id="question">
       <div class="wrap">
         <div class="kicker">01 / The question</div>
-        <h2>Did this listener nod?</h2>
-        <p>The study is clip level listener behaviour recognition on Columbia RealTalk. A nod may last about one second. The analysed conversational window lasts about sixty. Pose and RGB are two encodings of the same camera.</p>
+        <h2>Did this listener nod or shake?</h2>
+        <p>The study is windowed listener gesture recognition on Columbia RealTalk. A nod or shake lasts about one second. The decision unit is a three second window. Pose and RGB are two encodings of the same camera, not two independent sensors. The approved title says prediction. The executed task is recognition inside an observed window.</p>
         <figure class="film">
-          <img src="assets/teaser_backchannel.jpg" alt="Two locked TEST windows from Columbia RealTalk. Top, gold_020, a clear nod while the partner holds the floor. Bottom, gold_024, unclear. Listener face crops, Euler pitch, and who speaks." loading="lazy">
-          <figcaption>Locked TEST windows gold_020 (clear nod) and gold_024 (unclear). Blue marks the labelled listener, orange the partner. Pose is EMOCA rotation x, threshold 16.35°. Speaker lanes are official RealTalk TalkNet. Public reuse of identifiable frames requires RealTalk’s terms.</figcaption>
+          <img src="assets/teaser_windowed_heads.jpg" alt="Two labelled 3 s TEST windows. Top: head shake on gold_023, yaw. Bottom: head nod on gold_030, pitch. Listener faces and matching Euler traces." loading="lazy">
+          <figcaption>Locked TEST, 3 s windows. Top: head shake, gold_023, 15 to 18 s, yaw (EMOCA y), threshold 4.09°. Bottom: head nod, gold_030, 21 to 24 s, pitch (EMOCA x), two-feature rule (amplitude 1.49° and return ratio 0.21). Official RealTalk listener boxes. Public reuse of identifiable frames requires RealTalk’s terms.</figcaption>
         </figure>
       </div>
     </section>
@@ -95,9 +95,9 @@
       <div class="wrap">
         <div class="kicker">What this work produced</div>
         <div class="contrib">
-          <p>A hand-annotated gold set of 30 conversational windows, split 15 DEV / 15 TEST, with TEST scored once under a frozen protocol.</p>
-          <p>A weak-supervision pipeline that trains temporal pose and VideoMAE systems from a DEV-frozen pose rule, without gold labels on TRAIN.</p>
-          <p>An evaluation harness that refuses writes to locked TEST directories, asserts that refusal in tests, and recomputes every reported metric from stored predictions.</p>
+          <p>Interval labels on 30 RealTalk clips, 15 DEV and 15 TEST, scored as 3 s windows with a 2 s stride (435 windows per split).</p>
+          <p>A yaw amplitude rule that recognises head shakes on locked TEST, and a two-feature rule (amplitude plus return) that recognises head nods.</p>
+          <p>The same windows used to show that clip-level weak labels copy their teacher and do not localise, and that identity-corrected VideoMAE stays at chance as a main system.</p>
         </div>
       </div>
     </section>
@@ -105,47 +105,64 @@
     <section class="chapter" id="signal">
       <div class="wrap">
         <div class="kicker">02 / The signal</div>
-        <h2>pitch(t)</h2>
-        <p>EMOCA Euler rotation on locked TEST window gold_016. The marked band is the human-labelled nod interval, in the watch clock, one second inside a sixty-second window. Scored systems in this dissertation are an amplitude rule, a 1D CNN, and VideoMAE they are not an FFT classifier.</p>
+        <h2>A three second window.</h2>
+        <p>Each clip is cut into 3 s windows at a 2 s stride, 29 windows per clip. A window is positive if it overlaps a hand-marked gesture interval. The pitch trace below is one stored TEST excerpt. The headline scores use the short windows, not a single decision on the whole minute.</p>
         <div class="drawn">
           <svg id="scroll-trace" viewBox="0 0 1000 180" preserveAspectRatio="none" aria-label="Pitch against time">
             <path id="scroll-path" fill="none" stroke="currentColor" stroke-width="1.2"/>
           </svg>
           <div class="gold-band" id="gold-band" title="Human-labelled nod interval"></div>
         </div>
-        <p class="meta" style="margin-top:0.8rem">25 fps · ~60 s · human mark ~1 s · mean labelled interval 1.1 s</p>
+        <p class="meta" style="margin-top:0.8rem">25 fps · 3 s window · 2 s stride · 29 windows per clip</p>
+        <figure class="film">
+          <img src="assets/sliding_windows.png" alt="Sliding 3 s windows on one development clip, with six windows overlapping annotated nod intervals." loading="lazy">
+          <figcaption>Sliding windows on one development clip. Six of the twenty nine windows overlap an annotated nod and are labelled positive.</figcaption>
+        </figure>
       </div>
     </section>
 
     <section class="chapter" id="annotation">
       <div class="wrap">
         <div class="kicker">03 / Human ground truth</div>
-        <h2>Thirty windows, read by hand.</h2>
-        <p><span class="meta">Human label</span> is clip-level: clear nod or unclear. Unclear is the complement, not a second behaviour class. <span class="meta">Model signal</span> is whatever a system later assigns to that whole window.</p>
-        <p>30 gold windows · 15 DEV · 15 TEST · 19 clear nod · 11 unclear. TEST holds 10 positive and 5 negative windows. One annotator.</p>
+        <h2>Thirty clips, read as intervals.</h2>
+        <p><span class="meta">Human label</span> is an interval: a clear nod or a clear shake, timed inside the excerpt. A 3 s window that overlaps that interval is positive. <span class="meta">Unclear movement</span> sits in the negative class with stillness.</p>
+        <p>DEV gold_001 to gold_015. TEST gold_016 to gold_030. Nods: 52 DEV and 69 TEST positives. Shakes: 39 DEV and 40 TEST positives. One annotator. Chance for any constant predictor is balanced accuracy 0.500.</p>
       </div>
     </section>
 
     <section class="chapter" id="rule">
       <div class="wrap">
-        <div class="kicker">04 / Rule baseline</div>
-        <h2>A frozen amplitude detector on Euler x.</h2>
-        <p>Savitzky–Golay smoothing, window 11, polynomial 2. Threshold selected on DEV only: 16.3538328545911°, shown as 16.35°.</p>
-        <div class="stat">
-          <b>0.67</b>
-          <span>TEST F1 · pose rule · n = 15</span>
+        <div class="kicker">04 / Pose rules</div>
+        <h2>State the motion, then freeze it.</h2>
+        <p>Shake uses a single amplitude threshold on EMOCA yaw (channel y, τ = 4.09°), selected on DEV. Nod needs two features: peak-to-peak amplitude and a return ratio that asks whether the head came back. Amplitude alone on pitch does not clear chance.</p>
+        <div class="pair">
+          <div class="stat">
+            <b>0.654</b>
+            <span>TEST balanced accuracy · shake yaw rule · [0.525, 0.794]</span>
+          </div>
+          <div class="stat">
+            <b>0.634</b>
+            <span>TEST balanced accuracy · two-feature nod rule · [0.576, 0.685]</span>
+          </div>
         </div>
+        <p class="tiny">Nod amplitude only is 0.549 [0.480, 0.619] and includes chance. The nod TEST split was evaluated under three rule configurations. No further nod system was scored on TEST.</p>
       </div>
     </section>
 
     <section class="chapter" id="temporal">
       <div class="wrap">
-        <div class="kicker">05 / Temporal learning</div>
-        <h2>A 1D CNN on pose sequences.</h2>
-        <p>The network sees Euler plus derivatives. Training labels are pseudo-labels from the frozen rule, not gold. DEV selects the checkpoint. TEST is scored once.</p>
-        <div class="stat">
-          <b>0.70</b>
-          <span>TEST F1 · pose CNN · train n = 80</span>
+        <div class="kicker">05 / Learned pose</div>
+        <h2>A network that has to find the return.</h2>
+        <p>A 1D CNN is scored leave-one-clip-out on DEV. Giving it the return ratio as an extra channel or a scalar branch does not lift nod performance. Widening the receptive field does not either. TEST was not scored for these networks.</p>
+        <div class="pair">
+          <div class="stat">
+            <b>0.606</b>
+            <span>DEV LOCO · shake pose CNN · [0.519, 0.680]</span>
+          </div>
+          <div class="stat">
+            <b>0.523</b>
+            <span>DEV LOCO · nod pose CNN · interval includes 0.500</span>
+          </div>
         </div>
       </div>
     </section>
@@ -153,62 +170,50 @@
     <section class="chapter" id="vision">
       <div class="wrap">
         <div class="kicker">06 / Vision</div>
-        <h2>From a trajectory to sixteen frames.</h2>
-        <p>RGB 16 × 224 × 224 face crops from the same camera as the pose. Frozen VideoMAE uses a linear head on a frozen encoder. Fine-tuning adapts the last four blocks. These numbers are saved TEST predictions. VideoMAE does not run in the browser.</p>
-        <div class="pair">
-          <div class="stat">
-            <b>0.57</b>
-            <span>TEST F1 · frozen VideoMAE</span>
-          </div>
-          <div class="stat">
-            <b>0.82</b>
-            <span>Highest observed TEST F1 · fine-tuned VideoMAE, last four blocks</span>
-          </div>
-        </div>
-        <p class="tiny">The 0.82 point estimate sits 0.02 above the always-positive baseline (F1 0.80) on fifteen windows, inside the bootstrap interval 0.60–0.96. It is not a claim of statistical superiority.</p>
-        <figure class="film">
-          <img src="assets/test_clip_grid.jpg" alt="Grid of listener face crops from gold TEST windows used in the marked dissertation figures." loading="lazy">
-          <figcaption>RGB stills from the marked dissertation figures. Public reuse of identifiable frames requires RealTalk’s terms; they are not licensed from this repository.</figcaption>
-        </figure>
+        <h2>The face has to be the listener.</h2>
+        <p>Largest-face Haar crops often showed the speaker. Those RGB runs are withdrawn. Identity-corrected VideoMAE is development only. The configurations treated as main systems all have intervals containing 0.500. One 1.5 s no-flip variant reached 0.571 [0.509, 0.669]. That was one development configuration among several, uncorrected for multiplicity, and not scored on TEST.</p>
       </div>
     </section>
 
     <section class="chapter fail" id="finding">
       <div class="wrap">
-        <div class="kicker">07 / A finding about weak supervision</div>
-        <h2>More weak labels did not improve the locked score.</h2>
+        <div class="kicker">07 / Weak supervision</div>
+        <h2>Clip labels do not say where.</h2>
         <div class="pair">
           <div class="stat">
-            <b>80</b>
-            <span>pseudo-labels · TEST F1 0.82</span>
+            <b>0.864</b>
+            <span>Agreement with the rule on whole clips</span>
           </div>
           <div class="stat">
-            <b>200</b>
-            <span>pseudo-labels · TEST F1 0.63</span>
+            <b>0.500</b>
+            <span>Window localisation · [0.468, 0.555]</span>
           </div>
         </div>
-        <p>Increasing the quantity of weak labels did not monotonically improve the locked TEST point estimate. One plausible explanation is greater exposure to systematic noise from the rule-based teacher. With n = 15, this is an observed trend, not a proven cause.</p>
+        <p>The student copied the teacher. The teacher never marked which 3 s window held the nod. Extra bags of the same clip-level kind do not supply that information.</p>
+        <figure class="film">
+          <img src="assets/weak_supervision.png" alt="Multiple instance learning: clip-level balanced accuracy 0.864 against window-level 0.500." loading="lazy">
+          <figcaption>Weak supervision at clip and window level. 0.864 is agreement with rule-generated clip labels, not nod accuracy.</figcaption>
+        </figure>
       </div>
     </section>
 
     <section class="chapter" id="method">
       <div class="wrap">
         <div class="kicker">08 / How the system works</div>
-        <h2>TEST leaves the pipeline before development.</h2>
-        <p>The working disk was capped at 25 GB. That ceiling is why the pipeline used selective extraction, derived Euler features and weak supervision rather than retaining the full RealTalk video and EMOCA archive. The constraint shaped the method.</p>
+        <h2>TEST is confirmation, not selection.</h2>
+        <p>Rules and models are chosen on DEV. TEST is scored once per system. The nod TEST split has three rule evaluations: a transferred long-window threshold, the amplitude-only rule, and the two-feature rule. Audio is mixed soundtrack, DEV only, and stays at chance.</p>
         <div class="pipe" id="pipe">
           <div class="step">RealTalk</div>
-          <div class="step">Human gold annotations</div>
-          <div class="step">EMOCA / FLAME head pose</div>
-          <div class="step">Locked TEST held out</div>
-          <div class="step">Rule detector, frozen on DEV</div>
-          <div class="step">Pseudo-labels on TRAIN</div>
-          <div class="step">Temporal pose model / VideoMAE</div>
-          <div class="step">Locked TEST evaluation</div>
+          <div class="step">Interval annotation</div>
+          <div class="step">3 s windows, 2 s stride</div>
+          <div class="step">DEV selection</div>
+          <div class="step">Yaw rule / two-feature rule</div>
+          <div class="step">Pose CNN / VideoMAE on DEV</div>
+          <div class="step">Locked TEST confirmation</div>
         </div>
         <figure class="film">
-          <img src="assets/architecture.png" alt="Executed system for binary head-nod recognition. Columbia RealTalk window splits into EMOCA pose, feeding a frozen rule and a 1D CNN, and RGB face crops, feeding VideoMAE. Gold DEV tunes; Gold TEST is scored once." loading="lazy">
-          <figcaption>Executed architecture, binary nod only. EMOCA pose feeds the frozen rule and the 1D CNN. RGB 16 × 224 × 224 crops feed VideoMAE. No BERT, HuBERT, or fusion. TRAIN is rule pseudo-labels. TEST is scored once.</figcaption>
+          <img src="assets/study_design.png" alt="Study design: 30 annotated clips split into DEV and TEST, shared 3 s windows, then pose and video branches." loading="lazy">
+          <figcaption>Study design. Thirty annotated clips, one shared 3 s protocol, pose and video evaluated on the same windows.</figcaption>
         </figure>
       </div>
     </section>
@@ -217,65 +222,47 @@
       <div class="wrap">
         <div class="kicker">09 / Test discipline</div>
         <h2>The lock is part of the artefact.</h2>
-        <p>Locked TEST directories sit on a write-refusal list. The test suite asserts that those writes are refused. Every TEST F1 on this page can be recomputed from stored prediction CSVs. No TEST inference is required to validate the numbers.</p>
+        <p>Locked TEST directories sit on a write-refusal list. The headline metric is balanced accuracy. Chance is 0.500 for any constant predictor. Intervals are clip-level bootstrap, 15 clips, 2000 resamples. An interval that includes 0.500 is not distinguished from chance.</p>
       </div>
     </section>
 
     <section class="chapter" id="results">
       <div class="wrap">
-        <div class="kicker">10 / Locked nod TEST</div>
-        <h2>Point estimates on fifteen windows.</h2>
+        <div class="kicker">10 / Locked TEST headlines</div>
+        <h2>Both gestures, one protocol.</h2>
         <div class="rows">
-          <div class="row"><span>Pose rule</span><em>.67</em></div>
-          <div class="row"><span>Pose CNN</span><em>.70</em></div>
-          <div class="row"><span>Frozen VideoMAE</span><em>.57</em></div>
-          <div class="row accent"><span>Fine-tuned VideoMAE, last four blocks</span><em>.82</em></div>
-          <div class="row"><span>Always-positive baseline</span><em>.80</em></div>
-          <div class="row"><span>Fine-tuned VideoMAE, 200 pseudo-labels</span><em>.63</em></div>
+          <div class="row accent"><span>Shake yaw rule</span><em>0.654</em></div>
+          <div class="row"><span>Shake 95% CI</span><em>0.525–0.794</em></div>
+          <div class="row accent"><span>Nod two-feature rule</span><em>0.634</em></div>
+          <div class="row"><span>Nod two-feature 95% CI</span><em>0.576–0.685</em></div>
+          <div class="row"><span>Nod amplitude only</span><em>0.549</em></div>
+          <div class="row"><span>Constant predictor</span><em>0.500</em></div>
         </div>
-        <p class="ci" style="margin-top:1rem">Bootstrap 95% interval on the 0.82 run: 0.60–0.96.</p>
+        <p class="ci" style="margin-top:1rem">Diamonds are TEST. Circles are DEV. The nod amplitude interval includes 0.500. The two-feature nod interval does not.</p>
         <figure class="film">
-          <img src="assets/nod_test_confusion.png" alt="Confusion matrices for locked nod TEST systems." loading="lazy">
-          <figcaption>Locked nod TEST confusion. Fine-tuned VideoMAE: TP 9, FP 3, TN 2, FN 1. Pose rule: TP 7, FP 4, TN 1, FN 3.</figcaption>
+          <img src="assets/results_both_gestures.png" alt="Balanced accuracy for head shake and head nod systems with 95% confidence intervals." loading="lazy">
+          <figcaption>Windowed results for both gestures. Same clips, annotator, window, metric and resampling.</figcaption>
         </figure>
       </div>
     </section>
 
     <section class="chapter" id="shake">
       <div class="wrap">
-        <div class="kicker">11 / Locked head-shake TEST</div>
-        <h2>RGB lost to a simple pose rule.</h2>
-        <p>Same thirty gold windows, same frozen protocol, a different label: clear shake or not. TEST was scored once. The pose rule is the headline. Fine-tuned VideoMAE did not beat it.</p>
-        <div class="pair">
-          <div class="stat">
-            <b>0.70</b>
-            <span>TEST F1 · pose rule · axis z · τ ≈ 11.15°</span>
-          </div>
-          <div class="stat">
-            <b>0.64</b>
-            <span>Always-shake baseline on the same fifteen windows</span>
-          </div>
-        </div>
-        <div class="rows">
-          <div class="row accent"><span>Pose rule (z)</span><em>.70</em></div>
-          <div class="row"><span>Always-shake baseline</span><em>.64</em></div>
-          <div class="row"><span>Pose CNN</span><em>.64</em></div>
-          <div class="row"><span>Frozen VideoMAE</span><em>.60</em></div>
-          <div class="row"><span>Fine-tuned VideoMAE, last four blocks</span><em>.60</em></div>
-        </div>
-        <p>After scoring, a geometric audit placed shake on yaw (y), not roll (z). The locked TEST artefacts stay on z. They were not rewritten.</p>
+        <div class="kicker">11 / Why the two gestures differ</div>
+        <h2>Yaw is cleaner than pitch.</h2>
+        <p>Horizontal shake has fewer lookalikes in a seated conversation. Vertical nod shares pitch excursion with looking down, leaning and settling. Amplitude is enough for shake. Nod needs the return. The two-feature rule was selected on DEV after that comparison, then frozen for TEST.</p>
         <figure class="film">
-          <img src="assets/shake_test_f1.png" alt="Bar chart of locked head-shake TEST F1. Pose rule 0.70; always-shake 0.64; pose CNN 0.64; both VideoMAE systems 0.60." loading="lazy">
-          <figcaption>Locked shake TEST. RGB is two encodings of the same camera as pose, not a second sensory modality.</figcaption>
+          <img src="assets/rule_dev_vs_test.png" alt="Two-feature nod rule, development against locked TEST. TEST interval excludes 0.500." loading="lazy">
+          <figcaption>Frozen two-feature nod rule. Thresholds chosen on development. TEST scored once for that system. Interval excludes 0.500.</figcaption>
         </figure>
       </div>
     </section>
 
     <section class="chapter inspect" id="inspect">
       <div class="wrap">
-        <div class="kicker">12 / Inspect a TEST window</div>
-        <h2>Head pitch on a locked TEST window.</h2>
-        <p class="note">The pose rule is recomputed interactively from stored pose data. Pose CNN and VideoMAE are saved predictions from the locked TEST evaluation. The original RealTalk video is not hosted. Drag the plot to move through the sequence. Play, Pause and Restart sit under the plot.</p>
+        <div class="kicker">12 / Inspect a TEST excerpt</div>
+        <h2>Head pitch on a stored TEST clip.</h2>
+        <p class="note">This instrument replays stored pose from a gold TEST excerpt. The amplitude threshold drawn here is the older excerpt-level cut (16.35°), not the 3 s two-feature rule. Pose CNN and VideoMAE numbers in this panel are saved clip-level predictions from that earlier protocol. They are not the thesis headlines. Drag the plot to move through the sequence.</p>
         <div class="win-list" id="win-list"></div>
         <div class="spec-strip">
           <div><span>Window</span><b id="ex-window">GOLD_016</b></div>
@@ -324,27 +311,27 @@
         <div class="kicker">13 / Limitations</div>
         <h2>The constraints are part of the result.</h2>
         <ol>
-          <li><span class="id">Gold set</span><span>Fifteen TEST windows. Too small for statistical superiority.</span></li>
+          <li><span class="id">Gold set</span><span>Fifteen clips per split. Intervals are wide. No significance is claimed.</span></li>
           <li><span class="id">Annotator</span><span>One person labelled the gold set. There is no second-reader agreement.</span></li>
-          <li><span class="id">Weak labels</span><span>TRAIN is rule pseudo-labels, not gold.</span></li>
+          <li><span class="id">Nod TEST</span><span>Three rule evaluations on the nod TEST split. The 0.634 figure carries more selection optimism than a single scoring.</span></li>
           <li><span class="id">Camera</span><span>Pose and RGB are two encodings of one camera, not two sensory modalities.</span></li>
-          <li><span class="id">Shake axis</span><span>Locked shake TEST used roll (z). A later audit placed shake on yaw (y). TEST was not rescored.</span></li>
+          <li><span class="id">Audio</span><span>Acoustic systems use the mixed soundtrack. They stay at chance on DEV and were not taken to TEST.</span></li>
         </ol>
       </div>
     </section>
 
-    <section class="chapter future" id="future">
+    <section class="chapter future lim" id="future">
       <div class="wrap">
-        <div class="kicker">14 / Future work</div>
-        <h2>From prediction to presence.</h2>
-        <p>The next step is to drive a generative listener avatar from predicted backchannel events. Predicted nods and head motion would condition a listener that is visible while it listens. That system is not in this dissertation.</p>
-        <ol class="path" id="future-chain">
-          <li><span>01</span>Speaker</li>
-          <li><span>02</span>Predicted backchannel</li>
-          <li><span>03</span>Generative avatar</li>
-          <li><span>04</span>Responsive listener</li>
+        <div class="kicker">14 / Future directions</div>
+        <h2>Suggestions, not a plan.</h2>
+        <p>These are places further annotation or analysis would add most. They are suggestions for other researchers, not work remaining in this dissertation.</p>
+        <ol>
+          <li><span class="id">01</span><span>Test the return-ratio account on stored false positives.</span></li>
+          <li><span class="id">02</span><span>More human intervals, not more weak clip labels.</span></li>
+          <li><span class="id">03</span><span>Speaker-separated audio on the same windows.</span></li>
+          <li><span class="id">04</span><span>Shake at greater scale, and a nested nod threshold estimate.</span></li>
         </ol>
-        <p class="path-note"></p>
+        <p class="tiny">Recognition could later condition a generative listener. The detectors here are not accurate enough for that, and they operate on observed windows, not forecasts.</p>
       </div>
     </section>
 
@@ -354,8 +341,8 @@
         <h2>Read the work as it stands.</h2>
         <div class="links">
           <a href="https://github.com/thelivingdead/multimodalbackchannelprediction/blob/main/README.md">Read the research <span>↗</span></a>
-          <a href="https://github.com/thelivingdead/multimodalbackchannelprediction/blob/main/dissertation-behaviour-recognition/reports/methods_chapter_draft.md">View methods <span>↗</span></a>
-          <a href="https://github.com/thelivingdead/multimodalbackchannelprediction/blob/main/dissertation-behaviour-recognition/results/tables/main_results.md">Explore results <span>↗</span></a>
+          <a href="https://github.com/thelivingdead/multimodalbackchannelprediction/blob/main/dissertation-behaviour-recognition/figures/paper/CAPTIONS.md">Figure captions <span>↗</span></a>
+          <a href="https://github.com/thelivingdead/multimodalbackchannelprediction/blob/main/dissertation-behaviour-recognition/results/README.md">Results index <span>↗</span></a>
           <a href="https://github.com/thelivingdead/multimodalbackchannelprediction">GitHub <span>↗</span></a>
         </div>
       </div>
@@ -370,6 +357,6 @@
   </footer>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
-  <script src="app.js?v=13"></script>
+  <script src="app.js?v=14"></script>
 </body>
 </html>

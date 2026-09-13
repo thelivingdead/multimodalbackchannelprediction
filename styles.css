@@ -370,7 +370,7 @@ button {
 .rows { margin-top: 1.8rem; max-width: 44rem; }
 .row {
   display: grid;
-  grid-template-columns: 1fr 3.4rem;
+  grid-template-columns: 1fr 8.2rem;
   gap: 1rem;
   padding: 0.7rem 0;
   border-bottom: 1px solid var(--line);
